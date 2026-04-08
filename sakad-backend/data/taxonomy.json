@@ -1,0 +1,1141 @@
+[
+  {
+    "slug": "japanese-streetwear",
+    "label": "Japanese Streetwear",
+    "domain": "fashion",
+    "description": "Oversized layered silhouettes with baggy trousers, elongated tees, and deconstructed outerwear in muted earth tones and blacks, often paired with chunky sneakers",
+    "visual_references": [
+      "Yohji Yamamoto",
+      "Issey Miyake",
+      "Comme des Garçons",
+      "WTAPS",
+      "Neighborhood"
+    ]
+  },
+  {
+    "slug": "korean-minimalism",
+    "label": "Korean Minimalism",
+    "domain": "fashion",
+    "description": "Clean-cut tailoring with slim-fit trousers, oversized blazers in cream, beige, and charcoal, structured silhouettes with almost no visible branding",
+    "visual_references": [
+      "Ader Error",
+      "Wooyoungmi",
+      "Sandro Seoul",
+      "Low Classic"
+    ]
+  },
+  {
+    "slug": "gorpcore",
+    "label": "Gorpcore",
+    "domain": "fashion",
+    "description": "Technical outdoor gear worn as fashion: Arc'teryx shells, Salomon trail runners, cargo pants with multiple utility pockets, fleece vests, and hiking boots",
+    "visual_references": [
+      "Arc'teryx",
+      "Salomon",
+      "Patagonia",
+      "The North Face",
+      "Gramicci"
+    ]
+  },
+  {
+    "slug": "old-money",
+    "label": "Old Money",
+    "domain": "fashion",
+    "description": "Preppy east-coast aesthetic with polo shirts, cable-knit sweaters, khaki chinos, loafers, and navy blazers in muted heritage colors suggesting generational wealth",
+    "visual_references": [
+      "Ralph Lauren Purple Label",
+      "Brooks Brothers",
+      "Polo Ralph Lauren",
+      "Loro Piana"
+    ]
+  },
+  {
+    "slug": "y2k-revival",
+    "label": "Y2K Revival",
+    "domain": "fashion",
+    "description": "Early 2000s nostalgia: low-rise jeans, baby tees, velour tracksuits, butterfly clips, metallic fabrics, and platform shoes in hot pink, chrome silver, and sky blue",
+    "visual_references": [
+      "Paris Hilton",
+      "Britney Spears",
+      "Juicy Couture",
+      "Von Dutch",
+      "Ed Hardy"
+    ]
+  },
+  {
+    "slug": "techwear",
+    "label": "Techwear",
+    "domain": "fashion",
+    "description": "Functional futuristic aesthetic with waterproof shells, modular cargo systems, cyberpunk silhouettes in all-black palette, with visible utility straps and zippers",
+    "visual_references": [
+      "Acronym",
+      "Nike ACG",
+      "Stone Island Shadow Project",
+      "Guerrilla Group"
+    ]
+  },
+  {
+    "slug": "dark-academia",
+    "label": "Dark Academia",
+    "domain": "fashion",
+    "description": "Gothic scholarly aesthetic with tweed blazers, turtlenecks, plaid trousers, Oxford shoes, and leather satchels in deep burgundy, forest green, brown, and black",
+    "visual_references": [
+      "Donna Tartt",
+      "Dead Poets Society",
+      "Ralph Lauren",
+      "A.P.C."
+    ]
+  },
+  {
+    "slug": "cottagecore",
+    "label": "Cottagecore",
+    "domain": "fashion",
+    "description": "Rural romanticism with flowy floral dresses, linen pinafores, puffed sleeves, straw hats, and wicker baskets in soft pastels and warm naturals",
+    "visual_references": [
+      "Laura Ashley",
+      "Batsheva",
+      "Loveshackfancy",
+      "Brandy Melville"
+    ]
+  },
+  {
+    "slug": "streetwear-luxury",
+    "label": "Streetwear Luxury",
+    "domain": "fashion",
+    "description": "High-low mix of streetwear silhouettes with luxury execution: hoodies and sweatpants in cashmere, logo-heavy pieces from Supreme x Louis Vuitton collabs, designer sneakers",
+    "visual_references": [
+      "Off-White",
+      "Supreme",
+      "Balenciaga",
+      "Dior x Jordan",
+      "Gucci x Adidas"
+    ]
+  },
+  {
+    "slug": "coastal-grandmother",
+    "label": "Coastal Grandmother",
+    "domain": "fashion",
+    "description": "Relaxed seaside elegance with linen trousers, oversized striped shirts, canvas totes, woven sandals, and sun hats in navy, white, cream, and sandy beige",
+    "visual_references": [
+      "Diane Keaton",
+      "Something's Gotta Give",
+      "Eileen Fisher",
+      "J.Crew"
+    ]
+  },
+  {
+    "slug": "workwear-americana",
+    "label": "Workwear Americana",
+    "domain": "fashion",
+    "description": "Blue-collar American heritage: raw selvedge denim, Carhartt canvas duck jackets, Red Wing boots, chambray shirts, and trucker hats in indigo, tan, and olive",
+    "visual_references": [
+      "Carhartt WIP",
+      "Dickies",
+      "Red Wing",
+      "Levi's Vintage",
+      "Iron Heart"
+    ]
+  },
+  {
+    "slug": "soft-grunge",
+    "label": "Soft Grunge",
+    "domain": "fashion",
+    "description": "Feminine take on 90s grunge: floral dresses over ripped fishnet tights, band tees knotted at the waist, chunky boots, denim jackets with patches in faded black and dusty rose",
+    "visual_references": [
+      "Courtney Love",
+      "Hole",
+      "Urban Outfitters",
+      "Brandy Melville"
+    ]
+  },
+  {
+    "slug": "ivy-league-preppy",
+    "label": "Ivy League Preppy",
+    "domain": "fashion",
+    "description": "Classic American campus style: varsity jackets, madras plaid shorts, crewneck sweaters tied over shoulders, penny loafers, and boat shoes in red, navy, and cream",
+    "visual_references": [
+      "J.Crew",
+      "Vineyard Vines",
+      "Tommy Hilfiger",
+      "Lacoste"
+    ]
+  },
+  {
+    "slug": "normcore",
+    "label": "Normcore",
+    "domain": "fashion",
+    "description": "Deliberately average, anti-fashion aesthetic: plain white tees, straight-leg jeans, dad sneakers, zip-up fleece, and baseball caps in neutral basics",
+    "visual_references": [
+      "Jerry Seinfeld",
+      "New Balance 990",
+      "Gap basics",
+      "Uniqlo"
+    ]
+  },
+  {
+    "slug": "quiet-luxury",
+    "label": "Quiet Luxury",
+    "domain": "fashion",
+    "description": "Logoless understated wealth: cashmere turtlenecks, perfectly tailored trousers, camel coats, leather goods, in muted neutrals of camel, navy, cream, and charcoal",
+    "visual_references": [
+      "The Row",
+      "Loro Piana",
+      "Brunello Cucinelli",
+      "Succession styling"
+    ]
+  },
+  {
+    "slug": "afropunk",
+    "label": "Afropunk",
+    "domain": "fashion",
+    "description": "Bold fusion of African heritage with punk rebellion: natural afros adorned with Ankara prints, leather jackets, spiked accessories, and vibrant color clashing",
+    "visual_references": [
+      "Afropunk Festival",
+      "Janelle Monáe",
+      "Solange Knowles",
+      "Chromat"
+    ]
+  },
+  {
+    "slug": "e-girl",
+    "label": "E-Girl",
+    "domain": "fashion",
+    "description": "TikTok-era alternative aesthetic: plaid mini skirts layered over long-sleeve striped shirts, chain necklaces, heart face stickers, dyed hair, and platform shoes",
+    "visual_references": [
+      "Billie Eilish early",
+      "Corpse Husband",
+      "Doja Cat",
+      "Hot Topic"
+    ]
+  },
+  {
+    "slug": "boho-chic",
+    "label": "Boho Chic",
+    "domain": "fashion",
+    "description": "Free-spirited bohemian: crochet tops, peasant blouses, maxi skirts, fringe vests, tassel jewelry, and suede ankle boots in terracotta, cream, and warm brown",
+    "visual_references": [
+      "Sienna Miller",
+      "Kate Moss Glastonbury",
+      "Free People",
+      "Spell"
+    ]
+  },
+  {
+    "slug": "military-surplus",
+    "label": "Military Surplus",
+    "domain": "fashion",
+    "description": "Utilitarian army aesthetic: M65 field jackets, cargo pants with numerous pockets, combat boots, dog tags, and camouflage prints in olive drab, khaki, and camo",
+    "visual_references": [
+      "Maharishi",
+      "Stone Island",
+      "Kapital",
+      "Alpha Industries"
+    ]
+  },
+  {
+    "slug": "avant-garde",
+    "label": "Avant-Garde Fashion",
+    "domain": "fashion",
+    "description": "Conceptual anti-conventional clothing: deconstructed seams, asymmetric hemlines, architectural silhouettes, unexpected material combinations pushing the boundary of wearability",
+    "visual_references": [
+      "Rei Kawakubo",
+      "Martin Margiela",
+      "Rick Owens",
+      "Yohji Yamamoto",
+      "Walter Van Beirendonck"
+    ]
+  },
+  {
+    "slug": "skatecore",
+    "label": "Skatecore",
+    "domain": "fashion",
+    "description": "Skateboarding subculture style: loose graphic tees, baggy Dickies or Levi's, Vans slip-ons, bucket hats, and hoodies with skate brand logos in faded and worn finishes",
+    "visual_references": [
+      "Supreme early",
+      "Palace",
+      "Santa Cruz",
+      "Thrasher",
+      "Stüssy original"
+    ]
+  },
+  {
+    "slug": "punk-revival",
+    "label": "Punk Revival",
+    "domain": "fashion",
+    "description": "Neo-punk rebellion: studded leather jackets, torn fishnet, tartan bondage trousers, safety-pin accessories, mohawks, and band tees in black with neon accents",
+    "visual_references": [
+      "Vivienne Westwood",
+      "Sex Pistols",
+      "The Clash",
+      "Raf Simons",
+      "Chrome Hearts"
+    ]
+  },
+  {
+    "slug": "athleisure",
+    "label": "Athleisure",
+    "domain": "fashion",
+    "description": "Performance sportswear worn as everyday fashion: sleek leggings, moisture-wicking tops, track jackets, and seamless sets in monochrome or bold athletic colorways",
+    "visual_references": [
+      "Lululemon",
+      "Alo Yoga",
+      "Nike",
+      "Adidas by Stella McCartney",
+      "Vuori"
+    ]
+  },
+  {
+    "slug": "western-cowboy",
+    "label": "Western Cowboy",
+    "domain": "fashion",
+    "description": "American frontier revival: Stetson cowboy hats, bootcut denim, embroidered snap-button western shirts, turquoise jewelry, and pointed-toe cowboy boots",
+    "visual_references": [
+      "Nudie Jeans",
+      "Wrangler",
+      "Ralph Lauren Western",
+      "Double D Ranch"
+    ]
+  },
+  {
+    "slug": "subversive-basics",
+    "label": "Subversive Basics",
+    "domain": "fashion",
+    "description": "Elevated everyday pieces with unexpected twists: deconstructed white shirts, inside-out seams on plain sweaters, raw-edge hemlines on trousers, minimal but intentional",
+    "visual_references": [
+      "Maison Margiela",
+      "Lemaire",
+      "Toteme",
+      "Studio Nicholson"
+    ]
+  },
+  {
+    "slug": "regencycore",
+    "label": "Regencycore",
+    "domain": "fashion",
+    "description": "Bridgerton-inspired Regency Era romanticism: empire-waist gowns, puffed sleeves, corsets worn over blouses, pearl accessories, and pastel floral prints",
+    "visual_references": ["Bridgerton", "Simone Rocha", "Rodarte", "Selkie"]
+  },
+  {
+    "slug": "barbiecore",
+    "label": "Barbiecore",
+    "domain": "fashion",
+    "description": "Hyper-feminine maximalist pink: hot pink mini dresses, all-pink monochromatic outfits, platform heels, furry accessories, rhinestone embellishments, and Barbie-doll aesthetics",
+    "visual_references": [
+      "Valentino Pink PP",
+      "Moschino",
+      "Barbie movie 2023",
+      "Nicki Minaj"
+    ]
+  },
+  {
+    "slug": "coastal-surf",
+    "label": "Coastal Surf",
+    "domain": "fashion",
+    "description": "Beach culture aesthetic: boardshorts, rashguards, sun-bleached tees, Birkenstock sandals, and woven bucket hats in ocean blues, coral, and sandy tan",
+    "visual_references": [
+      "Saturdays NYC",
+      "Outerknown",
+      "Patagonia Surf",
+      "Billabong"
+    ]
+  },
+  {
+    "slug": "hipster-indie",
+    "label": "Hipster Indie",
+    "domain": "fashion",
+    "description": "Counter-culture thrift aesthetic: vintage flannel shirts, high-waisted mom jeans, round wire-frame glasses, canvas tote bags, and worn leather Oxford shoes",
+    "visual_references": [
+      "American Apparel circa 2010",
+      "Urban Outfitters",
+      "Topshop vintage"
+    ]
+  },
+  {
+    "slug": "maximalist-glam",
+    "label": "Maximalist Glam",
+    "domain": "fashion",
+    "description": "More-is-more high fashion opulence: bold pattern mixing, sequins, feathers, jewel tones, layered statement jewelry, and dramatic silhouettes in crimson, gold, and emerald",
+    "visual_references": [
+      "Versace",
+      "Dolce & Gabbana",
+      "Dries Van Noten",
+      "Marc Jacobs"
+    ]
+  },
+  {
+    "slug": "quiet-streetwear",
+    "label": "Quiet Streetwear",
+    "domain": "fashion",
+    "description": "Logoless premium streetwear: heavyweight blank hoodies, straight-leg denim, clean white sneakers, and minimal outerwear in neutral grays, blacks, and off-whites",
+    "visual_references": [
+      "Aime Leon Dore",
+      "Drake's",
+      "Norse Projects",
+      "A.P.C. x Carhartt"
+    ]
+  },
+  {
+    "slug": "festival-fashion",
+    "label": "Festival Fashion",
+    "domain": "fashion",
+    "description": "Music festival dressing: crochet bralettes, fringe shorts, glitter body paint, flower crowns, holographic accessories, and bold prints in neon and metallic rainbow",
+    "visual_references": [
+      "Coachella",
+      "Free People",
+      "For Love & Lemons",
+      "House of Harlow"
+    ]
+  },
+  {
+    "slug": "vintage-sportswear",
+    "label": "Vintage Sportswear",
+    "domain": "fashion",
+    "description": "Retro athletic wear: 80s nylon track suits, vintage NBA jerseys, classic Adidas Samba and Nike Cortez, color-blocked windbreakers in primary colors and gold",
+    "visual_references": [
+      "Mitchell & Ness",
+      "Adidas Originals",
+      "New Balance archive",
+      "Champion reverse weave"
+    ]
+  },
+  {
+    "slug": "romantic-goth",
+    "label": "Romantic Goth",
+    "domain": "fashion",
+    "description": "Victorian darkness meets romance: black lace corsets, velvet capes, cameo brooches, fishnet sleeves, and platform Mary Janes in deep purples, black, and blood red",
+    "visual_references": [
+      "Alexander McQueen",
+      "Stevie Nicks",
+      "Ann Demeulemeester",
+      "AllSaints"
+    ]
+  },
+  {
+    "slug": "tropical-resort",
+    "label": "Tropical Resort",
+    "domain": "fashion",
+    "description": "Vacation luxury with bold tropical prints, silk resort shirts, wide-leg linen trousers, espadrille wedges, and oversized straw hats in turquoise, coral, and banana yellow",
+    "visual_references": [
+      "Zimmermann",
+      "Agua by Agua Bendita",
+      "Johanna Ortiz",
+      "Cult Gaia"
+    ]
+  },
+  {
+    "slug": "archival-fashion",
+    "label": "Archival Fashion",
+    "domain": "fashion",
+    "description": "Rare vintage designer pieces worn as cultural artifacts: early 2000s Dior by Galliano, 90s Helmut Lang, vintage Versace prints, treating fashion as collectible art",
+    "visual_references": [
+      "John Galliano Dior",
+      "Helmut Lang 90s",
+      "early Versace",
+      "Raf Simons archive"
+    ]
+  },
+  {
+    "slug": "gender-fluid",
+    "label": "Gender-Fluid Fashion",
+    "domain": "fashion",
+    "description": "Deliberately non-binary dressing: men in skirts, women in boxy suiting, mixing traditionally gendered garments to create ambiguous powerful silhouettes",
+    "visual_references": [
+      "Billy Porter",
+      "Harry Styles",
+      "Palomo Spain",
+      "Harris Reed",
+      "Loewe"
+    ]
+  },
+  {
+    "slug": "indie-sleaze",
+    "label": "Indie Sleaze",
+    "domain": "fashion",
+    "description": "2008-2012 era underground nightlife aesthetic: American Apparel basics, vintage Ray-Bans, leather jackets, smudged eye makeup, and a deliberately disheveled party look",
+    "visual_references": [
+      "Terry Richardson photos",
+      "American Apparel",
+      "early Tumblr era"
+    ]
+  },
+  {
+    "slug": "mob-wife",
+    "label": "Mob Wife Aesthetic",
+    "domain": "fashion",
+    "description": "Extravagant 80s-90s Italian-American opulence: full-length fur coats, animal prints, gold jewelry layering, tight bodycon dresses, and big hair in dramatic jewel tones",
+    "visual_references": [
+      "The Sopranos",
+      "Carmela Soprano",
+      "Roberto Cavalli",
+      "Versace Jeans Couture"
+    ]
+  },
+  {
+    "slug": "minimalist-scandinavian",
+    "label": "Minimalist Scandinavian",
+    "domain": "fashion",
+    "description": "Nordic restraint with perfectly proportioned pieces: structured coats, clean-lined trousers, simple knitwear, and quality leather goods in white, grey, cream, and black",
+    "visual_references": [
+      "Acne Studios",
+      "Our Legacy",
+      "Filippa K",
+      "COS",
+      "Toteme"
+    ]
+  },
+  {
+    "slug": "twee",
+    "label": "Twee",
+    "domain": "fashion",
+    "description": "Whimsical indie cuteness: Peter Pan collars, A-line skirts, Mary Jane shoes, cardigans with embroidered patches, and quirky cat-eye glasses in pastel and candy colors",
+    "visual_references": [
+      "Zooey Deschanel",
+      "Wes Anderson films",
+      "Cath Kidston",
+      "Modcloth"
+    ]
+  },
+  {
+    "slug": "biker-moto",
+    "label": "Biker & Moto",
+    "domain": "fashion",
+    "description": "Motorcycle subculture style: asymmetric zip leather jackets, skinny black jeans, engineer boots, bandanas, and graphic tees in all-black with chrome hardware accents",
+    "visual_references": [
+      "Schott NYC",
+      "Belstaff",
+      "Saint Laurent",
+      "John Varvatos"
+    ]
+  },
+  {
+    "slug": "90s-hip-hop",
+    "label": "90s Hip-Hop",
+    "domain": "fashion",
+    "description": "Golden era rap aesthetics: oversized Timberlands, baggy denim, cross-color jeans, Coogi sweaters, doorknob chains, Kangol hats, and tracksuits in bold primary colors",
+    "visual_references": [
+      "Biggie",
+      "Tupac",
+      "TLC",
+      "FUBU",
+      "Phat Farm",
+      "Cross Colours"
+    ]
+  },
+  {
+    "slug": "clean-girl",
+    "label": "Clean Girl",
+    "domain": "fashion",
+    "description": "Effortless minimal polish: slicked-back bun, gold hoop earrings, ribbed tank tops, straight-leg denim, ballet flats, and dewy skin in neutral earth tones",
+    "visual_references": [
+      "Hailey Bieber",
+      "Sofia Richie",
+      "Abercrombie & Fitch",
+      "Zara basics"
+    ]
+  },
+  {
+    "slug": "denim-on-denim",
+    "label": "Denim on Denim",
+    "domain": "fashion",
+    "description": "Canadian tuxedo maximized: double denim from head to toe in various washes — dark jacket over light jeans or matching indigo sets, a deliberate fashion statement",
+    "visual_references": [
+      "Britney and Justin 2001 AMAs",
+      "Levi's",
+      "Calvin Klein denim"
+    ]
+  },
+  {
+    "slug": "print-mixing",
+    "label": "Print Mixing",
+    "domain": "fashion",
+    "description": "Intentional clashing of patterns: stripes with florals, plaids with animal prints, deliberately mismatched but balanced through color family or scale variation",
+    "visual_references": [
+      "Dries Van Noten",
+      "Stella McCartney",
+      "Mary Katrantzou",
+      "Gucci under Alessandro Michele"
+    ]
+  },
+  {
+    "slug": "punk-couture",
+    "label": "Punk Couture",
+    "domain": "fashion",
+    "description": "High fashion interpretation of punk: McQueen tartan, Westwood corsets, Givenchy studded leather, safety-pin evening gowns, transforming subversion into luxury runway pieces",
+    "visual_references": [
+      "Gianni Versace safety pin dress",
+      "Vivienne Westwood couture",
+      "Alexander McQueen",
+      "Jeremy Scott"
+    ]
+  },
+  {
+    "slug": "tailored-suiting",
+    "label": "Tailored Suiting",
+    "domain": "fashion",
+    "description": "Power dressing with immaculate construction: single-button suits, peak lapels, double-breasted blazers, French-cuffed shirts, and pocket squares in charcoal, navy, and chalk stripe",
+    "visual_references": [
+      "Tom Ford",
+      "Ozwald Boateng",
+      "Brioni",
+      "Kiton",
+      "Thom Browne"
+    ]
+  },
+  {
+    "slug": "logomania",
+    "label": "Logomania",
+    "domain": "fashion",
+    "description": "Visible luxury branding as status signal: monogram canvas bags, all-over logo prints, branded belts, and head-to-toe designer labeling as deliberate display of affluence",
+    "visual_references": [
+      "Louis Vuitton monogram",
+      "Gucci logo stripe",
+      "Fendi baguette",
+      "Balenciaga logo"
+    ]
+  },
+  {
+    "slug": "distressed-grunge",
+    "label": "Distressed & Grunge",
+    "domain": "fashion",
+    "description": "Deliberately destroyed finishes: shredded denim, acid-washed hoodies, bleach-splattered tees, paint-stained jeans, and worn-out Converse in faded blacks and grays",
+    "visual_references": [
+      "Kurt Cobain",
+      "Nirvana era",
+      "Saint Laurent",
+      "Amiri",
+      "John Varvatos"
+    ]
+  },
+  {
+    "slug": "cyberpunk-fashion",
+    "label": "Cyberpunk Fashion",
+    "domain": "fashion",
+    "description": "Dystopian futurism: reflective materials, LED-embedded garments, PVC outerwear, neon color blocking, and asymmetric cuts suggesting near-future urban warfare",
+    "visual_references": [
+      "Blade Runner 2049",
+      "Ghost in the Shell",
+      "Rick Owens x Adidas",
+      "Ivanman"
+    ]
+  },
+  {
+    "slug": "urban-outdoor",
+    "label": "Urban Outdoor",
+    "domain": "fashion",
+    "description": "City-ready outdoor performance gear: Patagonia vests over button-downs, puffer jackets, chino pants, and hiking-inspired sneakers blending function with office-appropriate polish",
+    "visual_references": [
+      "Patagonia Better Sweater",
+      "Eddie Bauer",
+      "Rab",
+      "Filson"
+    ]
+  },
+  {
+    "slug": "golden-hour-glow",
+    "label": "Golden Hour Glow",
+    "domain": "fashion",
+    "description": "Warm luminous palette inspired by late afternoon light: amber, burnt sienna, mustard yellow, rust orange, and cream fabrics in flowing silhouettes with natural texture",
+    "visual_references": [
+      "Zimmermann",
+      "Cult Gaia",
+      "Jacquemus",
+      "Faithfull the Brand"
+    ]
+  },
+  {
+    "slug": "monochromatic-dressing",
+    "label": "Monochromatic Dressing",
+    "domain": "fashion",
+    "description": "Head-to-toe single color in varied tones and textures: all-black with matte and glossy finishes, all-white mixing sheer and opaque, creating depth through material contrast",
+    "visual_references": [
+      "Yohji Yamamoto",
+      "Rick Owens",
+      "The Row",
+      "Helmut Lang"
+    ]
+  },
+  {
+    "slug": "abstract-expressionism",
+    "label": "Abstract Expressionism",
+    "domain": "art",
+    "description": "Large-scale gestural mark-making with drips, splashes, and bold brush strokes in raw emotional color, suggesting movement and psychological depth",
+    "visual_references": [
+      "Jackson Pollock",
+      "Mark Rothko",
+      "Franz Kline",
+      "Willem de Kooning",
+      "Lee Krasner"
+    ]
+  },
+  {
+    "slug": "brutalist-architecture",
+    "label": "Brutalist Architecture",
+    "domain": "art",
+    "description": "Raw exposed concrete structures with massive geometric forms, repetitive modular grids, and unfinished textural surfaces conveying monumental weight and permanence",
+    "visual_references": [
+      "Le Corbusier",
+      "Barbican Centre London",
+      "Boston City Hall",
+      "Paul Rudolph"
+    ]
+  },
+  {
+    "slug": "pop-art",
+    "label": "Pop Art",
+    "domain": "art",
+    "description": "Commercial imagery elevated to fine art: bold Ben-Day dots, primary colors, flat graphic style, celebrity portraits, and consumer product iconography",
+    "visual_references": [
+      "Andy Warhol",
+      "Roy Lichtenstein",
+      "Jasper Johns",
+      "Robert Rauschenberg"
+    ]
+  },
+  {
+    "slug": "japanese-woodblock",
+    "label": "Japanese Woodblock",
+    "domain": "art",
+    "description": "Ukiyo-e flat graphic style with bold outlines, limited color palette, stylized waves and nature scenes, and decorative pattern-filling in the tradition of the floating world",
+    "visual_references": [
+      "Hokusai Great Wave",
+      "Hiroshige",
+      "Utamaro",
+      "Yoshitoshi"
+    ]
+  },
+  {
+    "slug": "bauhaus-design",
+    "label": "Bauhaus Design",
+    "domain": "art",
+    "description": "Form follows function geometric precision: primary colors, geometric sans-serif typography, horizontal-vertical composition, and the marriage of fine art with industrial craft",
+    "visual_references": [
+      "László Moholy-Nagy",
+      "Herbert Bayer",
+      "Marcel Breuer furniture",
+      "Oskar Schlemmer"
+    ]
+  },
+  {
+    "slug": "art-nouveau",
+    "label": "Art Nouveau",
+    "domain": "art",
+    "description": "Organic curvilinear forms inspired by nature: flowing floral motifs, sinuous female figures, stained glass color effects, and whiplash curves in gold and emerald",
+    "visual_references": [
+      "Alphonse Mucha",
+      "Hector Guimard",
+      "Louis Comfort Tiffany",
+      "Gustav Klimt"
+    ]
+  },
+  {
+    "slug": "surrealism",
+    "label": "Surrealism",
+    "domain": "art",
+    "description": "Dreamlike juxtapositions with hyperrealist rendering of impossible scenes, melting forms, disembodied body parts, and subconscious imagery in meticulous photorealistic detail",
+    "visual_references": [
+      "Salvador Dalí",
+      "René Magritte",
+      "Frida Kahlo",
+      "Man Ray",
+      "Max Ernst"
+    ]
+  },
+  {
+    "slug": "minimalist-art",
+    "label": "Minimalist Art",
+    "domain": "art",
+    "description": "Reduction to essential form: monochrome canvases, geometric solids, industrial materials, serial repetition, and the elimination of personal expression in favor of pure concept",
+    "visual_references": [
+      "Donald Judd",
+      "Dan Flavin",
+      "Agnes Martin",
+      "Carl Andre",
+      "Frank Stella"
+    ]
+  },
+  {
+    "slug": "street-art-graffiti",
+    "label": "Street Art & Graffiti",
+    "domain": "art",
+    "description": "Urban mark-making: wildstyle lettering, character illustration, wheat-paste posters, and stencil-spray works in high-contrast colors on architectural surfaces",
+    "visual_references": [
+      "Banksy",
+      "Jean-Michel Basquiat",
+      "Keith Haring",
+      "Os Gemeos",
+      "Shepard Fairey"
+    ]
+  },
+  {
+    "slug": "impressionism",
+    "label": "Impressionism",
+    "domain": "art",
+    "description": "Capturing fleeting light effects with visible broken brushstrokes, soft edges, and atmospheric color — garden scenes, water surfaces, café life in dappled natural light",
+    "visual_references": [
+      "Claude Monet",
+      "Pierre-Auguste Renoir",
+      "Edgar Degas",
+      "Camille Pissarro"
+    ]
+  },
+  {
+    "slug": "digital-glitch-art",
+    "label": "Digital Glitch Art",
+    "domain": "art",
+    "description": "Intentional digital corruption: pixel sorting, data moshing, RGB channel separation, scan-line distortion, and JPEG artifact aesthetics celebrating technological failure",
+    "visual_references": [
+      "Rosa Menkman",
+      "Kim Asendorf",
+      "Takeshi Murata",
+      "Jon Satrom"
+    ]
+  },
+  {
+    "slug": "hyperrealism",
+    "label": "Hyperrealism",
+    "domain": "art",
+    "description": "Photographic precision in paint or sculpture: skin pores, fabric wrinkles, water droplets, and reflective surfaces rendered with microscopic accuracy surpassing photographic detail",
+    "visual_references": [
+      "Chuck Close",
+      "Ron Mueck",
+      "Gottfried Helnwein",
+      "Roberto Bernardi"
+    ]
+  },
+  {
+    "slug": "psychedelic-art",
+    "label": "Psychedelic Art",
+    "domain": "art",
+    "description": "Mind-altering visual imagery: kaleidoscopic patterns, melting symmetrical forms, neon color saturation, morphing organic shapes, and visual vibration suggesting altered consciousness",
+    "visual_references": [
+      "Wes Wilson",
+      "Victor Moscoso",
+      "Alex Grey",
+      "Roger Dean Yes album covers"
+    ]
+  },
+  {
+    "slug": "architectural-photography",
+    "label": "Architectural Photography",
+    "domain": "art",
+    "description": "Geometric urban documentation: extreme perspective convergence, leading lines into vanishing points, shadow and light on textural surfaces, and abstract building facade patterns",
+    "visual_references": [
+      "Julius Shulman",
+      "Ezra Stoller",
+      "Iwan Baan",
+      "Peter Zumthor"
+    ]
+  },
+  {
+    "slug": "vintage-photography",
+    "label": "Vintage Photography",
+    "domain": "art",
+    "description": "Analog photographic aesthetics: film grain, light leaks, faded color palettes, lomographic vignetting, expired film color shifts, and Polaroid border textures",
+    "visual_references": [
+      "Vivian Maier",
+      "Nan Goldin",
+      "William Eggleston",
+      "Stephen Shore"
+    ]
+  },
+  {
+    "slug": "fashion-photography",
+    "label": "Fashion Photography",
+    "domain": "art",
+    "description": "Editorial image-making emphasizing garment, light, and concept: dramatic studio lighting, location storytelling, post-processing color grading, and model as canvas",
+    "visual_references": [
+      "Helmut Newton",
+      "Irving Penn",
+      "Richard Avedon",
+      "Steven Meisel",
+      "Tim Walker"
+    ]
+  },
+  {
+    "slug": "concept-art",
+    "label": "Concept Art",
+    "domain": "art",
+    "description": "Pre-production visual development for film, games, and media: atmospheric environment paintings, character design sheets, and mood boards establishing visual world-building",
+    "visual_references": [
+      "Syd Mead Blade Runner",
+      "Ralph McQuarrie Star Wars",
+      "Craig Mullins",
+      "Feng Zhu"
+    ]
+  },
+  {
+    "slug": "fine-art-portraiture",
+    "label": "Fine Art Portraiture",
+    "domain": "art",
+    "description": "Psychological character study through controlled light and pose: Rembrandt lighting, Old Master chiaroscuro, psychological tension in the gaze, and painterly skin texture",
+    "visual_references": [
+      "Johannes Vermeer",
+      "Lucian Freud",
+      "Jenny Saville",
+      "Alice Neel"
+    ]
+  },
+  {
+    "slug": "color-field-painting",
+    "label": "Color Field Painting",
+    "domain": "art",
+    "description": "Large expanses of flat unmodulated color creating emotional atmosphere through hue relationships: soft edges, atmospheric staining, and color as primary expressive vehicle",
+    "visual_references": [
+      "Mark Rothko",
+      "Helen Frankenthaler",
+      "Morris Louis",
+      "Kenneth Noland"
+    ]
+  },
+  {
+    "slug": "neo-expressionism",
+    "label": "Neo-Expressionism",
+    "domain": "art",
+    "description": "Return to figurative raw paint handling: crude mark-making, violent impasto, distorted figures, and primal emotional urgency in thick gestural paint application",
+    "visual_references": [
+      "Jean-Michel Basquiat",
+      "Julian Schnabel",
+      "Georg Baselitz",
+      "Anselm Kiefer"
+    ]
+  },
+  {
+    "slug": "textile-pattern",
+    "label": "Textile & Surface Pattern",
+    "domain": "art",
+    "description": "Decorative repeat pattern design: intricate geometric tessellation, botanical repeats, folk motifs, and ornamental surface design in rich layered color",
+    "visual_references": [
+      "William Morris",
+      "Liberty London prints",
+      "Marimekko",
+      "Missoni"
+    ]
+  },
+  {
+    "slug": "neon-signage",
+    "label": "Neon Signage & Light Art",
+    "domain": "art",
+    "description": "Glowing bent-glass tube lettering and sculpture: vivid saturated color bleeding into surrounding space, retro Americana diner signs, and contemporary neon art installations",
+    "visual_references": [
+      "Dan Flavin",
+      "James Turrell",
+      "Tracey Emin neons",
+      "Las Vegas strip"
+    ]
+  },
+  {
+    "slug": "natural-landscape",
+    "label": "Natural Landscape",
+    "domain": "art",
+    "description": "Wilderness and terrain documentation: vast scale contrast between human and nature, dramatic sky and weather, golden hour topography, and untouched ecological beauty",
+    "visual_references": [
+      "Ansel Adams",
+      "Albert Bierstadt",
+      "Caspar David Friedrich",
+      "Peter Dombrovskis"
+    ]
+  },
+  {
+    "slug": "brutalist-photography",
+    "label": "Brutalist Photography",
+    "domain": "art",
+    "description": "Stark documentary realism: harsh direct flash, desaturated color, unflattering angles, social realism subject matter, and anti-aesthetic compositional choices",
+    "visual_references": [
+      "Diane Arbus",
+      "William Klein",
+      "Martin Parr",
+      "Bruce Gilden"
+    ]
+  },
+  {
+    "slug": "still-life",
+    "label": "Contemporary Still Life",
+    "domain": "art",
+    "description": "Arranged object studies with controlled studio light: dramatic chiaroscuro on ceramic and glass, dewy fruit textures, and symbolic object groupings in painterly or photographic form",
+    "visual_references": [
+      "Jan Brueghel",
+      "Irving Penn flower photos",
+      "Laura Letinsky",
+      "Ori Gersht"
+    ]
+  },
+  {
+    "slug": "kinetic-sculpture",
+    "label": "Kinetic & Interactive Art",
+    "domain": "art",
+    "description": "Movement-based and participatory works: motorized sculpture, wind-driven mobiles, light responsive installations, and audience-activated environments that change in real time",
+    "visual_references": [
+      "Alexander Calder mobiles",
+      "Olafur Eliasson",
+      "teamLab",
+      "James Turrell Skyspace"
+    ]
+  },
+  {
+    "slug": "illustration-editorial",
+    "label": "Editorial Illustration",
+    "domain": "art",
+    "description": "Concept-driven image-making for print: bold graphic metaphor, limited color palette, wit and conceptual economy translating complex ideas into single compelling images",
+    "visual_references": [
+      "Christoph Niemann",
+      "New Yorker covers",
+      "Malika Favre",
+      "Paul Rand"
+    ]
+  },
+  {
+    "slug": "urban-decay",
+    "label": "Urban Decay & Ruins",
+    "domain": "art",
+    "description": "Abandoned and deteriorating architecture: peeling paint revealing layered histories, rusted industrial equipment, overgrown interiors reclaimed by nature, and beautiful entropy",
+    "visual_references": [
+      "Yves Marchand & Romain Meffre",
+      "Detroit Ruins photography",
+      "Christopher Woodward"
+    ]
+  },
+  {
+    "slug": "celestial-cosmic",
+    "label": "Celestial & Cosmic",
+    "domain": "art",
+    "description": "Astronomical imagery and cosmic scale: nebula color palettes, star field depth, planetary surface textures, and the overwhelming vastness of deep space rendered in saturated blues and golds",
+    "visual_references": [
+      "NASA Hubble imagery",
+      "Chesley Bonestell",
+      "Robert McCall",
+      "Android Jones"
+    ]
+  },
+  {
+    "slug": "botanical-illustration",
+    "label": "Botanical Illustration",
+    "domain": "art",
+    "description": "Scientific plant documentation elevated to fine art: precise specimen rendering, cross-section anatomy, delicate watercolor washes on cream paper, and taxonomic labeling",
+    "visual_references": [
+      "Maria Sibylla Merian",
+      "Pierre-Joseph Redouté",
+      "Kew Gardens archive",
+      "Ernst Haeckel"
+    ]
+  },
+  {
+    "slug": "analog-collage",
+    "label": "Analog Collage & Cut-Up",
+    "domain": "art",
+    "description": "Physical paper cutting and reassembly: found image fragments, magazine ephemera, unexpected spatial juxtapositions, visible tape and glue edges, and tactile material evidence",
+    "visual_references": [
+      "Hannah Höch",
+      "John Heartfield",
+      "Eduardo Paolozzi",
+      "Romare Bearden"
+    ]
+  },
+  {
+    "slug": "wabi-sabi-aesthetic",
+    "label": "Wabi-Sabi",
+    "domain": "art",
+    "description": "Japanese aesthetic of imperfect impermanence: cracked ceramic glazes, weathered wood grain, asymmetric handmade vessels, mossy stone, and the beauty of age and incompleteness",
+    "visual_references": [
+      "Sen no Rikyū tea ceremony",
+      "Kenzan Ogata ceramics",
+      "Axel Vervoordt interiors"
+    ]
+  },
+  {
+    "slug": "retrofuturism",
+    "label": "Retrofuturism",
+    "domain": "art",
+    "description": "Past visions of the future: Space Age Googie architecture, chrome and pastel interiors, atomic age optimism, flying cars, and moon colony aesthetics of the 1950s-60s",
+    "visual_references": [
+      "Syd Mead",
+      "Streamline Moderne",
+      "Jetsons",
+      "2001 A Space Odyssey",
+      "Googie diners"
+    ]
+  },
+  {
+    "slug": "maximalist-interior",
+    "label": "Maximalist Interior",
+    "domain": "art",
+    "description": "Layered interior environments: pattern-on-pattern wallpaper, clustered gallery walls, jewel-toned velvet furniture, curated collections of objects, and deliberate visual abundance",
+    "visual_references": [
+      "Iris Apfel",
+      "Tony Duquette",
+      "Hotel Costes Paris",
+      "Gucci Decor"
+    ]
+  },
+  {
+    "slug": "wearable-art",
+    "label": "Wearable Art",
+    "domain": "art",
+    "description": "Garments conceived as sculptural fine art objects: 3D-printed bodices, wire armature dresses, paper and unconventional material clothing, and conceptual pieces prioritizing idea over wearability",
+    "visual_references": [
+      "Iris van Herpen",
+      "Rei Kawakubo Met Gala",
+      "Hussein Chalayan",
+      "Neri Oxman"
+    ]
+  },
+  {
+    "slug": "typographic-design",
+    "label": "Typographic Design",
+    "domain": "art",
+    "description": "Typography as visual art: experimental lettering, expressive font pairing, kinetic type, hand-lettered script, and the arrangement of text as primary compositional element",
+    "visual_references": [
+      "Stefan Sagmeister",
+      "Paula Scher",
+      "Herb Lubalin",
+      "Wolfgang Weingart"
+    ]
+  },
+  {
+    "slug": "vernacular-photography",
+    "label": "Vernacular Photography",
+    "domain": "art",
+    "description": "Amateur and everyday photography elevated: family snapshots, photo booth strips, holiday slides, school portraits, and the authentic unposed humanity of non-art photography",
+    "visual_references": [
+      "Mike Mandel & Larry Sultan Evidence",
+      "Joachim Schmid",
+      "Found Magazine"
+    ]
+  },
+  {
+    "slug": "industrial-aesthetic",
+    "label": "Industrial Aesthetic",
+    "domain": "art",
+    "description": "Raw manufacturing materials as design: exposed steel beams, concrete floors, Edison bulb lighting, factory window grids, and the beauty of unfinished industrial processes",
+    "visual_references": [
+      "Loft living",
+      "Soho Cast Iron District",
+      "Charles & Ray Eames",
+      "Tom Dixon"
+    ]
+  },
+  {
+    "slug": "organic-biomorphic",
+    "label": "Organic & Biomorphic Forms",
+    "domain": "art",
+    "description": "Nature-derived abstract forms: sculptural objects resembling organs, seeds, shells, and cellular structures in flowing smooth surfaces suggesting biological growth",
+    "visual_references": [
+      "Henry Moore",
+      "Barbara Hepworth",
+      "Jean Arp",
+      "Zaha Hadid",
+      "Marc Newson"
+    ]
+  },
+  {
+    "slug": "grunge-texture",
+    "label": "Grunge & Distressed Texture",
+    "domain": "art",
+    "description": "Surface decay as aesthetic: scratched film, crumpled paper, peeling posters, concrete staining, layered urban texture, and intentional degradation of pristine surfaces",
+    "visual_references": [
+      "David Carson",
+      "Ray Gun magazine",
+      "grunge typography era",
+      "street poster weathering"
+    ]
+  }
+]

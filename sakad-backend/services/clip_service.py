@@ -31,3 +31,16 @@ def get_image_embedding(image_bytes: bytes) -> list[float]:
         image_features = image_features[0]
     embedding = image_features.reshape(-1).tolist()
     return embedding
+
+
+def get_text_embedding(text: str) -> list[float]:
+    _load()
+    inputs = _processor(text=[text], return_tensors="pt", padding=True, truncation=True)
+    with torch.no_grad():
+        text_features = _model.get_text_features(**inputs)
+    if hasattr(text_features, "pooler_output"):
+        text_features = text_features.pooler_output
+    elif isinstance(text_features, tuple):
+        text_features = text_features[0]
+    embedding = text_features.reshape(-1).tolist()
+    return embedding
