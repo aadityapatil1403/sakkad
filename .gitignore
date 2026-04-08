@@ -32,3 +32,4 @@ env/
 # Model cache
 .cache/
 huggingface/
+.worktrees/
