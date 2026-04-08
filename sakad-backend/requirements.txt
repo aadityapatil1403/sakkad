@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+supabase
+transformers
+torch
+torchvision
+Pillow
+python-dotenv
+python-multipart
+sentencepiece
+protobuf
+pydantic-settings
