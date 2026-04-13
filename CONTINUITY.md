@@ -21,18 +21,18 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Swapped model to Marqo/marqo-fashionSigLIP; added open-clip-torch+ftfy deps; migration 002 for domain constraint (2026-04-13)
-- Added sakad-backend/migrations/001_classification_columns.sql — nullable JSONB classification columns for captures table (2026-04-13)
-- Canonicalized taxonomy: data/taxonomy.json (100 entries) is now single source; reformatted descriptions to caption style (2026-04-13)
+- Classification pipeline live: POST /api/capture returns taxonomy_matches (top 5 cosine sim) + tags.palette (5 hex colors) (2026-04-13)
+- Swapped model to Marqo/marqo-fashionSigLIP via open_clip; taxonomy re-seeded 100 entries (2026-04-13)
+- Canonicalized taxonomy, added migrations folder, classification columns in captures table (2026-04-13)
 
 ### Now
 
 **Week 2 — Backend Core**
 
 - [ ] Sessions API: `POST /api/sessions/start`, `POST /api/sessions/{id}/end`, `GET /api/sessions`
-- [ ] Classification: cosine sim on capture embedding → top 5 taxonomy matches → store in `taxonomy_matches`
-- [ ] Color palette: PIL KMeans k=5 → hex array → store in `tags.palette`
 - [ ] Seed 15+ fashion images to validate classification output
+- [x] Classification: cosine sim on capture embedding → top 5 taxonomy matches → store in `taxonomy_matches`
+- [x] Color palette: PIL KMeans k=5 → hex array → store in `tags.palette`
 
 **Exit criteria:** `POST /api/capture` returns real `taxonomy_matches`. Sessions API live.
 
