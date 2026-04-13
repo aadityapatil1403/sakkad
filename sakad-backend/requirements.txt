@@ -10,3 +10,5 @@ python-multipart
 sentencepiece
 protobuf
 pydantic-settings
+open-clip-torch
+ftfy

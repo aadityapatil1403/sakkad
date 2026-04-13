@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
+- Swapped model to Marqo/marqo-fashionSigLIP; added open-clip-torch+ftfy deps; migration 002 for domain constraint (2026-04-13)
 - Added sakad-backend/migrations/001_classification_columns.sql — nullable JSONB classification columns for captures table (2026-04-13)
-- Canonicalized taxonomy: data/taxonomy.json (100 entries) is now single source; deleted stale sakad-backend/data/taxonomy.json; reformatted all descriptions to SigLIP caption style; updated seed script path (2026-04-13)
-- taxonomy.json (94 labels) + seed script → 94/94 rows upserted with SigLIP text embeddings (2026-04-07)
+- Canonicalized taxonomy: data/taxonomy.json (100 entries) is now single source; reformatted descriptions to caption style (2026-04-13)
 
 ### Now
 
@@ -46,30 +46,30 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value                      |
-| --------- | -------------------------- |
-| Command   | /new-feature seed-taxonomy |
-| Phase     | 6 — Finish                 |
-| Next step | Commit and push            |
+| Field     | Value                                       |
+| --------- | ------------------------------------------- |
+| Command   | /new-feature swap-model-marqo-fashionsiglip |
+| Phase     | 6 — Finish                                  |
+| Next step | Commit and push                             |
 
 ### Checklist
 
 - [x] Worktree created
 - [x] Project state read
 - [x] Plugins verified
-- [x] PRD created (user-defined spec)
-- [x] Research done (probed DB schema, found domain constraint, verified upsert)
+- [x] PRD created — N/A: user-defined spec (3 files, no ambiguity)
+- [x] Research done — N/A: spec fully prescribes API calls and output fields
 - [x] Design guidance loaded (if UI) — N/A: backend only
-- [x] Brainstorming complete
-- [x] Plan written
-- [x] Plan review loop — N/A: user-directed spec, no architectural ambiguity
-- [x] TDD execution complete — script ran, 94/94 rows upserted
-- [x] Code review loop (0 iterations) — pending
+- [x] Brainstorming complete — N/A: user-directed, no design choices needed
+- [x] Plan written — N/A: spec is the plan
+- [x] Plan review loop — N/A: user-directed spec
+- [x] TDD execution complete — model loads, embeds produce shape [1,768], L2 norm=1.0
+- [x] Code review loop (1 iteration) — P2 fixed (removed dead hasattr branch); PASS
 - [x] Simplified
-- [x] Verified (tests/lint/types) — pending
-- [x] E2E use cases tested — N/A: internal seed script, no user-facing changes
+- [x] Verified (tests/lint/types) — ruff clean, 0 new mypy errors
+- [x] E2E use cases tested — N/A: internal model service, no user-facing API changes
 - [x] Learnings documented
-- [ ] State files updated
+- [x] State files updated
 - [ ] Committed and pushed
 - [ ] PR created
 - [ ] PR reviews addressed
