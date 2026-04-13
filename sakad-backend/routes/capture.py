@@ -39,24 +39,24 @@ def _load_taxonomy() -> list[dict]:
     return _taxonomy_cache
 
 
-def _cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
-    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
-
-
 def _classify(image_embedding: list[float]) -> list[dict]:
     taxonomy = _load_taxonomy()
-    img_vec = np.array(image_embedding, dtype=np.float32)
-    scored = [
+    img_vec = np.array(image_embedding, dtype=np.float32)       # (768,)
+    text_matrix = np.stack([r["embedding"] for r in taxonomy])  # (100, 768)
+    # softmax over all labels simultaneously — required by marqo-fashionSigLIP
+    logits = 100.0 * (text_matrix @ img_vec)                    # (100,)
+    exp = np.exp(logits - logits.max())
+    probs = exp / exp.sum()                                     # (100,) sums to 1.0
+    top5_idx = np.argsort(probs)[::-1][:5]
+    return [
         {
-            "id": row["id"],
-            "label": row["label"],
-            "domain": row["domain"],
-            "score": round(_cosine_similarity(img_vec, row["embedding"]), 4),
+            "id": taxonomy[i]["id"],
+            "label": taxonomy[i]["label"],
+            "domain": taxonomy[i]["domain"],
+            "score": round(float(probs[i]), 4),
         }
-        for row in taxonomy
+        for i in top5_idx
     ]
-    scored.sort(key=lambda x: x["score"], reverse=True)
-    return scored[:5]
 
 
 def _kmeans_numpy(pixels: np.ndarray, k: int = 5, max_iter: int = 20) -> np.ndarray:
