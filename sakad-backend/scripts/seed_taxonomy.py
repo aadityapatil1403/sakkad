@@ -1,3 +1,4 @@
+# Canonical taxonomy source: data/taxonomy.json at repo root
 """Seed taxonomy.json entries into the Supabase taxonomy table with SigLIP text embeddings."""
 
 import json
@@ -15,7 +16,7 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 from services.clip_service import get_text_embedding  # noqa: E402
 from services.supabase_client import supabase  # noqa: E402
 
-TAXONOMY_PATH = Path(__file__).parent.parent / "data" / "taxonomy.json"
+TAXONOMY_PATH = Path(__file__).parent.parent.parent / "data" / "taxonomy.json"
 
 
 def main() -> None:

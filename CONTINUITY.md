@@ -21,8 +21,8 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
+- Canonicalized taxonomy: data/taxonomy.json (100 entries) is now single source; deleted stale sakad-backend/data/taxonomy.json; reformatted all descriptions to SigLIP caption style; updated seed script path (2026-04-13)
 - taxonomy.json (94 labels) + seed script → 94/94 rows upserted with SigLIP text embeddings (2026-04-07)
-- Fixed backend startup: `supabase` module missing — must run `source venv/bin/activate` before uvicorn (2026-04-07)
 
 ### Now
 
