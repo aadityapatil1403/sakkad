@@ -121,6 +121,39 @@ class TestGetLayer2Tags:
 # Timeout and API key guard tests
 # ---------------------------------------------------------------------------
 
+class TestLayer1Validation:
+    """Layer-1 tags must be single words (no spaces, no hyphens, non-empty)."""
+
+    def _run_layer1(self, tags: list) -> list[str]:
+        import json
+        import services.gemini_service as gs
+        payload = json.dumps(tags)
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
+            return gs.get_layer1_tags(b"fake-image-bytes")
+
+    def test_rejects_tags_with_spaces(self) -> None:
+        # "dark blue" is two words — should reject the whole batch
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "dark blue", "denim", "wide", "burgundy", "matte"]
+        assert self._run_layer1(tags) == []
+
+    def test_rejects_tags_with_hyphens(self) -> None:
+        # "wide-leg" is a hyphenated compound — belongs in layer2, not layer1
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "wide-leg", "denim", "wide", "burgundy", "matte"]
+        assert self._run_layer1(tags) == []
+
+    def test_rejects_empty_string_tags(self) -> None:
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "", "denim", "wide", "burgundy", "matte"]
+        assert self._run_layer1(tags) == []
+
+    def test_accepts_valid_single_word_tags(self) -> None:
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "indigo", "denim", "wide", "burgundy", "matte"]
+        assert self._run_layer1(tags) == tags
+
+
 class TestClientTimeout:
     def test_get_client_passes_timeout_via_http_options(self) -> None:
         """_get_client must set a finite timeout so Gemini calls don't hang forever."""

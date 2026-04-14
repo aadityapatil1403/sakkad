@@ -75,3 +75,43 @@ class TestClassify:
         result = self._run([1.0, 0.0, 0.0], text_embedding=None)
         total = sum(r["score"] for r in result)
         assert abs(total - 1.0) < 1e-3  # top-5 subset, may not be exactly 1 for 3-label
+
+
+class TestGetTextEmbeddingFallback:
+    """get_text_embedding failures in capture() must fall back to image-only, not raise 500."""
+
+    def test_text_embedding_exception_falls_back_to_none(self) -> None:
+        """If get_text_embedding raises, _classify should still be called with text_embedding=None."""
+        from unittest.mock import MagicMock, patch
+
+        # Simulate get_text_embedding raising (e.g. CUDA OOM)
+        with patch("routes.capture.get_text_embedding", side_effect=RuntimeError("CUDA OOM")), \
+             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
+             patch("routes.capture._classify", return_value=[]) as mock_classify, \
+             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
+             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
+             patch("routes.capture.get_layer2_tags", return_value=[]), \
+             patch("routes.capture.supabase") as mock_supa, \
+             patch("routes.capture._extract_palette", return_value=["#000000"]):
+            mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
+            mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
+            mock_supa.table().insert().execute.return_value = MagicMock(data=[{"id": "1"}])
+
+            from fastapi.testclient import TestClient
+            from fastapi import FastAPI
+            from routes.capture import router
+            app = FastAPI()
+            app.include_router(router)
+            client = TestClient(app)
+
+            import io
+            response = client.post(
+                "/api/capture",
+                files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
+            )
+
+        # Must succeed (not 500) and _classify must have been called with text_embedding=None
+        assert response.status_code == 200
+        mock_classify.assert_called_once()
+        _, kwargs = mock_classify.call_args
+        assert kwargs.get("text_embedding") is None or mock_classify.call_args[0][1] is None

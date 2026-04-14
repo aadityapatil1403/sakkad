@@ -133,9 +133,13 @@ async def capture(file: UploadFile = File(...)) -> dict:
 
     if layer1 or layer2:
         enriched_text = " ".join(layer1 + layer2)
-        text_embedding: list[float] | None = await loop.run_in_executor(
-            None, get_text_embedding, enriched_text
-        )
+        try:
+            text_embedding: list[float] | None = await loop.run_in_executor(
+                None, get_text_embedding, enriched_text
+            )
+        except Exception as exc:
+            print(f"[capture] text embedding failed, falling back to image-only: {exc}")
+            text_embedding = None
     else:
         text_embedding = None
 

@@ -1,4 +1,5 @@
 import json
+import re
 
 from google import genai
 from google.genai import types
@@ -68,6 +69,10 @@ def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[s
             return []
         if not all(isinstance(t, str) for t in tags):
             print("[gemini_service] layer1: items are not all strings")
+            return []
+        # Enforce single-word constraint: no spaces, no hyphens, non-empty
+        if not all(re.fullmatch(r"[^\s\-]+", t) for t in tags):
+            print(f"[gemini_service] layer1: tags failed single-word validation: {tags}")
             return []
         return tags
     except json.JSONDecodeError as exc:
