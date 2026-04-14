@@ -1,5 +1,6 @@
 import io
 import os
+import threading
 from PIL import Image
 import torch
 import open_clip
@@ -10,11 +11,16 @@ os.environ.setdefault("HF_HUB_OFFLINE", "1")
 
 _model = None
 _processor = None
+_load_lock = threading.Lock()
 
 
 def _load() -> None:
     global _model, _processor
-    if _model is None:
+    if _model is not None:
+        return
+    with _load_lock:
+        if _model is not None:  # double-checked locking
+            return
         # open_clip handles marqo-fashionSigLIP weights correctly; AutoModel.from_pretrained
         # fails with torch 2.x due to meta-tensor incompatibility in the custom __init__.
         _model, _, _ = open_clip.create_model_and_transforms(

@@ -43,11 +43,11 @@ def _get_client() -> genai.Client:
     return genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
-def get_layer1_tags(image_bytes: bytes) -> list[str]:
+def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[str]:
     """Return 10 single-word visual descriptors for the image, or [] on failure."""
     try:
         client = _get_client()
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=[_LAYER1_PROMPT, image_part],
@@ -56,6 +56,9 @@ def get_layer1_tags(image_bytes: bytes) -> list[str]:
         if not isinstance(tags, list) or len(tags) != 10:
             response_len = len(tags) if isinstance(tags, list) else "non-list"
             print(f"[gemini_service] layer1: unexpected response length {response_len}")
+            return []
+        if not all(isinstance(t, str) for t in tags):
+            print("[gemini_service] layer1: items are not all strings")
             return []
         return tags
     except json.JSONDecodeError as exc:
@@ -66,13 +69,13 @@ def get_layer1_tags(image_bytes: bytes) -> list[str]:
         return []
 
 
-def get_layer2_tags(image_bytes: bytes, layer1: list[str]) -> list[str]:
+def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
     """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
     try:
         layer1_joined = ", ".join(layer1)
         prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=layer1_joined)
         client = _get_client()
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=[prompt, image_part],
@@ -80,6 +83,9 @@ def get_layer2_tags(image_bytes: bytes, layer1: list[str]) -> list[str]:
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:
             print("[gemini_service] layer2: unexpected response length")
+            return []
+        if not all(isinstance(t, str) for t in tags):
+            print("[gemini_service] layer2: items are not all strings")
             return []
         if not all(t.count("-") == 1 for t in tags):
             print(f"[gemini_service] layer2: items failed hyphen validation: {tags}")
