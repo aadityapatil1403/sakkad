@@ -11,15 +11,16 @@ os.environ.setdefault("HF_HUB_OFFLINE", "1")
 
 _model = None
 _processor = None
+_loaded = False  # True only after both _model and _processor are fully assigned
 _load_lock = threading.Lock()
 
 
 def _load() -> None:
-    global _model, _processor
-    if _model is not None:
+    global _model, _processor, _loaded
+    if _loaded:
         return
     with _load_lock:
-        if _model is not None:  # double-checked locking
+        if _loaded:  # double-checked locking — guard on _loaded, not _model
             return
         # open_clip handles marqo-fashionSigLIP weights correctly; AutoModel.from_pretrained
         # fails with torch 2.x due to meta-tensor incompatibility in the custom __init__.
@@ -33,6 +34,7 @@ def _load() -> None:
             local_files_only=True,
         )
         _model.eval()
+        _loaded = True  # set last — only visible to other threads once both globals are ready
 
 
 def get_image_embedding(image_bytes: bytes) -> list[float]:

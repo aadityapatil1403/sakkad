@@ -51,6 +51,7 @@ def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[s
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=[_LAYER1_PROMPT, image_part],
+            config=types.GenerateContentConfig(response_mime_type="application/json"),
         )
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:
@@ -79,6 +80,7 @@ def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "ima
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=[prompt, image_part],
+            config=types.GenerateContentConfig(response_mime_type="application/json"),
         )
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:

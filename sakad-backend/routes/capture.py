@@ -125,8 +125,11 @@ async def capture(file: UploadFile = File(...)) -> dict:
     layer1_fn = functools.partial(get_layer1_tags, image_bytes, mime_type=file.content_type or "image/jpeg")
     layer1 = await loop.run_in_executor(None, layer1_fn)
 
-    layer2_fn = functools.partial(get_layer2_tags, image_bytes, layer1, mime_type=file.content_type or "image/jpeg")
-    layer2 = await loop.run_in_executor(None, layer2_fn)
+    if layer1:
+        layer2_fn = functools.partial(get_layer2_tags, image_bytes, layer1, mime_type=file.content_type or "image/jpeg")
+        layer2 = await loop.run_in_executor(None, layer2_fn)
+    else:
+        layer2: list[str] = []
 
     if layer1 or layer2:
         enriched_text = " ".join(layer1 + layer2)
