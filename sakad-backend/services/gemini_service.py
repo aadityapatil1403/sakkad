@@ -1,5 +1,4 @@
 import json
-import sys
 
 import google.generativeai as genai
 
@@ -63,7 +62,8 @@ def get_layer1_tags(image_bytes: bytes) -> list[str]:
         response = model.generate_content([_LAYER1_PROMPT, image_part])
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:
-            print(f"[gemini_service] layer1: unexpected response length {len(tags) if isinstance(tags, list) else 'non-list'}")
+            response_len = len(tags) if isinstance(tags, list) else "non-list"
+            print(f"[gemini_service] layer1: unexpected response length {response_len}")
             return []
         return tags
     except Exception as exc:
