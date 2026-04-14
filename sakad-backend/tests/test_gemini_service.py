@@ -115,3 +115,54 @@ class TestGetLayer2Tags:
             result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
 
         assert result == []
+
+
+# ---------------------------------------------------------------------------
+# Timeout and API key guard tests
+# ---------------------------------------------------------------------------
+
+class TestClientTimeout:
+    def test_get_client_passes_timeout_via_http_options(self) -> None:
+        """_get_client must set a finite timeout so Gemini calls don't hang forever."""
+        import services.gemini_service as gs
+        from google.genai import types as genai_types
+
+        with patch("services.gemini_service.genai.Client") as mock_client_cls:
+            mock_client_cls.return_value = MagicMock()
+            gs._get_client()
+
+        mock_client_cls.assert_called_once()
+        _, kwargs = mock_client_cls.call_args
+        http_options = kwargs.get("http_options")
+        assert http_options is not None, "http_options not passed to genai.Client"
+        assert isinstance(http_options, genai_types.HttpOptions)
+        assert http_options.timeout is not None, "timeout must be set (not None)"
+        assert http_options.timeout > 0, "timeout must be a positive value"
+
+
+class TestApiKeyGuard:
+    def test_layer1_returns_empty_without_calling_client_when_key_is_unset(self) -> None:
+        """get_layer1_tags must short-circuit and return [] when GEMINI_API_KEY is empty."""
+        import services.gemini_service as gs
+
+        with patch("services.gemini_service.settings") as mock_settings, \
+             patch("services.gemini_service._get_client") as mock_get_client:
+            mock_settings.GEMINI_API_KEY = ""
+            result = gs.get_layer1_tags(b"fake-image-bytes")
+
+        assert result == []
+        mock_get_client.assert_not_called()
+
+    def test_layer2_returns_empty_without_calling_client_when_key_is_unset(self) -> None:
+        """get_layer2_tags must short-circuit and return [] when GEMINI_API_KEY is empty."""
+        layer1 = ["black", "leather", "oversized", "shiny", "structured",
+                  "indigo", "denim", "wide", "burgundy", "matte"]
+        import services.gemini_service as gs
+
+        with patch("services.gemini_service.settings") as mock_settings, \
+             patch("services.gemini_service._get_client") as mock_get_client:
+            mock_settings.GEMINI_API_KEY = ""
+            result = gs.get_layer2_tags(b"fake-image-bytes", layer1)
+
+        assert result == []
+        mock_get_client.assert_not_called()

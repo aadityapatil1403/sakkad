@@ -39,12 +39,20 @@ Example: ["wide-leg", "moto-collar", "leather-jacket", "oversized-denim",
 """
 
 
+_TIMEOUT_MS = 10_000  # 10 s — Gemini tagging is best-effort; don't let it hang /api/capture
+
+
 def _get_client() -> genai.Client:
-    return genai.Client(api_key=settings.GEMINI_API_KEY)
+    return genai.Client(
+        api_key=settings.GEMINI_API_KEY,
+        http_options=types.HttpOptions(timeout=_TIMEOUT_MS),
+    )
 
 
 def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[str]:
     """Return 10 single-word visual descriptors for the image, or [] on failure."""
+    if not settings.GEMINI_API_KEY:
+        return []
     try:
         client = _get_client()
         image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
@@ -72,6 +80,8 @@ def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[s
 
 def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
     """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
+    if not settings.GEMINI_API_KEY:
+        return []
     try:
         layer1_joined = ", ".join(layer1)
         prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=layer1_joined)
