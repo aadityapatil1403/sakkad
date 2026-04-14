@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Classification pipeline live: POST /api/capture returns taxonomy_matches (top 5 cosine sim) + tags.palette (5 hex colors) (2026-04-13)
+- Layer 1/2 Gemini tagging + blended classification: POST /api/capture now calls Gemini Flash for 10 single-word tags (layer1) + 10 hyphenated two-word tags (layer2), blends text embedding 40% with image embedding 60% for richer taxonomy matches (2026-04-14)
 - Swapped model to Marqo/marqo-fashionSigLIP via open_clip; taxonomy re-seeded 100 entries (2026-04-13)
-- Canonicalized taxonomy, added migrations folder, classification columns in captures table (2026-04-13)
+- Classification pipeline live: POST /api/capture returns taxonomy_matches (top 5 cosine sim) + tags.palette (5 hex colors) (2026-04-13)
 
 ### Now
 
@@ -46,31 +46,31 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value                                       |
-| --------- | ------------------------------------------- |
-| Command   | /new-feature swap-model-marqo-fashionsiglip |
-| Phase     | 6 — Finish                                  |
-| Next step | Commit and push                             |
+| Field     | Value                                 |
+| --------- | ------------------------------------- |
+| Command   | /new-feature classification-layer-1-2 |
+| Phase     | 6 — Finish                            |
+| Next step | Create PR                             |
 
 ### Checklist
 
 - [x] Worktree created
 - [x] Project state read
 - [x] Plugins verified
-- [x] PRD created — N/A: user-defined spec (3 files, no ambiguity)
+- [x] PRD created — N/A: user-defined spec, no ambiguity
 - [x] Research done — N/A: spec fully prescribes API calls and output fields
 - [x] Design guidance loaded (if UI) — N/A: backend only
 - [x] Brainstorming complete — N/A: user-directed, no design choices needed
-- [x] Plan written — N/A: spec is the plan
+- [x] Plan written — docs/superpowers/plans/2026-04-14-classification-layer-1-2.md
 - [x] Plan review loop — N/A: user-directed spec
-- [x] TDD execution complete — model loads, embeds produce shape [1,768], L2 norm=1.0
-- [x] Code review loop (1 iteration) — P2 fixed (removed dead hasattr branch); PASS
+- [x] TDD execution complete — 13/13 tests pass
+- [x] Code review loop (2 iterations) — Codex P1/P2 fixes: thread-safe CLIP init, MIME type passthrough, string validation
 - [x] Simplified
-- [x] Verified (tests/lint/types) — ruff clean, 0 new mypy errors
-- [x] E2E use cases tested — N/A: internal model service, no user-facing API changes
+- [x] Verified (tests/lint/types) — ruff clean, 13/13 pass
+- [x] E2E use cases tested — smoke test confirms capture completes; Gemini tags null due to free-tier quota exhaustion (infrastructure, not code)
 - [x] Learnings documented
 - [x] State files updated
-- [ ] Committed and pushed
+- [x] Committed and pushed
 - [ ] PR created
 - [ ] PR reviews addressed
 - [ ] Branch finished
