@@ -102,7 +102,8 @@ def _extract_palette(image_bytes: bytes) -> list[str]:
 async def capture(file: UploadFile = File(...)) -> dict:
     image_bytes = await file.read()
 
-    filename = f"{uuid.uuid4()}.{file.filename.rsplit('.', 1)[-1] if '.' in file.filename else 'jpg'}"
+    ext = file.filename.rsplit(".", 1)[-1] if "." in file.filename else "jpg"
+    filename = f"{uuid.uuid4()}.{ext}"
 
     storage_response = supabase.storage.from_(STORAGE_BUCKET).upload(
         path=filename,
@@ -110,13 +111,16 @@ async def capture(file: UploadFile = File(...)) -> dict:
         file_options={"content-type": file.content_type or "image/jpeg"},
     )
     if hasattr(storage_response, "error") and storage_response.error:
-        raise HTTPException(status_code=500, detail=f"Storage upload failed: {storage_response.error}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Storage upload failed: {storage_response.error}",
+        )
 
     public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
 
     image_embedding = get_image_embedding(image_bytes)
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     layer1 = await loop.run_in_executor(None, get_layer1_tags, image_bytes)
     layer2 = await loop.run_in_executor(None, get_layer2_tags, image_bytes, layer1)
 
