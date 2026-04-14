@@ -1,4 +1,5 @@
 import ast
+import asyncio
 import io
 import uuid
 
@@ -6,7 +7,8 @@ import numpy as np
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from PIL import Image
 
-from services.clip_service import get_image_embedding
+from services.clip_service import get_image_embedding, get_text_embedding
+from services.gemini_service import get_layer1_tags, get_layer2_tags
 from services.supabase_client import supabase
 
 router = APIRouter()
@@ -39,15 +41,27 @@ def _load_taxonomy() -> list[dict]:
     return _taxonomy_cache
 
 
-def _classify(image_embedding: list[float]) -> list[dict]:
+def _classify(
+    image_embedding: list[float],
+    text_embedding: list[float] | None,
+) -> list[dict]:
     taxonomy = _load_taxonomy()
-    img_vec = np.array(image_embedding, dtype=np.float32)       # (768,)
-    text_matrix = np.stack([r["embedding"] for r in taxonomy])  # (100, 768)
-    # softmax over all labels simultaneously — required by marqo-fashionSigLIP
-    logits = 100.0 * (text_matrix @ img_vec)                    # (100,)
+    img_vec = np.array(image_embedding, dtype=np.float32)  # (768,) already normalized
+
+    if text_embedding is not None:
+        txt_vec = np.array(text_embedding, dtype=np.float32)
+        blended = 0.6 * img_vec + 0.4 * txt_vec
+        norm = np.linalg.norm(blended)
+        blended = blended / norm if norm > 0 else img_vec
+    else:
+        blended = img_vec
+
+    text_matrix = np.stack([r["embedding"] for r in taxonomy])  # (N, 768)
+    logits = 100.0 * (text_matrix @ blended)
     exp = np.exp(logits - logits.max())
-    probs = exp / exp.sum()                                     # (100,) sums to 1.0
-    top5_idx = np.argsort(probs)[::-1][:5]
+    probs = exp / exp.sum()
+    k = min(5, len(taxonomy))
+    top_idx = np.argsort(probs)[::-1][:k]
     return [
         {
             "id": taxonomy[i]["id"],
@@ -55,7 +69,7 @@ def _classify(image_embedding: list[float]) -> list[dict]:
             "domain": taxonomy[i]["domain"],
             "score": round(float(probs[i]), 4),
         }
-        for i in top5_idx
+        for i in top_idx
     ]
 
 
@@ -100,14 +114,27 @@ async def capture(file: UploadFile = File(...)) -> dict:
 
     public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
 
-    embedding = get_image_embedding(image_bytes)
-    taxonomy_matches = _classify(embedding)
+    image_embedding = get_image_embedding(image_bytes)
+
+    loop = asyncio.get_event_loop()
+    layer1 = await loop.run_in_executor(None, get_layer1_tags, image_bytes)
+    layer2 = await loop.run_in_executor(None, get_layer2_tags, image_bytes, layer1)
+
+    if layer1 or layer2:
+        enriched_text = " ".join(layer1 + layer2)
+        text_embedding: list[float] | None = get_text_embedding(enriched_text)
+    else:
+        text_embedding = None
+
+    taxonomy_matches = _classify(image_embedding, text_embedding)
     palette = _extract_palette(image_bytes)
 
     insert_response = supabase.table("captures").insert({
         "image_url": public_url,
-        "embedding": embedding,
+        "embedding": image_embedding,
         "taxonomy_matches": taxonomy_matches,
+        "layer1_tags": layer1 or None,
+        "layer2_tags": layer2 or None,
         "tags": {"palette": palette},
     }).execute()
 
