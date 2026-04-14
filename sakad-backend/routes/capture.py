@@ -118,15 +118,17 @@ async def capture(file: UploadFile = File(...)) -> dict:
 
     public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
 
-    image_embedding = get_image_embedding(image_bytes)
-
     loop = asyncio.get_running_loop()
+    image_embedding = await loop.run_in_executor(None, get_image_embedding, image_bytes)
+
     layer1 = await loop.run_in_executor(None, get_layer1_tags, image_bytes)
     layer2 = await loop.run_in_executor(None, get_layer2_tags, image_bytes, layer1)
 
     if layer1 or layer2:
         enriched_text = " ".join(layer1 + layer2)
-        text_embedding: list[float] | None = get_text_embedding(enriched_text)
+        text_embedding: list[float] | None = await loop.run_in_executor(
+            None, get_text_embedding, enriched_text
+        )
     else:
         text_embedding = None
 

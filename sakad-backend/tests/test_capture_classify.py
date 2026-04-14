@@ -8,7 +8,6 @@ and verify that:
   2. With text_embedding the blended vector shifts the top result.
 """
 import numpy as np
-import pytest
 from unittest.mock import patch
 
 

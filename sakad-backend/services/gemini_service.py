@@ -1,6 +1,7 @@
 import json
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from config import settings
 
@@ -38,34 +39,28 @@ Example: ["wide-leg", "moto-collar", "leather-jacket", "oversized-denim",
 """
 
 
-# Capture any previously-set value of _get_model (e.g. a test mock) BEFORE
-# the `def` statement below overwrites it during importlib.reload().
-_saved_get_model = globals().get("_get_model")
+def _get_client() -> genai.Client:
+    return genai.Client(api_key=settings.GEMINI_API_KEY)
 
-
-def _get_model() -> genai.GenerativeModel:
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-    return genai.GenerativeModel("gemini-2.0-flash")
-
-
-# If a mock/patch replaced _get_model before this reload, restore it.
-# On the first (non-reload) import _saved_get_model is None, so we skip this.
-if _saved_get_model is not None and _saved_get_model is not _get_model:
-    _get_model = _saved_get_model  # type: ignore[assignment]
-del _saved_get_model
 
 def get_layer1_tags(image_bytes: bytes) -> list[str]:
     """Return 10 single-word visual descriptors for the image, or [] on failure."""
     try:
-        model = _get_model()
-        image_part = {"mime_type": "image/jpeg", "data": image_bytes}
-        response = model.generate_content([_LAYER1_PROMPT, image_part])
+        client = _get_client()
+        image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=[_LAYER1_PROMPT, image_part],
+        )
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:
             response_len = len(tags) if isinstance(tags, list) else "non-list"
             print(f"[gemini_service] layer1: unexpected response length {response_len}")
             return []
         return tags
+    except json.JSONDecodeError as exc:
+        print(f"[gemini_service] layer1 JSON parse error: {exc}")
+        return []
     except Exception as exc:
         print(f"[gemini_service] layer1 error: {exc}")
         return []
@@ -76,17 +71,23 @@ def get_layer2_tags(image_bytes: bytes, layer1: list[str]) -> list[str]:
     try:
         layer1_joined = ", ".join(layer1)
         prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=layer1_joined)
-        model = _get_model()
-        image_part = {"mime_type": "image/jpeg", "data": image_bytes}
-        response = model.generate_content([prompt, image_part])
+        client = _get_client()
+        image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=[prompt, image_part],
+        )
         tags: list[str] = json.loads(response.text)
         if not isinstance(tags, list) or len(tags) != 10:
-            print(f"[gemini_service] layer2: unexpected response length")
+            print("[gemini_service] layer2: unexpected response length")
             return []
         if not all(t.count("-") == 1 for t in tags):
             print(f"[gemini_service] layer2: items failed hyphen validation: {tags}")
             return []
         return tags
+    except json.JSONDecodeError as exc:
+        print(f"[gemini_service] layer2 JSON parse error: {exc}")
+        return []
     except Exception as exc:
         print(f"[gemini_service] layer2 error: {exc}")
         return []
