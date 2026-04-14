@@ -111,6 +111,20 @@ class TestGetLayer2Tags:
 
         assert result == tags
 
+    def test_returns_empty_list_when_json_invalid(self) -> None:
+        with patch("services.gemini_service._get_model") as mock_model_factory:
+            mock_model = MagicMock()
+            mock_model.generate_content.return_value = _mock_response("not json")
+            mock_model_factory.return_value = mock_model
+
+            import importlib
+            import services.gemini_service as gs
+            importlib.reload(gs)
+
+            result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
+
+        assert result == []
+
     def test_filters_out_items_without_exactly_one_hyphen(self) -> None:
         tags = ["wide-leg", "no-hyphen-here", "valid-tag",
                 "another-good", "bad", "ok-word",
