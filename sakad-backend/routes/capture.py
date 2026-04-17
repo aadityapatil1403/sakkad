@@ -15,6 +15,9 @@ from services.supabase_client import supabase
 router = APIRouter()
 
 STORAGE_BUCKET = "captures"
+CLASSIFICATION_DOMAIN = "fashion_streetwear"
+IMAGE_WEIGHT = 1.0
+TEXT_WEIGHT = 0.0
 
 # Module-level taxonomy cache: populated on first request
 _taxonomy_cache: list[dict] | None = None
@@ -24,7 +27,12 @@ def _load_taxonomy() -> list[dict]:
     global _taxonomy_cache
     if _taxonomy_cache is not None:
         return _taxonomy_cache
-    response = supabase.table("taxonomy").select("id, label, domain, embedding").execute()
+    response = (
+        supabase.table("taxonomy")
+        .select("id, label, domain, embedding")
+        .eq("domain", CLASSIFICATION_DOMAIN)
+        .execute()
+    )
     rows = response.data or []
     parsed = []
     for row in rows:
@@ -51,7 +59,7 @@ def _classify(
 
     if text_embedding is not None:
         txt_vec = np.array(text_embedding, dtype=np.float32)
-        blended = 0.6 * img_vec + 0.4 * txt_vec
+        blended = IMAGE_WEIGHT * img_vec + TEXT_WEIGHT * txt_vec
         norm = np.linalg.norm(blended)
         blended = blended / norm if norm > 0 else img_vec
     else:
@@ -131,7 +139,7 @@ async def capture(file: UploadFile = File(...)) -> dict:
     else:
         layer2: list[str] = []
 
-    if layer1 or layer2:
+    if TEXT_WEIGHT > 0.0 and (layer1 or layer2):
         enriched_text = " ".join(layer1 + layer2)
         try:
             text_embedding: list[float] | None = await loop.run_in_executor(

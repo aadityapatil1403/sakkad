@@ -32,7 +32,7 @@ class TestGetLayer1Tags:
     def test_returns_10_strings_on_valid_response(self) -> None:
         tags = ["black", "leather", "oversized", "shiny", "structured",
                 "indigo", "denim", "wide", "burgundy", "matte"]
-        payload = json.dumps(tags)
+        payload = json.dumps({"tags": tags})
 
         with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
             import services.gemini_service as gs
@@ -41,20 +41,26 @@ class TestGetLayer1Tags:
         assert result == tags
 
     def test_returns_empty_list_when_json_invalid(self) -> None:
-        with patch("services.gemini_service._get_client", return_value=_make_mock_client("not json")):
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client("not json")), \
+             patch("services.gemini_service.logger") as mock_logger:
             import services.gemini_service as gs
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
+        mock_logger.log.assert_called_once()
+        assert "schema parsing failed" in mock_logger.log.call_args.args[3]
 
     def test_returns_empty_list_when_list_not_10(self) -> None:
-        payload = json.dumps(["black", "leather"])  # only 2 items
+        payload = json.dumps({"tags": ["black", "leather"]})  # only 2 items
 
-        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)), \
+             patch("services.gemini_service.logger") as mock_logger:
             import services.gemini_service as gs
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
+        mock_logger.log.assert_called_once()
+        assert "schema parsing failed" in mock_logger.log.call_args.args[3]
 
     def test_returns_empty_list_on_api_exception(self) -> None:
         with patch(
@@ -79,7 +85,7 @@ class TestGetLayer2Tags:
         tags = ["wide-leg", "moto-collar", "leather-jacket", "oversized-denim",
                 "burgundy-loafer", "white-sock", "cropped-torso",
                 "zip-closure", "ribbed-knit", "straight-hem"]
-        payload = json.dumps(tags)
+        payload = json.dumps({"tags": tags})
 
         with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
             import services.gemini_service as gs
@@ -88,23 +94,31 @@ class TestGetLayer2Tags:
         assert result == tags
 
     def test_returns_empty_list_when_json_invalid(self) -> None:
-        with patch("services.gemini_service._get_client", return_value=_make_mock_client("not json")):
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client("not json")), \
+             patch("services.gemini_service.logger") as mock_logger:
             import services.gemini_service as gs
             result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
 
         assert result == []
+        mock_logger.log.assert_called_once()
+        assert "schema parsing failed" in mock_logger.log.call_args.args[3]
 
     def test_filters_out_items_without_exactly_one_hyphen(self) -> None:
         tags = ["wide-leg", "no-hyphen-here", "valid-tag",
                 "another-good", "bad", "ok-word",
                 "fine-item", "extra--dash", "good-one", "last-tag"]
-        payload = json.dumps(tags)
+        payload = json.dumps({"tags": tags})
 
-        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)), \
+             patch("services.gemini_service.logger") as mock_logger:
             import services.gemini_service as gs
             result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
 
         assert result == []
+        mock_logger.log.assert_called_once()
+        assert "tag validation failed" in mock_logger.log.call_args.args[3]
+        assert "'tag': 'bad'" in str(mock_logger.log.call_args.args[5])
+        assert "expected exactly one hyphen" in str(mock_logger.log.call_args.args[5])
 
     def test_returns_empty_list_on_api_exception(self) -> None:
         with patch(
@@ -115,6 +129,42 @@ class TestGetLayer2Tags:
             result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
 
         assert result == []
+
+    def test_normalizes_whitespace_and_unicode_hyphens_before_validation(self) -> None:
+        tags = ["wide - leg", "moto–collar", "leather-jacket", "oversized-denim",
+                "burgundy-loafer", "white-sock", "cropped-torso",
+                "zip-closure", "ribbed-knit", "straight-hem"]
+        payload = json.dumps({"tags": tags})
+
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
+            import services.gemini_service as gs
+            result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
+
+        assert result[:2] == ["wide-leg", "moto-collar"]
+
+    def test_salvages_multi_hyphen_compounds_by_merging_prefix_tokens(self) -> None:
+        tags = ["v-neck-collar", "wide-leg-denim", "short-sleeve-shirt", "oversized-denim",
+                "burgundy-loafer", "white-sock", "cropped-torso",
+                "zip-closure", "ribbed-knit", "straight-hem"]
+        payload = json.dumps({"tags": tags})
+
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
+            import services.gemini_service as gs
+            result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
+
+        assert result[:3] == ["vneck-collar", "wideleg-denim", "shortsleeve-shirt"]
+
+    def test_returns_empty_list_when_schema_shape_is_wrong(self) -> None:
+        payload = json.dumps(["wide-leg", "moto-collar"])
+
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)), \
+             patch("services.gemini_service.logger") as mock_logger:
+            import services.gemini_service as gs
+            result = gs.get_layer2_tags(b"fake-image-bytes", self._layer1)
+
+        assert result == []
+        mock_logger.log.assert_called_once()
+        assert "schema parsing failed" in mock_logger.log.call_args.args[3]
 
 
 # ---------------------------------------------------------------------------
@@ -127,7 +177,7 @@ class TestLayer1Validation:
     def _run_layer1(self, tags: list) -> list[str]:
         import json
         import services.gemini_service as gs
-        payload = json.dumps(tags)
+        payload = json.dumps({"tags": tags})
         with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)):
             return gs.get_layer1_tags(b"fake-image-bytes")
 

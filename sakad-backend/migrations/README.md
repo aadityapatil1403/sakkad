@@ -7,4 +7,4 @@ Never auto-run these from application code.
 ## Files
 
 - `001_classification_columns.sql` — adds nullable JSONB classification columns to `captures` for the 4-layer taxonomy pipeline (`tags`, `taxonomy_matches`, `layer1_tags`–`layer4_tags`)
-- `002_taxonomy_domain_constraint.sql` — updates `taxonomy.domain` check constraint to allow the 3-tier domains (`fashion_streetwear`, `art_reference`, `visual_context`); **run before re-seeding taxonomy**
+- `002_taxonomy_domain_constraint.sql` — legacy migration that broadened the `taxonomy.domain` check constraint for an older mixed-domain taxonomy. The current canonical `data/taxonomy.json` is fashion-only, so re-seeding now writes only `fashion_streetwear` rows.

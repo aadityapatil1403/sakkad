@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Layer 1/2 Gemini tagging + blended classification: POST /api/capture now calls Gemini Flash for 10 single-word tags (layer1) + 10 hyphenated two-word tags (layer2), blends text embedding 40% with image embedding 60% for richer taxonomy matches (2026-04-14)
-- Swapped model to Marqo/marqo-fashionSigLIP via open_clip; taxonomy re-seeded 100 entries (2026-04-13)
-- Classification pipeline live: POST /api/capture returns taxonomy_matches (top 5 cosine sim) + tags.palette (5 hex colors) (2026-04-13)
+- End-to-end pipeline smoke test: all 5 test images processed successfully (furcoat, japanjersey, western, workwear, leather_jacket) — layer1/layer2 tags, taxonomy_matches, palette all returning (2026-04-16). Known issue: leather_jacket.jpg layer2 returned null (Gemini tag validation failure).
+- Gemini layer1/layer2 tagging merged to main: layer1_tags (10 words) + layer2_tags (10 hyphenated) + blended taxonomy_matches live on POST /api/capture (2026-04-15)
+- Layer 1/2 Gemini tagging + blended classification: 60/40 image/text embedding blend, gemini_service with shared helper + lru_cache client (2026-04-14)
 
 ### Now
 
@@ -33,8 +33,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 - [ ] Seed 15+ fashion images to validate classification output
 - [x] Classification: cosine sim on capture embedding → top 5 taxonomy matches → store in `taxonomy_matches`
 - [x] Color palette: PIL KMeans k=5 → hex array → store in `tags.palette`
+- [x] Gemini layer1/layer2 tags: 10 single-word + 10 hyphenated descriptors, blended into taxonomy scoring
 
-**Exit criteria:** `POST /api/capture` returns real `taxonomy_matches`. Sessions API live.
+**Exit criteria:** Sessions API live.
 
 ### Next
 
@@ -46,41 +47,18 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value                                 |
-| --------- | ------------------------------------- |
-| Command   | /new-feature classification-layer-1-2 |
-| Phase     | 6 — Finish                            |
-| Next step | Create PR                             |
-
-### Checklist
-
-- [x] Worktree created
-- [x] Project state read
-- [x] Plugins verified
-- [x] PRD created — N/A: user-defined spec, no ambiguity
-- [x] Research done — N/A: spec fully prescribes API calls and output fields
-- [x] Design guidance loaded (if UI) — N/A: backend only
-- [x] Brainstorming complete — N/A: user-directed, no design choices needed
-- [x] Plan written — docs/superpowers/plans/2026-04-14-classification-layer-1-2.md
-- [x] Plan review loop — N/A: user-directed spec
-- [x] TDD execution complete — 13/13 tests pass
-- [x] Code review loop (2 iterations) — Codex P1/P2 fixes: thread-safe CLIP init, MIME type passthrough, string validation
-- [x] Simplified
-- [x] Verified (tests/lint/types) — ruff clean, 13/13 pass
-- [x] E2E use cases tested — smoke test confirms capture completes; Gemini tags null due to free-tier quota exhaustion (infrastructure, not code)
-- [x] Learnings documented
-- [x] State files updated
-- [x] Committed and pushed
-- [ ] PR created
-- [ ] PR reviews addressed
-- [ ] Branch finished
+| Field     | Value |
+| --------- | ----- |
+| Command   | none  |
+| Phase     | —     |
+| Next step | —     |
 
 ---
 
 ## Open Questions
 
-- Does `taxonomy_matches` column exist in captures table, or does it need to be added?
-- Confirm Supabase pgvector dimension for SigLIP embeddings (should be 768)
+- `leather_jacket.jpg` layer2 tags return null — Gemini returned tags that failed `t.count("-") == 1` validator; investigate what was returned
+- Taxonomy accuracy questionable: `western.jpg` → "Tropical", `furcoat.jpg` → "Y2K" are poor matches — may need taxonomy embedding tuning
 
 ## Blockers
 

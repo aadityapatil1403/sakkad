@@ -16,19 +16,19 @@ _FAKE_TAXONOMY = [
     {
         "id": 1,
         "label": "label-A",
-        "domain": "streetwear",
+        "domain": "fashion_streetwear",
         "embedding": np.array([1.0, 0.0, 0.0], dtype=np.float32),
     },
     {
         "id": 2,
         "label": "label-B",
-        "domain": "streetwear",
+        "domain": "fashion_streetwear",
         "embedding": np.array([0.0, 1.0, 0.0], dtype=np.float32),
     },
     {
         "id": 3,
         "label": "label-C",
-        "domain": "streetwear",
+        "domain": "fashion_streetwear",
         "embedding": np.array([0.0, 0.0, 1.0], dtype=np.float32),
     },
 ]
@@ -39,9 +39,16 @@ class TestClassify:
         self,
         image_embedding: list[float],
         text_embedding: list[float] | None,
+        *,
+        image_weight: float = 1.0,
+        text_weight: float = 0.0,
     ) -> list[dict]:
         from routes.capture import _classify
-        with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY):
+        with (
+            patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY),
+            patch("routes.capture.IMAGE_WEIGHT", image_weight),
+            patch("routes.capture.TEXT_WEIGHT", text_weight),
+        ):
             return _classify(image_embedding, text_embedding)
 
     def test_no_text_embedding_returns_top_label_matching_image_vector(self) -> None:
@@ -50,10 +57,14 @@ class TestClassify:
         assert result[0]["label"] == "label-A"
 
     def test_text_embedding_shifts_top_result(self) -> None:
-        # Image aligned with label-A, text aligned with label-B
-        # Blend: 0.6*[1,0,0] + 0.4*[0,1,0] = [0.6, 0.4, 0] → label-A still top
+        # Force a blended mode for this unit test even though runtime is image-only.
         result_no_text = self._run([1.0, 0.0, 0.0], text_embedding=None)
-        result_with_text = self._run([1.0, 0.0, 0.0], text_embedding=[0.0, 1.0, 0.0])
+        result_with_text = self._run(
+            [1.0, 0.0, 0.0],
+            text_embedding=[0.0, 1.0, 0.0],
+            image_weight=0.8,
+            text_weight=0.2,
+        )
         # Top label stays label-A but the second should now be label-B
         assert result_no_text[0]["label"] == "label-A"
         assert result_with_text[0]["label"] == "label-A"
@@ -77,15 +88,13 @@ class TestClassify:
         assert abs(total - 1.0) < 1e-3  # top-5 subset, may not be exactly 1 for 3-label
 
 
-class TestGetTextEmbeddingFallback:
-    """get_text_embedding failures in capture() must fall back to image-only, not raise 500."""
+class TestCaptureTextEmbeddingPath:
+    """The capture route should skip text embeddings when the runtime split is image-only."""
 
-    def test_text_embedding_exception_falls_back_to_none(self) -> None:
-        """If get_text_embedding raises, _classify should still be called with text_embedding=None."""
+    def test_image_only_runtime_skips_text_embedding(self) -> None:
         from unittest.mock import MagicMock, patch
 
-        # Simulate get_text_embedding raising (e.g. CUDA OOM)
-        with patch("routes.capture.get_text_embedding", side_effect=RuntimeError("CUDA OOM")), \
+        with patch("routes.capture.get_text_embedding") as mock_get_text_embedding, \
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture._classify", return_value=[]) as mock_classify, \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
@@ -110,8 +119,8 @@ class TestGetTextEmbeddingFallback:
                 files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
             )
 
-        # Must succeed (not 500) and _classify must have been called with text_embedding=None
         assert response.status_code == 200
+        mock_get_text_embedding.assert_not_called()
         mock_classify.assert_called_once()
         _, kwargs = mock_classify.call_args
         assert kwargs.get("text_embedding") is None or mock_classify.call_args[0][1] is None

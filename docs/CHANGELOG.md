@@ -17,6 +17,17 @@ All notable changes to Sakkad will be documented in this file.
 - **2026-04-13** — Reformatted all 100 taxonomy descriptions to SigLIP caption style (fashion_streetwear, art_reference, visual_context domains)
 - **2026-04-13** — Updated `seed_taxonomy.py` path to load from repo-root `data/taxonomy.json`
 
+- **2026-04-17** — `sakad-backend/tests/test_capture_classify.py`, `test_gemini_service.py`: Updated tests to match current service contracts and classification pipeline
+- **2026-04-17** — `sakad-backend/tests/test_seed_taxonomy.py`, `test_taxonomy_data.py`: Added taxonomy seeding and data validation tests
+- **2026-04-17** — `sakad-backend/eval/`: Added evaluation harness for classifier accuracy
+- **2026-04-17** — `sakad-backend/models/`: Added model layer (likely Pydantic schemas for sessions/captures)
+- **2026-04-17** — `sakad-backend/scripts/evaluate_classifier.py`, `smoke_capture.sh`, `verify_capture_eval.sh`: Added evaluation and smoke test scripts
+- **2026-04-17** — `sakad-backend/test-images/`: Added 9 test images for classifier evaluation (formal_wear, furcoat, japanjersey, monochromatic, old_money, soccer_streetwear, vintage, western, workwear)
+- **2026-04-17** — `data/taxonomy.json`: Updated taxonomy data
+- **2026-04-17** — `sakad-backend/migrations/002_taxonomy_domain_constraint.sql`, `README.md`: Added domain constraint migration and updated migration docs
+- **2026-04-17** — `sakad-backend/services/gemini_service.py`: Updates to Gemini service (layer1/layer2 tagging refinements)
+- **2026-04-17** — `sakad-backend/routes/capture.py`, `scripts/seed_taxonomy.py`: Route and seeding script updates
+
 ### Fixed
 
 ### Removed

@@ -3,7 +3,7 @@
     "id": "japanese-streetwear",
     "label": "Japanese Streetwear",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Japanese Streetwear, oversized layered silhouettes in charcoal, ecru, olive, and washed black create a deliberate off-balance shape. Technical cottons, raw hems, wide trousers, and sculptural shirting reference Harajuku styling and the draped severity of 1990s Tokyo designers.",
+    "description": "a photo of someone wearing Japanese Streetwear, dark layered silhouettes, asymmetric shirting, dropped crotches, longline outerwear, tabi-like footwear, and avant street styling create an off-balance Harajuku silhouette. Charcoal, washed black, ink navy, olive, and ecru dominate technical cotton, gabardine, raw hems, and sculptural drape tied to Tokyo designer fashion rather than flashy faux fur or western denim styling.",
     "visual_references": [
       "Yohji Yamamoto",
       "Comme des Garcons",
@@ -25,7 +25,7 @@
     "id": "quiet-luxury",
     "label": "Quiet Luxury",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Quiet Luxury, clean longline coats, fine-gauge knits, and precise trousers appear in camel, cream, taupe, navy, and soft black. Cashmere, brushed wool, silk, and smooth leather signal wealth through restraint rather than logos or loud ornament.",
+    "description": "a photo of someone wearing Quiet Luxury, immaculate coats, fine-gauge knitwear, pleated trousers, soft shirting, loafers, and smooth leather accessories create a discreetly expensive silhouette. Camel, cream, taupe, navy, chocolate, and soft black appear in cashmere, brushed wool, silk, and polished leather with wealth signaled through cut, fabric, and restraint rather than logos.",
     "visual_references": [
       "The Row",
       "Loro Piana",
@@ -36,7 +36,7 @@
     "id": "y2k",
     "label": "Y2K",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Y2K, low-rise bottoms, baby tees, glossy synthetic fabrics, and shrunken proportions create a hyper-styled early internet silhouette. Metallic pink, icy blue, silver, and acid brights are paired with rhinestones, micro bags, and futuristic clubwear details.",
+    "description": "a photo of someone wearing Y2K, low-rise or baggy denim, cropped tops, faux fur trims, tinted glasses, metallic chains, glossy synthetics, and hyper-styled early internet details create a flashy turn-of-the-millennium silhouette. Silver, icy blue, pink, lime, black, and acid brights pair with rhinestones, tiny bags, pointed footwear, and nightclub-era accessories.",
     "visual_references": [
       "Blumarine",
       "Paris Hilton",
@@ -69,7 +69,7 @@
     "id": "workwear",
     "label": "Workwear",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Workwear, boxy chore jackets, straight-leg canvas pants, overshirts, and heavy boots form a durable and functional silhouette. Duck cloth, indigo denim, hickory stripe, brass hardware, and faded earth tones reference trades, factories, and American labor uniforms.",
+    "description": "a photo of someone wearing Workwear, canvas chore jackets, corduroy collars, carpenter or double-knee pants, boxy overshirts, and sturdy leather shoes create a practical labor-inspired silhouette. Faded charcoal, khaki, tobacco, olive, indigo, and ecru appear in duck canvas, denim, corduroy, and matte leather with patch pockets, utility seams, and durable hardware.",
     "visual_references": [
       "Carhartt WIP",
       "Dickies",
@@ -91,7 +91,7 @@
     "id": "old-money",
     "label": "Old Money",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Old Money, relaxed blazers, pleated chinos, crisp shirting, and understated knitwear appear in cream, navy, khaki, and racing green. The look favors polished tailoring, equestrian references, and inherited leisure over trend-driven styling.",
+    "description": "a photo of someone wearing Old Money, navy blazers, pleated chinos, oxford shirts, fine-gauge sweaters, sweater-over-shoulders styling, loafers, and restrained jewelry create an inherited-wealth leisure silhouette. Cream, navy, khaki, racing green, camel, and white appear in wool, cashmere, cotton poplin, and polished leather with country-club, equestrian, and ivy leisure references rather than relaxed linen suiting or streetwear jerseys.",
     "visual_references": [
       "Ralph Lauren",
       "Loro Piana",
@@ -113,7 +113,7 @@
     "id": "preppy",
     "label": "Preppy",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Preppy, cable knits, oxford shirts, pleated skirts, and tailored shorts create a polished collegiate silhouette. Navy, forest green, burgundy, and cream pair with loafers, crest motifs, and tennis-club references.",
+    "description": "a photo of someone wearing Preppy, oxford shirts, rugby tops, cable knits, pleated chinos or skirts, loafers, and crest-coded layers create a polished collegiate silhouette. Navy, forest green, burgundy, cream, and khaki pair with striped trims, club ties, lettered knitwear, and campus-ready tailoring rather than athletic shorts and sneaker-led styling.",
     "visual_references": [
       "Tommy Hilfiger",
       "Brooks Brothers",
@@ -138,7 +138,7 @@
     "description": "a photo of someone wearing Cottagecore, puff sleeves, prairie dresses, aprons, and soft cardigans create a pastoral silhouette in butter, sage, rose, and milk white. Cotton eyelet, linen, tiny florals, and lace trims evoke gardens, heirloom linens, and rural domestic romance.",
     "visual_references": [
       "Gunne Sax",
-      "Dôen",
+      "D\u00f4en",
       "English countryside"
     ]
   },
@@ -179,7 +179,7 @@
     "id": "grunge",
     "label": "Grunge",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Grunge, flannel, ripped denim, oversized knits, and worn boots create a slouched silhouette with visible wear and tear. Muddy red, forest green, faded black, and dirty grey pair with distressed textures and thrifted layering.",
+    "description": "a photo of someone wearing Grunge, flannel shirts, ripped denim, oversized knits, and worn combat boots create a slouched silhouette with visible wear and tear. Muddy red, forest green, faded black, and dirty grey pair with distressed textures and thrifted layering.",
     "visual_references": [
       "Kurt Cobain",
       "Seattle scene",
@@ -212,7 +212,7 @@
     "id": "utilitarian",
     "label": "Utilitarian",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Utilitarian, pocket-heavy jackets, belted layers, and straight practical trousers emphasize utility over ornament. Olive, khaki, sand, and black dominate canvas, ripstop, and brushed twill surfaces with military and fieldwear cues.",
+    "description": "a photo of someone wearing Utilitarian, field jackets, cargo pockets, belted layers, tactical vests, and straight practical trousers emphasize storage, function, and modular dressing over ornament. Olive, khaki, sand, black, and stone dominate canvas, ripstop, twill, and weathered nylon with military, expedition, and fieldwear cues.",
     "visual_references": [
       "Engineered Garments",
       "military surplus",
@@ -223,7 +223,7 @@
     "id": "denim-culture",
     "label": "Denim Culture",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Denim Culture, rigid jeans, trucker jackets, western shirts, and indigo-on-indigo styling center the outfit around denim as both fabric and identity. Fades, whiskering, selvedge edges, and heavy topstitching reference heritage mills and collector culture.",
+    "description": "a photo of someone wearing Denim Culture, raw or dark-wash selvedge jeans, trucker jackets, five-pocket construction, visible topstitching, and heritage denim layering center the outfit around indigo craftsmanship. Deep indigo, tobacco, ecru, and washed blue appear in rigid denim with whiskering, selvedge edges, chain stitching, and collector-minded denim references rather than generic casual jeans.",
     "visual_references": [
       "Levi's Vintage Clothing",
       "Kapital",
@@ -234,7 +234,7 @@
     "id": "tailoring",
     "label": "Tailoring",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Tailoring, structured shoulders, precise lapels, and sharply cut trousers define the body with measured proportion. Navy, charcoal, camel, and black wool suiting with crisp shirting and leather shoes reference bespoke dress codes and atelier craft.",
+    "description": "a photo of someone wearing Tailoring, structured or double-breasted blazers, defined lapels, pressed wide or straight trousers, dress shirts or open refined collars, and polished leather shoes create a formal precise silhouette. Navy, charcoal, black, camel, ivory, and sage appear in wool suiting, linen suiting, crisp poplin, satin lapels, sharp crease lines, and suit construction details associated with menswear tailoring and formal dressing.",
     "visual_references": [
       "Savile Row",
       "Giorgio Armani",
@@ -245,7 +245,7 @@
     "id": "sportswear-luxe",
     "label": "Sportswear Luxe",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Sportswear Luxe, track elements, zip jackets, and relaxed separates are elevated with premium fabrication and a sleek fit. Cream, navy, black, and jewel tones appear in satin, cashmere, polished jersey, and soft leather rather than standard athletic fabrics.",
+    "description": "a photo of someone wearing Sportswear Luxe, football jerseys, elevated rugby tops, sleek training jackets, zip knits, athletic shorts or relaxed trousers, and premium sneakers are styled as fashion rather than pure sport. Black, cream, navy, scarlet, cobalt, forest green, and jewel tones appear in lustrous jersey, satin, technical knit, soft leather, and embroidered sport details that feel expensive, polished, and runway-aware instead of collegiate preppy.",
     "visual_references": [
       "Celine",
       "Lacoste",
@@ -300,7 +300,7 @@
     "id": "club-kid",
     "label": "Club Kid",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Club Kid, exaggerated shapes, neon faux fur, platform shoes, and theatrical accessories transform the body into nightlife spectacle. Synthetic shine, UV brights, vinyl, glitter, and costume-like layering reference underground party scenes and queer performance.",
+    "description": "a photo of someone wearing Club Kid, exaggerated faux fur, theatrical volume, tinted glasses, metallic accessories, dramatic sleeves, platform or pointed shoes, and nightlife spectacle transform the body into performance. Synthetic shine, UV brights, vinyl, glitter, clubwear layering, and costume-like styling reference queer nightlife and outrageous party dressing.",
     "visual_references": [
       "Leigh Bowery",
       "Club Kids",
@@ -344,7 +344,7 @@
     "id": "biker",
     "label": "Biker",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Biker, fitted leather jackets, narrow denim, heavy boots, and metal hardware create a tough road-ready silhouette. Black, tobacco, petrol, and oxidized silver on worn leather surfaces reference motorcycle culture and speed.",
+    "description": "a photo of someone wearing Biker, black leather moto jackets with snap or band collars, zip closures, dark jeans, heavy boots or loafers, and exposed metal hardware create a road-ready rebellious silhouette. Black, tobacco, petrol, oxblood, white, and oxidized silver sit on worn leather, matte denim, stacked soles, and rugged accessories tied to motorcycle culture.",
     "visual_references": [
       "Schott",
       "Belstaff",
@@ -355,7 +355,7 @@
     "id": "soft-tailoring",
     "label": "Soft Tailoring",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Soft Tailoring, relaxed jackets, fluid trousers, and unstructured shoulders shape the body without rigid armor. Warm neutrals, dusty blues, and muted browns in drapey wool, silk, and linen create a calm and tactile elegance.",
+    "description": "a photo of someone wearing Soft Tailoring, relaxed or double-breasted blazers, open-collar shirting, fluid wide-leg trousers, patch pockets, loafers, and unstructured shoulders shape the body with ease instead of rigidity. Sage, taupe, cream, dusty blue, chocolate, and tan appear in linen, drapey wool, silk, and soft cotton with soft-shoulder suit construction, relaxed suiting, and refined proportion.",
     "visual_references": [
       "Giorgio Armani",
       "Lemaire",
@@ -410,7 +410,7 @@
     "id": "moto-culture",
     "label": "Moto Culture",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Moto Culture, protective panels, racing stripes, gloves, and zip-heavy jackets turn the outfit toward motorsport references rather than classic biker rebellion. Black, red, white, and metallic accents on leather and technical mesh suggest velocity and trackwear.",
+    "description": "a photo of someone wearing Moto Culture, moto jackets with racing seams, zip fronts, protective paneling, contrast stripes, gloves, and performance-inspired leather or technical pieces turn the outfit toward motorsport references rather than classic biker minimalism. Black, red, white, silver, and petrol blue appear in leather, technical mesh, and sport hardware with a fast track-oriented silhouette.",
     "visual_references": [
       "Dainese",
       "Ducati racing",
@@ -432,7 +432,7 @@
     "id": "vintage-americana",
     "label": "Vintage Americana",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Vintage Americana, faded denim, varsity knits, western shirts, and work jackets build a nostalgic all-American silhouette. Sun-worn red, cream, indigo, tobacco, and dusty blue reference road trips, ranch wear, and mid-century casual dress.",
+    "description": "a photo of someone wearing Vintage Americana, faded denim, western shirts, varsity knits, work jackets, flared jeans, suede layers, and broken-in boots build a nostalgic all-American silhouette. Sun-worn red, cream, indigo, tobacco, dusty blue, and faded brown appear in aged cotton, worn flannel, washed canvas, and soft suede referencing road trips, ranch wear, and secondhand mid-century casual dress.",
     "visual_references": [
       "RRL",
       "Levi's",
@@ -440,10 +440,65 @@
     ]
   },
   {
+    "id": "cowboy-core",
+    "label": "Cowboy Core",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Cowboy Core, cowboy hats, western denim shirts with snap buttons, bootcut or flared jeans, pointed-toe leather boots, and statement belts define a direct western-inspired silhouette. Cognac, tobacco, cream, indigo, rust, and gold pair with pearl necklaces, bandanas, bolo ties, buckle details, and rodeo-coded accessories.",
+    "visual_references": [
+      "Beyonce Cowboy Carter",
+      "Levi's western",
+      "Nudie Jeans"
+    ]
+  },
+  {
+    "id": "western-americana",
+    "label": "Western Americana",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Western Americana, ranchwear, rodeo tailoring, western shirts, cowboy hats, bootcut denim, leather belts, and pointed boots turn frontier dress codes into contemporary fashion. Tobacco, rust, cream, indigo, faded blue, and turquoise appear in suede, denim, leather, pearl details, and heritage western accessories.",
+    "visual_references": [
+      "Ralph Lauren RRL",
+      "Stetson",
+      "Nudie Jeans"
+    ]
+  },
+  {
+    "id": "denim-on-denim",
+    "label": "Denim-on-Denim",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Denim-on-Denim, a matching or tonal denim jacket or shirt is worn with denim jeans or skirt in the same or contrasting wash, creating a head-to-toe denim composition known as the Canadian tuxedo. Light wash on light wash, dark indigo sets, or mixed-wash combinations are unified by the denim fabric across the full silhouette.",
+    "visual_references": [
+      "Levi's",
+      "Canadian tuxedo",
+      "Britney and Justin 2001"
+    ]
+  },
+  {
+    "id": "70s-revival",
+    "label": "70s Revival",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing 70s Revival, flared or wide-leg trousers, fitted knits, pointed collars, suede jackets, platform shoes, and warm-toned separates recreate a 1970s silhouette with modern styling. Camel, burnt orange, chocolate, mustard, olive, cream, and faded indigo appear in corduroy, suede, jersey, and washed denim with retro ease.",
+    "visual_references": [
+      "Gucci Tom Ford era",
+      "Saint Laurent 70s",
+      "flare denim revival"
+    ]
+  },
+  {
+    "id": "new-americana",
+    "label": "New Americana",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing New Americana, patchwork, varsity details, western shirting, workwear jackets, faded denim, and heritage motifs are reworked through a contemporary streetwear or craft lens. Indigo, cream, red, tobacco, khaki, and washed blue appear in quilted textiles, bandana prints, denim, canvas, and nostalgic American symbols with updated proportion.",
+    "visual_references": [
+      "Bode",
+      "Cactus Plant Flea Market",
+      "ERL"
+    ]
+  },
+  {
     "id": "monochrome",
     "label": "Monochrome",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Monochrome, the entire outfit is built from one tonal family, with silhouette and texture replacing color contrast. Layered blacks, all-cream, or full grey compositions use wool, leather, cotton, and knit to create depth without hue shifts.",
+    "description": "a photo of someone wearing Monochrome, the outfit is built from one tonal family such as all black, all grey, or all cream, with silhouette and texture replacing color contrast. Leather, denim, wool, jersey, and knit stack within the same color range so tonal layering, matte-versus-shine contrast, and shape become the main visual signal.",
     "visual_references": [
       "Rick Owens",
       "Jil Sander",
@@ -456,8 +511,8 @@
     "domain": "fashion_streetwear",
     "description": "a photo of someone wearing Color Blocking, large uninterrupted fields of saturated color divide the silhouette into bold graphic sections. Cobalt, tomato red, emerald, yellow, and white are arranged in crisp shapes with minimal print or texture noise.",
     "visual_references": [
-      "Bauhaus color theory",
       "Roksanda",
+      "Pierre Cardin",
       "1960s mod"
     ]
   },
@@ -509,7 +564,7 @@
     "id": "preppy-revival",
     "label": "Preppy Revival",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Preppy Revival, traditional rugby shirts, pleats, loafers, and school colors are sharpened with contemporary proportion and styling. Crest motifs, striped knits, and navy-red-green palettes feel intentionally nostalgic but freshly recontextualized.",
+    "description": "a photo of someone wearing Preppy Revival, rugby shirts, pleats, loafers, striped knits, school colors, sweaters, and ivy-coded pieces are styled with sharper proportion and contemporary attitude. Navy, red, green, cream, and khaki pair with crest motifs, collegiate layering, polished bottoms, and nostalgic campus references that feel newly styled rather than streetwear jerseys, athletic shorts, or sneaker-heavy sport fits.",
     "visual_references": [
       "Miu Miu",
       "Tommy Hilfiger",
@@ -522,7 +577,7 @@
     "domain": "fashion_streetwear",
     "description": "a photo of someone wearing Draped Form, fabric wraps, falls, and gathers around the body in fluid arcs rather than fixed seams and rigid lines. Jersey, silk, and soft wool in stone, black, clay, and cream create sculptural movement with Grecian and modernist references.",
     "visual_references": [
-      "Madame Grès",
+      "Madame Gr\u00e8s",
       "Rick Owens",
       "Issey Miyake"
     ]
@@ -531,7 +586,7 @@
     "id": "safari",
     "label": "Safari",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Safari, belted jackets, utility shirts, tailored shorts, and field pockets shape a practical warm-climate silhouette. Sand, khaki, tobacco, olive, and sun-faded white in cotton twill and linen reference expedition wear and desert travel imagery.",
+    "description": "a photo of someone wearing Safari, belted safari jackets, utility shirts, tailored shorts, and field pockets shape a practical warm-climate silhouette. Sand, khaki, tobacco, olive, and sun-faded white in cotton twill and linen reference expedition wear and desert travel imagery.",
     "visual_references": [
       "Yves Saint Laurent safari",
       "Ralph Lauren",
@@ -542,7 +597,7 @@
     "id": "streetwear",
     "label": "Streetwear",
     "domain": "fashion_streetwear",
-    "description": "a photo of someone wearing Streetwear, graphic hoodies, statement sneakers, varsity layers, and relaxed trousers create a logo-aware urban silhouette. Black, white, primary brights, camo, and washed neutrals reference skate culture, hip-hop styling, and drop-driven hype.",
+    "description": "a photo of someone wearing Streetwear, graphic hoodies, football or rugby jerseys, oversized tees, baggy denim, athletic shorts, statement sneakers, caps, and logo-heavy layering create a relaxed hype-aware urban silhouette. Black, white, primary brights, camo, washed indigo, forest green, scarlet, and team colors reference skate culture, hip-hop styling, sportswear crossover, and drop-driven street fashion.",
     "visual_references": [
       "Supreme",
       "Stussy",
@@ -550,553 +605,14 @@
     ]
   },
   {
-    "id": "brutalism",
-    "label": "Brutalism",
-    "domain": "visual_context",
-    "description": "a photo showing Brutalism context, where massive concrete volumes, stark shadows, and repetitive geometric forms create a severe and weighty visual environment. Grey, stone, and weather-darkened surfaces emphasize raw mass, exposed structure, and monumental scale.",
+    "id": "hip-hop-fashion",
+    "label": "Hip-Hop Fashion",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Hip-Hop Fashion, oversized jerseys, baggy denim, timberland boots, chunky gold chains, fitted caps, and athletic brands create a silhouette rooted in Black American street culture. Logomania, luxury brand mixing, and bold scale reference hip-hop's influence on global fashion from the 1990s through today.",
     "visual_references": [
-      "Le Corbusier",
-      "Barbican",
-      "Trellick Tower"
-    ]
-  },
-  {
-    "id": "wabi-sabi",
-    "label": "Wabi-Sabi",
-    "domain": "visual_context",
-    "description": "a photo showing Wabi-Sabi context, where irregular ceramics, worn wood, soft earth tones, and imperfect handmade surfaces create a quiet atmosphere of age and humility. Cracks, patina, natural fiber textures, and asymmetry are central to the image language.",
-    "visual_references": [
-      "Japanese tea aesthetics",
-      "Raku ceramics",
-      "Mingei"
-    ]
-  },
-  {
-    "id": "japandi",
-    "label": "Japandi",
-    "domain": "visual_context",
-    "description": "a photo showing Japandi context, where low clean furniture lines, pale timber, matte ceramics, and restrained negative space create a calm hybrid of Japanese and Scandinavian interiors. Beige, soft grey, smoke black, and warm wood keep the image quiet, airy, and tactile.",
-    "visual_references": [
-      "Muji",
-      "Norm Architects",
-      "Scandinavian-Japanese interiors"
-    ]
-  },
-  {
-    "id": "industrial-raw",
-    "label": "Industrial Raw",
-    "domain": "visual_context",
-    "description": "a photo showing Industrial Raw context, where exposed beams, unfinished walls, rough concrete, and visible mechanical systems create a stripped-back utilitarian setting. Rust, soot, steel, and raw timber emphasize workshop textures and unfinished urban architecture.",
-    "visual_references": [
-      "SoHo lofts",
-      "factory interiors",
-      "warehouse conversions"
-    ]
-  },
-  {
-    "id": "bauhaus",
-    "label": "Bauhaus",
-    "domain": "visual_context",
-    "description": "a photo showing Bauhaus context, where primary colors, clean geometry, tubular forms, and functional composition create a disciplined modernist visual field. Red, blue, yellow, black, and white are arranged with clarity and structural balance rather than decoration.",
-    "visual_references": [
-      "Bauhaus School",
-      "Marcel Breuer",
-      "Walter Gropius"
-    ]
-  },
-  {
-    "id": "memphis-design",
-    "label": "Memphis Design",
-    "domain": "visual_context",
-    "description": "a photo showing Memphis Design context, where squiggles, terrazzo patterns, playful shapes, and synthetic surfaces produce a loud and irreverent environment. Neon pastels, checkerboards, and glossy laminates create a cartoonish postmodern visual rhythm.",
-    "visual_references": [
-      "Ettore Sottsass",
-      "Memphis Group",
-      "1980s postmodern design"
-    ]
-  },
-  {
-    "id": "art-deco",
-    "label": "Art Deco",
-    "domain": "visual_context",
-    "description": "a photo showing Art Deco context, where fan motifs, stepped geometry, polished metals, and lacquered surfaces create an elegant high-glamour setting. Black, gold, cream, emerald, and mirrored finishes suggest luxury, symmetry, and cinematic opulence.",
-    "visual_references": [
-      "Chrysler Building",
-      "Tamara de Lempicka",
-      "1930s interiors"
-    ]
-  },
-  {
-    "id": "desert-modernism",
-    "label": "Desert Modernism",
-    "domain": "visual_context",
-    "description": "a photo showing Desert Modernism context, where flat roofs, horizontal lines, stone, glass, and sun-bleached surfaces create a warm modernist environment tied to arid landscapes. Sand, adobe pink, sage, rust, and bright sky blue emphasize dry light and minimal architecture.",
-    "visual_references": [
-      "Palm Springs",
-      "Richard Neutra",
-      "mid-century desert homes"
-    ]
-  },
-  {
-    "id": "urban-decay",
-    "label": "Urban Decay",
-    "domain": "visual_context",
-    "description": "a photo showing Urban Decay context, where peeling paint, stained walls, broken signage, and neglected infrastructure create a gritty atmosphere of abandonment. Rust, mildew green, nicotine yellow, cracked concrete, and graffiti traces give the setting visual erosion.",
-    "visual_references": [
-      "abandoned buildings",
-      "Detroit ruins",
-      "post-industrial streets"
-    ]
-  },
-  {
-    "id": "soft-minimalism",
-    "label": "Soft Minimalism",
-    "domain": "visual_context",
-    "description": "a photo showing Soft Minimalism context, where simple forms, generous negative space, and diffuse light create a minimal image softened by tactile materials. Warm white, oatmeal, pale grey, and muted wood rely on plaster, linen, and rounded edges rather than hard austerity.",
-    "visual_references": [
-      "Axel Vervoordt",
-      "Kinfolk interiors",
-      "Belgian minimalism"
-    ]
-  },
-  {
-    "id": "nature-immersion",
-    "label": "Nature Immersion",
-    "domain": "visual_context",
-    "description": "a photo showing Nature Immersion context, where dense foliage, wet stone, bark textures, and filtered light place the subject inside an enveloping natural setting. Deep green, moss, brown, and mineral tones dominate with moisture, irregular growth, and organic layering.",
-    "visual_references": [
-      "forest bathing",
-      "land art",
-      "woodland photography"
-    ]
-  },
-  {
-    "id": "golden-hour",
-    "label": "Golden Hour",
-    "domain": "visual_context",
-    "description": "a photo showing Golden Hour context, where low-angle sunlight creates long shadows, glowing skin, and warm edge light across the frame. Honey gold, amber, peach, and dusty pink tint every surface with a soft cinematic warmth.",
-    "visual_references": [
-      "sunset portraiture",
-      "Terrence Malick",
-      "late-afternoon light"
-    ]
-  },
-  {
-    "id": "neon-urban",
-    "label": "Neon Urban",
-    "domain": "visual_context",
-    "description": "a photo showing Neon Urban context, where wet streets, illuminated signage, reflective surfaces, and nighttime density create a saturated city atmosphere. Electric pink, cyan, violet, and acid green bounce off glass, chrome, and rain-dark pavement.",
-    "visual_references": [
-      "Tokyo at night",
-      "Blade Runner",
-      "Hong Kong neon"
-    ]
-  },
-  {
-    "id": "textural-contrast",
-    "label": "Textural Contrast",
-    "domain": "visual_context",
-    "description": "a photo showing Textural Contrast context, where smooth against rough, glossy against matte, and soft against rigid surfaces are the primary visual logic in the frame. Leather beside concrete, silk beside rust, or glass beside knit create a deliberate tactile tension.",
-    "visual_references": [
-      "material studies",
-      "editorial still life",
-      "surface-focused photography"
-    ]
-  },
-  {
-    "id": "architectural-detail",
-    "label": "Architectural Detail",
-    "domain": "visual_context",
-    "description": "a photo showing Architectural Detail context, where the image isolates stairs, corners, columns, rails, and joinery so form and proportion become the main subject. Shadow lines, material transitions, and structural precision produce a highly composed spatial image.",
-    "visual_references": [
-      "architectural photography",
-      "Tadao Ando",
-      "detail studies"
-    ]
-  },
-  {
-    "id": "material-study",
-    "label": "Material Study",
-    "domain": "visual_context",
-    "description": "a photo showing Material Study context, where close attention is given to grain, weave, patina, sheen, and edge quality rather than to broad scene narrative. Stone pores, textile fibers, metal oxidation, and glaze variation are framed as primary visual information.",
-    "visual_references": [
-      "design archives",
-      "material library",
-      "close-up product photography"
-    ]
-  },
-  {
-    "id": "still-life",
-    "label": "Still Life",
-    "domain": "visual_context",
-    "description": "a photo showing Still Life context, where objects are arranged deliberately in a static composition with strong attention to spacing, shadow, and balance. Ceramics, flowers, books, fruit, cloth, or accessories become studies in form, color, and quiet symbolism.",
-    "visual_references": [
-      "Dutch still life",
-      "Irving Penn",
-      "studio tabletop composition"
-    ]
-  },
-  {
-    "id": "soviet-modernism",
-    "label": "Soviet Modernism",
-    "domain": "visual_context",
-    "description": "a photo showing Soviet Modernism context, where monumental concrete, severe geometry, and futuristic civic forms create an austere and ideological visual setting. Pale grey, weathered beige, and oxidized metal frame large-scale structures with utopian but worn ambition.",
-    "visual_references": [
-      "Soviet bus stops",
-      "Eastern Bloc monuments",
-      "Frédéric Chaubin"
-    ]
-  },
-  {
-    "id": "raw-unfinished",
-    "label": "Raw/Unfinished",
-    "domain": "visual_context",
-    "description": "a photo showing Raw/Unfinished context, where exposed plaster, unsealed wood, rough edges, and incomplete surfaces create an in-progress aesthetic. Dusty neutrals, construction marks, and visible substrate layers communicate process, not polish.",
-    "visual_references": [
-      "unfinished interiors",
-      "atelier spaces",
-      "construction textures"
-    ]
-  },
-  {
-    "id": "zen-minimalism",
-    "label": "Zen Minimalism",
-    "domain": "visual_context",
-    "description": "a photo showing Zen Minimalism context, where sparse composition, low contrast, and natural materials create a meditative and disciplined visual atmosphere. Tatami tones, pale wood, stone, and soft shadow reduce distraction and privilege stillness.",
-    "visual_references": [
-      "Tadao Ando",
-      "Ryokan interiors",
-      "Zen temples"
-    ]
-  },
-  {
-    "id": "urban-industrial",
-    "label": "Urban Industrial",
-    "domain": "visual_context",
-    "description": "a photo showing Urban Industrial context, where steel staircases, brick walls, street infrastructure, and utilitarian fixtures define a metropolitan working environment. Charcoal, rust, black, concrete grey, and amber utility lighting build a tough functional backdrop.",
-    "visual_references": [
-      "warehouse districts",
-      "Brooklyn lofts",
-      "industrial cityscapes"
-    ]
-  },
-  {
-    "id": "artisan-handmade",
-    "label": "Artisan Handmade",
-    "domain": "visual_context",
-    "description": "a photo showing Artisan Handmade context, where hand-thrown, hand-carved, stitched, and woven surfaces foreground visible human labor and irregular finish. Earth colors, natural fibers, and tactile imperfections create warmth, intimacy, and process-based authenticity.",
-    "visual_references": [
-      "craft workshops",
-      "Mingei",
-      "artisan markets"
-    ]
-  },
-  {
-    "id": "biophilic",
-    "label": "Biophilic",
-    "domain": "visual_context",
-    "description": "a photo showing Biophilic context, where plants, daylight, airflow, and natural materials are integrated into built space so interior and exterior feel interconnected. Green foliage, timber, stone, and water-like reflections soften architecture and increase organic presence.",
-    "visual_references": [
-      "biophilic design",
-      "green architecture",
-      "indoor gardens"
-    ]
-  },
-  {
-    "id": "maximalist-interior",
-    "label": "Maximalist Interior",
-    "domain": "visual_context",
-    "description": "a photo showing Maximalist Interior context, where patterned wallpaper, layered objects, ornate frames, and saturated upholstery create a room with dense visual richness. Jewel tones, florals, stripes, antiques, and decorative clutter form a highly storied atmosphere.",
-    "visual_references": [
-      "House of Hackney",
-      "Wunderkammer",
-      "eclectic salon interiors"
-    ]
-  },
-  {
-    "id": "new-nordic",
-    "label": "New Nordic",
-    "domain": "visual_context",
-    "description": "a photo showing New Nordic context, where pale timber, sculptural furniture, cool daylight, and restrained styling define a contemporary Scandinavian visual language. White, ash, fog grey, muted blue, and soft black keep the frame crisp but not cold.",
-    "visual_references": [
-      "Normann Copenhagen",
-      "Scandinavian design",
-      "new Nordic interiors"
-    ]
-  },
-  {
-    "id": "tropical",
-    "label": "Tropical",
-    "domain": "visual_context",
-    "description": "a photo showing Tropical context, where lush leaves, humid air, bright florals, and sun-saturated surfaces create an abundant warm-climate atmosphere. Emerald, banana leaf green, hibiscus red, turquoise, and sunlit white dominate with dense botanical texture.",
-    "visual_references": [
-      "Caribbean villas",
-      "tropical modernism",
-      "jungle resorts"
-    ]
-  },
-  {
-    "id": "coastal-context",
-    "label": "Coastal",
-    "domain": "visual_context",
-    "description": "a photo showing Coastal context, where bleached wood, salty air, striped textiles, and open light create a breezy shoreline environment. Sand, sea blue, shell white, and weathered grey emphasize relaxed marine textures and horizon-facing openness.",
-    "visual_references": [
-      "seaside homes",
-      "New England coast",
-      "Mediterranean beach houses"
-    ]
-  },
-  {
-    "id": "found-object",
-    "label": "Found Object",
-    "domain": "visual_context",
-    "description": "a photo showing Found Object context, where discarded, repurposed, or collected objects are framed for their shape, patina, and accidental beauty. Oxidized metal, worn paper, broken plastic, and salvaged wood create an assemblage-driven visual language.",
-    "visual_references": [
-      "Marcel Duchamp",
-      "assemblage art",
-      "street finds"
-    ]
-  },
-  {
-    "id": "french-eclecticism",
-    "label": "French Eclecticism",
-    "domain": "visual_context",
-    "description": "a photo showing French Eclecticism context, where antique moldings, mixed periods, gilt frames, and casually layered furniture create a refined but lived-in interior. Cream, dusty rose, faded blue, brass, and dark wood combine elegance with collected imperfection.",
-    "visual_references": [
-      "Paris apartments",
-      "French salons",
-      "Left Bank interiors"
-    ]
-  },
-  {
-    "id": "grandmillennial",
-    "label": "Grandmillennial",
-    "domain": "visual_context",
-    "description": "a photo showing Grandmillennial context, where chintz florals, skirted tables, ruffles, needlepoint, and inherited-looking furniture create a nostalgic domestic setting. Soft pink, sage, powder blue, cream, and warm wood reference tradition through a younger styled lens.",
-    "visual_references": [
-      "Laura Ashley",
-      "traditional Southern interiors",
-      "granny chic"
-    ]
-  },
-  {
-    "id": "analog-photography",
-    "label": "Analog Photography",
-    "domain": "art_reference",
-    "description": "a photo showing Analog Photography aesthetic, characterized by visible grain, slight blur, halation, and tonal softness create an image that feels chemical and tactile rather than digitally perfect. Muted colors, natural shadow rolloff, and occasional light leaks suggest film stock and darkroom process.",
-    "visual_references": [
-      "35mm film",
-      "Kodak Portra",
-      "Nan Goldin"
-    ]
-  },
-  {
-    "id": "fashion-photography",
-    "label": "Fashion Photography",
-    "domain": "art_reference",
-    "description": "a photo showing Fashion Photography aesthetic, characterized by the image prioritizes styling, pose, garment shape, and surface finish with deliberate attention to fabric and body line. Lighting, composition, and gesture are polished to make clothing appear aspirational, cinematic, and editorially precise.",
-    "visual_references": [
-      "Steven Meisel",
-      "Peter Lindbergh",
-      "Vogue"
-    ]
-  },
-  {
-    "id": "editorial",
-    "label": "Editorial",
-    "domain": "art_reference",
-    "description": "a photo showing Editorial aesthetic, characterized by narrative pose, styled environments, and highly considered composition produce a magazine-like visual story rather than a plain product shot. The frame often balances concept, styling, and mood through striking angles, props, or sequencing cues.",
-    "visual_references": [
-      "i-D",
-      "Dazed",
-      "Vogue editorials"
-    ]
-  },
-  {
-    "id": "documentary",
-    "label": "Documentary",
-    "domain": "art_reference",
-    "description": "a photo showing Documentary aesthetic, characterized by the image feels observed rather than staged, with available light, environmental context, and lived gesture remaining visible. Texture, motion, and imperfection carry social reality and situational truth.",
-    "visual_references": [
-      "Mary Ellen Mark",
-      "street documentary",
-      "photojournalism"
-    ]
-  },
-  {
-    "id": "constructivism",
-    "label": "Constructivism",
-    "domain": "art_reference",
-    "description": "a photo showing Constructivism aesthetic, characterized by diagonal composition, stark geometry, and ideological red-black-white contrast create a graphic and propagandistic visual language. Photomontage energy, bold type-like shapes, and industrial forms emphasize movement and collective modernity.",
-    "visual_references": [
-      "Alexander Rodchenko",
-      "El Lissitzky",
-      "Russian Constructivism"
-    ]
-  },
-  {
-    "id": "psychedelia",
-    "label": "Psychedelia",
-    "domain": "art_reference",
-    "description": "a photo showing Psychedelia aesthetic, characterized by swirling color, optical distortion, liquid gradients, and surreal pattern repetition create an altered sensory atmosphere. Acid pink, ultraviolet, lime, orange, and warped typography reference hallucinatory 1960s poster culture.",
-    "visual_references": [
-      "1960s concert posters",
-      "Wes Wilson",
-      "psychedelic art"
-    ]
-  },
-  {
-    "id": "surrealism",
-    "label": "Surrealism",
-    "domain": "art_reference",
-    "description": "a photo showing Surrealism aesthetic, characterized by unexpected object pairings, impossible scale, dreamlike emptiness, and uncanny staging create a logic beyond realism. Soft shadow, symbolic objects, and dislocated environments produce a psychologically strange frame.",
-    "visual_references": [
-      "Salvador Dali",
-      "Rene Magritte",
-      "surreal editorial imagery"
-    ]
-  },
-  {
-    "id": "vaporwave",
-    "label": "Vaporwave",
-    "domain": "art_reference",
-    "description": "a photo showing Vaporwave aesthetic, characterized by pastel gradients, retro digital artifacts, marble busts, grids, and sunset palettes create a nostalgic synthetic dreamscape. Lavender, cyan, bubblegum pink, chrome, and VHS-style distortion reference obsolete consumer futurism.",
-    "visual_references": [
-      "Windows 95 graphics",
-      "Macintosh Plus",
-      "vaporwave art"
-    ]
-  },
-  {
-    "id": "zine-culture",
-    "label": "Zine Culture",
-    "domain": "art_reference",
-    "description": "a photo showing Zine Culture aesthetic, characterized by photocopy texture, rough collage, hand annotations, and cropped images create a self-published DIY visual language. Black ink, off-white paper, tape marks, and imperfect layout emphasize urgency, subculture, and personal voice.",
-    "visual_references": [
-      "punk zines",
-      "riot grrrl",
-      "DIY publishing"
-    ]
-  },
-  {
-    "id": "risograph",
-    "label": "Risograph",
-    "domain": "art_reference",
-    "description": "a photo showing Risograph aesthetic, characterized by layered spot colors, slight misregistration, and grainy ink texture create a printed image with visible process and softness. Fluorescent pink, cobalt, sunflower yellow, and soy-ink textures produce a vibrant but imperfect graphic look.",
-    "visual_references": [
-      "riso prints",
-      "small press posters",
-      "artist books"
-    ]
-  },
-  {
-    "id": "lo-fi-aesthetic",
-    "label": "Lo-fi Aesthetic",
-    "domain": "art_reference",
-    "description": "a photo showing Lo-fi Aesthetic aesthetic, characterized by compression artifacts, blur, harsh flash, and low-resolution textures create a deliberately unpolished image. The frame feels intimate, immediate, and internet-native rather than technically pristine.",
-    "visual_references": [
-      "blog-era photos",
-      "webcam imagery",
-      "DIY digital culture"
-    ]
-  },
-  {
-    "id": "afrofuturism",
-    "label": "Afrofuturism",
-    "domain": "art_reference",
-    "description": "a photo showing Afrofuturism aesthetic, characterized by metallic surfaces, cosmic motifs, regal silhouette cues, and technologically charged symbolism create a future-facing Black visual language. Jewel tones, gold, ultraviolet, and sculptural accessories blend ancestral reference with speculative modernity.",
-    "visual_references": [
-      "Sun Ra",
-      "Black Panther",
-      "Afrofuturist art"
-    ]
-  },
-  {
-    "id": "dark-gothic",
-    "label": "Dark Gothic",
-    "domain": "art_reference",
-    "description": "a photo showing Dark Gothic aesthetic, characterized by pointed arches, lace-like shadow, velvet blackness, and religious or funerary motifs create a haunted and romantic visual field. Oxblood, midnight, smoke grey, candle gold, and ruined textures emphasize drama, mystery, and decay.",
-    "visual_references": [
-      "gothic revival",
-      "Tim Burton",
-      "cathedral imagery"
-    ]
-  },
-  {
-    "id": "kawaii",
-    "label": "Kawaii",
-    "domain": "art_reference",
-    "description": "a photo showing Kawaii aesthetic, characterized by rounded shapes, pastel palettes, cute mascots, and toy-like surfaces create a sweet hyper-stylized image language. Pink, lavender, baby blue, mint, and glossy plastic textures reference Japanese character culture and youth sweetness.",
-    "visual_references": [
-      "Sanrio",
-      "Harajuku kawaii",
-      "Decora culture"
-    ]
-  },
-  {
-    "id": "retro-futurism",
-    "label": "Retro Futurism",
-    "domain": "art_reference",
-    "description": "a photo showing Retro Futurism aesthetic, characterized by streamlined curves, chrome surfaces, space-age optimism, and yesterday's idea of tomorrow create a nostalgic future. Silver, teal, orange, white, and glossy plastics reference atomic-age design, sci-fi illustration, and concept mobility.",
-    "visual_references": [
-      "1960s space age",
-      "Pierre Cardin",
-      "retro sci-fi"
-    ]
-  },
-  {
-    "id": "street-art",
-    "label": "Street Art",
-    "domain": "art_reference",
-    "description": "a photo showing Street Art aesthetic, characterized by spray texture, mural scale, pasted posters, and urban surfaces create a public-facing visual language rooted in the street. High-contrast color, drips, tags, and rough wall texture emphasize spontaneity, territory, and city energy.",
-    "visual_references": [
-      "Basquiat",
-      "Banksy",
-      "graffiti culture"
-    ]
-  },
-  {
-    "id": "pop-art",
-    "label": "Pop Art",
-    "domain": "art_reference",
-    "description": "a photo showing Pop Art aesthetic, characterized by flat bright color, bold outlines, consumer imagery, and graphic repetition create a loud mass-culture visual language. Dots, comic-book contrast, advertisement cues, and synthetic surfaces keep the frame playful and instantly legible.",
-    "visual_references": [
-      "Andy Warhol",
-      "Roy Lichtenstein",
-      "pop graphics"
-    ]
-  },
-  {
-    "id": "collage",
-    "label": "Collage",
-    "domain": "art_reference",
-    "description": "a photo showing Collage aesthetic, characterized by cut edges, layered fragments, mixed scales, and overlapping imagery create a constructed composite rather than a single seamless scene. Paper texture, torn borders, and abrupt juxtapositions make assembly visible and concept-driven.",
-    "visual_references": [
-      "Hannah Hoch",
-      "photomontage",
-      "mixed-media collage"
-    ]
-  },
-  {
-    "id": "swiss-graphic",
-    "label": "Swiss Graphic",
-    "domain": "art_reference",
-    "description": "a photo showing Swiss Graphic aesthetic, characterized by grid alignment, asymmetric spacing, sans-serif typography, and high legibility create a disciplined and rational visual order. Black, white, red, and restrained photography are arranged with clarity, structure, and typographic precision.",
-    "visual_references": [
-      "Josef Muller-Brockmann",
-      "Swiss Style",
-      "International Typographic Style"
-    ]
-  },
-  {
-    "id": "illustration",
-    "label": "Illustration",
-    "domain": "art_reference",
-    "description": "a photo showing Illustration aesthetic, characterized by drawn outlines, painterly fills, or stylized mark-making signal an image built through interpretation rather than pure photographic capture. Brush texture, pen line, flat color fields, or hand-rendered shading shape the final visual language.",
-    "visual_references": [
-      "fashion illustration",
-      "editorial drawing",
-      "hand-drawn image making"
+      "FUBU",
+      "Sean John",
+      "Dapper Dan"
     ]
   }
 ]
