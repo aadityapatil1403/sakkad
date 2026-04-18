@@ -82,6 +82,12 @@ class TestClassify:
             assert "domain" in item
             assert "score" in item
 
+    def test_empty_taxonomy_returns_no_matches(self) -> None:
+        from routes.capture import _classify
+        with patch("routes.capture._load_taxonomy", return_value=[]):
+            result = _classify([1.0, 0.0, 0.0], text_embedding=None)
+        assert result == []
+
     def test_scores_sum_to_1(self) -> None:
         result = self._run([1.0, 0.0, 0.0], text_embedding=None)
         total = sum(r["score"] for r in result)
@@ -124,3 +130,30 @@ class TestCaptureTextEmbeddingPath:
         mock_classify.assert_called_once()
         _, kwargs = mock_classify.call_args
         assert kwargs.get("text_embedding") is None or mock_classify.call_args[0][1] is None
+
+class TestTaxonomyCache:
+    def test_load_taxonomy_does_not_cache_empty_results(self) -> None:
+        from unittest.mock import MagicMock
+        import routes.capture as capture_module
+
+        capture_module._taxonomy_cache = None
+        response_empty = MagicMock(data=[])
+        response_full = MagicMock(data=[{
+            "id": 1,
+            "label": "label-A",
+            "domain": "fashion_streetwear",
+            "embedding": [1.0, 0.0, 0.0],
+        }])
+
+        with patch("routes.capture.supabase") as mock_supa:
+            mock_supa.table().select().eq().execute.side_effect = [response_empty, response_full]
+
+            first = capture_module._load_taxonomy()
+            second = capture_module._load_taxonomy()
+
+        assert first == []
+        assert len(second) == 1
+        assert capture_module._taxonomy_cache is not None
+        assert mock_supa.table().select().eq().execute.call_count == 2
+
+        capture_module._taxonomy_cache = None
