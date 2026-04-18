@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
+from config import settings  # noqa: E402
 from services.clip_service import get_text_embedding  # noqa: E402
 from services.supabase_client import supabase  # noqa: E402
 
@@ -36,8 +37,17 @@ def load_entries() -> list[dict]:
     return json.loads(TAXONOMY_PATH.read_text())
 
 
-def fetch_existing_rows() -> dict[str, dict]:
-    response = supabase.table("taxonomy").select("id, label").execute()
+def _get_seed_domain(entries: list[dict]) -> str:
+    domains = {entry["domain"] for entry in entries}
+    if len(domains) != 1:
+        raise ValueError(
+            "data/taxonomy.json must contain exactly one domain for deterministic seeding."
+        )
+    return next(iter(domains))
+
+
+def fetch_existing_rows(domain: str) -> dict[str, dict]:
+    response = supabase.table("taxonomy").select("id, label").eq("domain", domain).execute()
     rows = response.data or []
     return {
         row["label"]: row
@@ -46,11 +56,16 @@ def fetch_existing_rows() -> dict[str, dict]:
     }
 
 
-def delete_stale_rows(existing_rows: dict[str, dict], canonical_labels: set[str]) -> int:
+def delete_stale_rows(
+    existing_rows: dict[str, dict],
+    canonical_labels: set[str],
+    *,
+    domain: str,
+) -> int:
     stale_labels = sorted(set(existing_rows) - canonical_labels)
     for label in stale_labels:
         print(f"Deleting stale taxonomy row: {label}", flush=True)
-        supabase.table("taxonomy").delete().eq("label", label).execute()
+        supabase.table("taxonomy").delete().eq("domain", domain).eq("label", label).execute()
     return len(stale_labels)
 
 
@@ -65,6 +80,7 @@ def build_row(entry: dict, existing_id: str | None) -> dict:
         "domain": entry["domain"],
         "description": description,
         "embedding": embedding,
+        "embedding_model": settings.TAXONOMY_EMBEDDING_MODEL,
         "related_references": entry.get("visual_references", []),
     }
 
@@ -72,17 +88,13 @@ def build_row(entry: dict, existing_id: str | None) -> dict:
 def main() -> None:
     args = parse_args()
     entries = load_entries()
+    seed_domain = _get_seed_domain(entries)
     total = len(entries)
     success_count = 0
 
-    existing_rows = fetch_existing_rows()
+    existing_rows = fetch_existing_rows(seed_domain)
     canonical_labels = {entry["label"] for entry in entries}
     deleted_count = 0
-    if not args.keep_stale:
-        deleted_count = delete_stale_rows(existing_rows, canonical_labels)
-        existing_rows = {
-            label: row for label, row in existing_rows.items() if label in canonical_labels
-        }
 
     for i, entry in enumerate(entries, start=1):
         label = entry["label"]
@@ -96,6 +108,9 @@ def main() -> None:
             success_count += 1
         else:
             print(f"  WARNING: upsert returned no data for '{label}'", flush=True)
+
+    if not args.keep_stale:
+        deleted_count = delete_stale_rows(existing_rows, canonical_labels, domain=seed_domain)
 
     print(
         f"\nDone. {success_count}/{total} rows successfully upserted."

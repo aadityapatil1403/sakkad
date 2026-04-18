@@ -8,6 +8,7 @@ import numpy as np
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from PIL import Image
 
+from config import settings
 from services.clip_service import get_image_embedding, get_text_embedding
 from services.gemini_service import get_layer1_tags, get_layer2_tags
 from services.supabase_client import supabase
@@ -29,16 +30,28 @@ def _load_taxonomy() -> list[dict]:
         return _taxonomy_cache
     response = (
         supabase.table("taxonomy")
-        .select("id, label, domain, embedding")
+        .select("id, label, domain, embedding, embedding_model")
         .eq("domain", CLASSIFICATION_DOMAIN)
         .execute()
     )
     rows = response.data or []
+    if not rows:
+        raise RuntimeError(
+            "Taxonomy is empty for domain "
+            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
+        )
+
     parsed = []
     for row in rows:
         raw = row.get("embedding")
         if raw is None:
             continue
+        embedding_model = row.get("embedding_model")
+        if embedding_model != settings.TAXONOMY_EMBEDDING_MODEL:
+            raise RuntimeError(
+                "Taxonomy embeddings were seeded with a different model. "
+                "Re-run sakad-backend/scripts/seed_taxonomy.py before serving captures."
+            )
         embedding = ast.literal_eval(raw) if isinstance(raw, str) else raw
         parsed.append({
             "id": row["id"],
@@ -46,6 +59,11 @@ def _load_taxonomy() -> list[dict]:
             "domain": row["domain"],
             "embedding": np.array(embedding, dtype=np.float32),
         })
+    if not parsed:
+        raise RuntimeError(
+            "Taxonomy rows are missing embeddings for domain "
+            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
+        )
     _taxonomy_cache = parsed
     return _taxonomy_cache
 
@@ -55,6 +73,11 @@ def _classify(
     text_embedding: list[float] | None,
 ) -> list[dict]:
     taxonomy = _load_taxonomy()
+    if not taxonomy:
+        raise RuntimeError(
+            "Taxonomy is empty for domain "
+            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
+        )
     img_vec = np.array(image_embedding, dtype=np.float32)  # (768,) already normalized
 
     if text_embedding is not None:
@@ -151,7 +174,10 @@ async def capture(file: UploadFile = File(...)) -> dict:
     else:
         text_embedding = None
 
-    taxonomy_matches = _classify(image_embedding, text_embedding)
+    try:
+        taxonomy_matches = _classify(image_embedding, text_embedding)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     palette = _extract_palette(image_bytes)
 
     insert_response = supabase.table("captures").insert({

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "5d0b8c43-5fa5-4da5-bec2-e2ebf29d5f01",
+    "designer": "Yohji Yamamoto",
+    "brand": "Yohji Yamamoto",
+    "collection_or_era": "1990s tailoring",
+    "title": "Monastic black drape tailoring",
+    "description": "Severe black tailoring with elongated lines, soft drape, asymmetry, wide trousers, and a monastic silhouette that feels intellectual rather than decorative.",
+    "taxonomy_tags": ["avant_garde", "tailoring", "monochrome", "draping", "minimal"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "designer_signature",
+      "notes": "Useful for dark draped tailoring retrieval."
+    }
+  },
+  {
+    "id": "8f1b4a01-36c4-4ca7-b805-eae7f117b0cc",
+    "designer": "Martin Margiela",
+    "brand": "Maison Martin Margiela",
+    "collection_or_era": "Artisanal line, late 1990s to early 2000s",
+    "title": "Deconstruction and exposed process",
+    "description": "Garments built through deconstruction, exposed seams, recycled materials, anonymous labeling, and conceptual styling that makes the construction process visible.",
+    "taxonomy_tags": ["deconstruction", "conceptual", "upcycling", "artisanal", "experimental"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "designer_signature",
+      "notes": "Strong match anchor for reconstructed or inside-out garments."
+    }
+  },
+  {
+    "id": "1b595cd0-1b13-4403-baf4-0a8dc7966be6",
+    "designer": "Rei Kawakubo",
+    "brand": "Comme des Garcons",
+    "collection_or_era": "Body Meets Dress, Dress Meets Body, 1997",
+    "title": "Lumps and sculptural distortion",
+    "description": "Sculptural silhouettes with padded distortions, off-balance volume, unexpected body shapes, and an anti-beauty approach that turns the garment into a provocation.",
+    "taxonomy_tags": ["avant_garde", "sculptural", "distortion", "volume", "conceptual"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Useful for exaggerated volume and unconventional proportions."
+    }
+  },
+  {
+    "id": "547f1957-6503-4c80-aa3d-d41b1ad1ab4f",
+    "designer": "Helmut Lang",
+    "brand": "Helmut Lang",
+    "collection_or_era": "Late 1990s minimalism",
+    "title": "Industrial minimal tailoring",
+    "description": "Lean tailoring, utilitarian straps, sharp neutrals, technical fabrics, and a stripped-back industrial attitude that feels precise, urban, and modernist.",
+    "taxonomy_tags": ["minimal", "tailoring", "utilitarian", "technical", "industrial"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "designer_signature",
+      "notes": "Covers minimalist utilitarian fashion references."
+    }
+  },
+  {
+    "id": "6c9bc9d7-0d38-4ce6-bef1-877d40f9df4a",
+    "designer": "Issey Miyake",
+    "brand": "Pleats Please Issey Miyake",
+    "collection_or_era": "Permanent pleating era",
+    "title": "Architectural pleated movement",
+    "description": "Lightweight pleated garments with architectural geometry, kinetic movement, saturated color, and engineered texture that transforms with motion and body posture.",
+    "taxonomy_tags": ["pleating", "architectural", "texture", "movement", "color"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "material_language",
+      "notes": "Good for pleat-heavy and motion-driven looks."
+    }
+  },
+  {
+    "id": "620979be-dc0e-4b82-9287-3f9cc863a29d",
+    "designer": "Rick Owens",
+    "brand": "Rick Owens",
+    "collection_or_era": "2010s dark luxury",
+    "title": "Brutalist elongated street tailoring",
+    "description": "Elongated proportions, leather, washed neutrals, heavy boots, layered jerseys, and a brutalist mood that merges luxury fabrication with dystopian streetwear.",
+    "taxonomy_tags": ["darkwear", "streetwear", "layering", "leather", "elongated"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "designer_signature",
+      "notes": "Useful for dark layered silhouettes with luxury edge."
+    }
+  },
+  {
+    "id": "cb82cf0d-d4eb-4865-9854-2f90d04b3dc1",
+    "designer": "Hedi Slimane",
+    "brand": "Dior Homme",
+    "collection_or_era": "Early 2000s skinny tailoring",
+    "title": "Razor slim rock tailoring",
+    "description": "Ultra-slim suits, narrow shoulders, skinny trousers, monochrome palettes, and a rock musician attitude that sharpened menswear into a youthful silhouette.",
+    "taxonomy_tags": ["tailoring", "slim", "rock", "monochrome", "menswear"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Anchor for slim rock-influenced tailoring."
+    }
+  },
+  {
+    "id": "18b88996-5f72-4593-a345-b954dd165084",
+    "designer": "Miuccia Prada",
+    "brand": "Prada",
+    "collection_or_era": "1996 ugly chic",
+    "title": "Offbeat ugly chic polish",
+    "description": "Awkward-pretty styling with intelligent color clashes, prim silhouettes, plain fabrics, and deliberately uncool combinations that read as refined through context and attitude.",
+    "taxonomy_tags": ["ugly_chic", "color", "styling", "intellectual", "classic_twist"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "styling_language",
+      "notes": "Helpful for polished looks with intentional dissonance."
+    }
+  }
+]
