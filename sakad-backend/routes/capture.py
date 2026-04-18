@@ -2,25 +2,32 @@ import ast
 import asyncio
 import functools
 import io
+import logging
 import uuid
 
 import numpy as np
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from PIL import Image
 
+from config import settings
 from services.clip_service import get_image_embedding, get_text_embedding
 from services.gemini_service import get_layer1_tags, get_layer2_tags
 from services.supabase_client import supabase
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 STORAGE_BUCKET = "captures"
 CLASSIFICATION_DOMAIN = "fashion_streetwear"
+REFERENCE_CORPUS_TABLE = "reference_corpus"
 IMAGE_WEIGHT = 1.0
 TEXT_WEIGHT = 0.0
 
-# Module-level taxonomy cache: populated on first request
 _taxonomy_cache: list[dict] | None = None
+_reference_cache: list[dict] | None = None
+_reference_corpus_available = True
+_missing_capture_enrichment_columns: set[str] = set()
+_ENRICHMENT_COLUMNS = {"session_id", "reference_matches", "reference_explanation"}
 
 
 def _load_taxonomy() -> list[dict]:
@@ -29,16 +36,28 @@ def _load_taxonomy() -> list[dict]:
         return _taxonomy_cache
     response = (
         supabase.table("taxonomy")
-        .select("id, label, domain, embedding")
+        .select("id, label, domain, embedding, embedding_model")
         .eq("domain", CLASSIFICATION_DOMAIN)
         .execute()
     )
     rows = response.data or []
+    if not rows:
+        raise RuntimeError(
+            "Taxonomy is empty for domain "
+            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
+        )
+
     parsed = []
     for row in rows:
         raw = row.get("embedding")
         if raw is None:
             continue
+        embedding_model = row.get("embedding_model")
+        if embedding_model != settings.TAXONOMY_EMBEDDING_MODEL:
+            raise RuntimeError(
+                "Taxonomy embeddings were seeded with a different model. "
+                "Re-run sakad-backend/scripts/seed_taxonomy.py before serving captures."
+            )
         embedding = ast.literal_eval(raw) if isinstance(raw, str) else raw
         parsed.append({
             "id": row["id"],
@@ -46,9 +65,215 @@ def _load_taxonomy() -> list[dict]:
             "domain": row["domain"],
             "embedding": np.array(embedding, dtype=np.float32),
         })
-    if parsed:
-        _taxonomy_cache = parsed
-    return parsed
+    if not parsed:
+        raise RuntimeError(
+            "Taxonomy rows are missing embeddings for domain "
+            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
+        )
+    _taxonomy_cache = parsed
+    return _taxonomy_cache
+
+
+def _parse_embedding(raw_embedding: object) -> np.ndarray | None:
+    if raw_embedding is None:
+        return None
+    try:
+        embedding = ast.literal_eval(raw_embedding) if isinstance(raw_embedding, str) else raw_embedding
+        vector = np.array(embedding, dtype=np.float32)
+    except (SyntaxError, TypeError, ValueError) as exc:
+        logger.warning("[retrieval] skipping malformed embedding: %s", exc)
+        return None
+    if vector.ndim != 1 or vector.size == 0:
+        logger.warning("[retrieval] skipping malformed embedding shape: %s", getattr(vector, "shape", None))
+        return None
+    return vector
+
+
+def _load_reference_corpus() -> list[dict]:
+    global _reference_cache, _reference_corpus_available
+    if _reference_cache is not None:
+        return _reference_cache
+    if not _reference_corpus_available:
+        return []
+
+    try:
+        response = (
+            supabase.table(REFERENCE_CORPUS_TABLE)
+            .select("id, designer, brand, collection_or_era, title, description, image_url, embedding")
+            .execute()
+        )
+    except Exception as exc:
+        _reference_corpus_available = False
+        _reference_cache = []
+        logger.warning("[retrieval] reference corpus unavailable; disabling retrieval: %s", exc)
+        return []
+
+    parsed_rows = []
+    for row in response.data or []:
+        embedding = _parse_embedding(row.get("embedding"))
+        if embedding is None:
+            continue
+        parsed_rows.append({
+            "id": row.get("id"),
+            "designer": row.get("designer"),
+            "brand": row.get("brand"),
+            "collection_or_era": row.get("collection_or_era"),
+            "title": row.get("title"),
+            "description": row.get("description"),
+            "image_url": row.get("image_url"),
+            "embedding": embedding,
+        })
+
+    _reference_cache = parsed_rows
+    if not _reference_cache:
+        logger.info("[retrieval] empty reference corpus")
+    return _reference_cache
+
+
+def get_reference_matches(image_embedding: list[float], limit: int = 5) -> list[dict]:
+    if limit <= 0:
+        return []
+
+    corpus = _load_reference_corpus()
+    if not corpus:
+        logger.info("[retrieval] empty-hit: no corpus rows available")
+        return []
+
+    try:
+        image_vec = np.array(image_embedding, dtype=np.float32)
+    except (TypeError, ValueError) as exc:
+        logger.warning("[retrieval] invalid query embedding: %s", exc)
+        return []
+
+    if image_vec.ndim != 1 or image_vec.size == 0:
+        logger.warning("[retrieval] invalid query embedding shape: %s", getattr(image_vec, "shape", None))
+        return []
+
+    query_norm = np.linalg.norm(image_vec)
+    if query_norm == 0:
+        logger.warning("[retrieval] zero-norm query embedding")
+        return []
+
+    scored_rows = []
+    for row in corpus:
+        candidate_vec = row["embedding"]
+        if candidate_vec.shape != image_vec.shape:
+            logger.warning(
+                "[retrieval] skipping row with mismatched embedding shape: id=%s query=%s row=%s",
+                row.get("id"),
+                image_vec.shape,
+                candidate_vec.shape,
+            )
+            continue
+
+        candidate_norm = np.linalg.norm(candidate_vec)
+        if candidate_norm == 0:
+            logger.warning("[retrieval] skipping zero-norm corpus embedding: id=%s", row.get("id"))
+            continue
+
+        score = float(np.dot(candidate_vec, image_vec) / (candidate_norm * query_norm))
+        scored_rows.append({
+            "id": row.get("id"),
+            "designer": row.get("designer"),
+            "brand": row.get("brand"),
+            "collection_or_era": row.get("collection_or_era"),
+            "title": row.get("title"),
+            "description": row.get("description"),
+            "image_url": row.get("image_url"),
+            "score": round(score, 4),
+        })
+
+    if not scored_rows:
+        logger.info("[retrieval] empty-hit: no usable reference matches")
+        return []
+
+    scored_rows.sort(key=lambda row: row["score"], reverse=True)
+    return scored_rows[:limit]
+
+
+def generate_reference_explanation(
+    taxonomy_matches: list[dict] | None,
+    reference_matches: list[dict] | None,
+    layer1_tags: list[str] | None = None,
+    layer2_tags: list[str] | None = None,
+) -> str | None:
+    if not taxonomy_matches or not reference_matches:
+        return None
+
+    top_taxonomy = taxonomy_matches[0].get("label") or "the current taxonomy result"
+    top_reference = reference_matches[0]
+    reference_name = top_reference.get("title") or top_reference.get("designer") or "the top reference"
+    cue_source = layer2_tags or layer1_tags or []
+    cues = ", ".join(cue_source[:3])
+
+    explanation = f"This image reads closest to {top_taxonomy} and aligns with {reference_name}."
+    if cues:
+        explanation += f" Key visual cues include {cues}."
+    return explanation
+
+
+def _build_capture_insert_payload(
+    *,
+    public_url: str,
+    session_id: str | None,
+    image_embedding: list[float],
+    taxonomy_matches: list[dict],
+    layer1: list[str],
+    layer2: list[str],
+    palette: list[str],
+    reference_matches: list[dict],
+    reference_explanation: str | None,
+    include_enrichment: bool,
+) -> dict:
+    payload = {
+        "image_url": public_url,
+        "embedding": image_embedding,
+        "taxonomy_matches": taxonomy_matches,
+        "layer1_tags": layer1 or None,
+        "layer2_tags": layer2 or None,
+        "tags": {"palette": palette},
+    }
+    if include_enrichment:
+        if "session_id" not in _missing_capture_enrichment_columns:
+            payload["session_id"] = session_id
+        if "reference_matches" not in _missing_capture_enrichment_columns:
+            payload["reference_matches"] = reference_matches
+        if "reference_explanation" not in _missing_capture_enrichment_columns:
+            payload["reference_explanation"] = reference_explanation
+    return payload
+
+
+def _missing_enrichment_columns(exc: Exception) -> set[str]:
+    message = str(exc).lower()
+    schema_error = (
+        ("column" in message and "does not exist" in message)
+        or ("schema cache" in message and "column" in message)
+    )
+    if not schema_error:
+        return set()
+    return {column for column in _ENRICHMENT_COLUMNS if column in message}
+
+
+def _insert_capture(payload: dict, *, allow_retry_without_enrichment: bool) -> object:
+    global _missing_capture_enrichment_columns
+
+    try:
+        return supabase.table("captures").insert(payload).execute()
+    except Exception as exc:
+        missing_columns = _missing_enrichment_columns(exc)
+        if not allow_retry_without_enrichment or not missing_columns:
+            raise
+        _missing_capture_enrichment_columns.update(missing_columns)
+        logger.warning(
+            "[capture] enrichment columns unavailable; retrying legacy insert shape: %s",
+            exc,
+        )
+        retry_payload = {
+            key: value
+            for key, value in payload.items()
+            if key not in missing_columns
+        }
+        return supabase.table("captures").insert(retry_payload).execute()
 
 
 def _classify(
@@ -56,10 +281,7 @@ def _classify(
     text_embedding: list[float] | None,
 ) -> list[dict]:
     taxonomy = _load_taxonomy()
-    if not taxonomy:
-        return []
-
-    img_vec = np.array(image_embedding, dtype=np.float32)  # (768,) already normalized
+    img_vec = np.array(image_embedding, dtype=np.float32)
 
     if text_embedding is not None:
         txt_vec = np.array(text_embedding, dtype=np.float32)
@@ -69,7 +291,7 @@ def _classify(
     else:
         blended = img_vec
 
-    text_matrix = np.stack([r["embedding"] for r in taxonomy])  # (N, 768)
+    text_matrix = np.stack([row["embedding"] for row in taxonomy])
     logits = 100.0 * (text_matrix @ blended)
     exp = np.exp(logits - logits.max())
     probs = exp / exp.sum()
@@ -87,7 +309,6 @@ def _classify(
 
 
 def _kmeans_numpy(pixels: np.ndarray, k: int = 5, max_iter: int = 20) -> np.ndarray:
-    """Minimal k-means using numpy — avoids sklearn dependency."""
     rng = np.random.default_rng(0)
     centroids = pixels[rng.choice(len(pixels), k, replace=False)]
     for _ in range(max_iter):
@@ -112,63 +333,112 @@ def _extract_palette(image_bytes: bytes) -> list[str]:
 
 
 @router.post("/api/capture")
-async def capture(file: UploadFile = File(...)) -> dict:
-    image_bytes = await file.read()
+async def capture(
+    file: UploadFile = File(...),
+    session_id: str | None = Form(default=None),
+) -> dict:
+    try:
+        image_bytes = await file.read()
 
-    ext = file.filename.rsplit(".", 1)[-1] if "." in file.filename else "jpg"
-    filename = f"{uuid.uuid4()}.{ext}"
+        ext = file.filename.rsplit(".", 1)[-1] if "." in file.filename else "jpg"
+        filename = f"{uuid.uuid4()}.{ext}"
 
-    storage_response = supabase.storage.from_(STORAGE_BUCKET).upload(
-        path=filename,
-        file=image_bytes,
-        file_options={"content-type": file.content_type or "image/jpeg"},
-    )
-    if hasattr(storage_response, "error") and storage_response.error:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Storage upload failed: {storage_response.error}",
+        storage_response = supabase.storage.from_(STORAGE_BUCKET).upload(
+            path=filename,
+            file=image_bytes,
+            file_options={"content-type": file.content_type or "image/jpeg"},
+        )
+        if hasattr(storage_response, "error") and storage_response.error:
+            logger.error("[capture] storage upload failed: %s", storage_response.error)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Storage upload failed: {storage_response.error}",
+            )
+
+        public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
+
+        loop = asyncio.get_running_loop()
+        image_embedding = await loop.run_in_executor(None, get_image_embedding, image_bytes)
+
+        layer1_fn = functools.partial(get_layer1_tags, image_bytes, mime_type=file.content_type or "image/jpeg")
+        layer1 = await loop.run_in_executor(None, layer1_fn)
+        if not layer1:
+            logger.warning("[capture] gemini layer1 unavailable; continuing with fallback path")
+
+        if layer1:
+            layer2_fn = functools.partial(
+                get_layer2_tags, image_bytes, layer1, mime_type=file.content_type or "image/jpeg"
+            )
+            layer2 = await loop.run_in_executor(None, layer2_fn)
+        else:
+            layer2 = []
+        if layer1 and not layer2:
+            logger.warning("[capture] gemini layer2 unavailable; continuing with fallback path")
+
+        if TEXT_WEIGHT > 0.0 and (layer1 or layer2):
+            enriched_text = " ".join(layer1 + layer2)
+            try:
+                text_embedding: list[float] | None = await loop.run_in_executor(
+                    None, get_text_embedding, enriched_text
+                )
+            except Exception as exc:
+                logger.warning("[capture] text embedding failed; falling back to image-only: %s", exc)
+                text_embedding = None
+        else:
+            text_embedding = None
+
+        try:
+            taxonomy_matches = _classify(image_embedding, text_embedding)
+        except RuntimeError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        reference_matches = get_reference_matches(image_embedding)
+        palette = _extract_palette(image_bytes)
+
+        try:
+            reference_explanation = generate_reference_explanation(
+                taxonomy_matches,
+                reference_matches,
+                layer1_tags=layer1 or None,
+                layer2_tags=layer2 or None,
+            )
+        except Exception:
+            logger.exception("[capture] reference explanation failed")
+            reference_explanation = None
+
+        insert_payload = _build_capture_insert_payload(
+            public_url=public_url,
+            session_id=session_id,
+            image_embedding=image_embedding,
+            taxonomy_matches=taxonomy_matches,
+            layer1=layer1,
+            layer2=layer2,
+            palette=palette,
+            reference_matches=reference_matches,
+            reference_explanation=reference_explanation,
+            include_enrichment=True,
+        )
+        insert_response = _insert_capture(
+            insert_payload,
+            allow_retry_without_enrichment=bool(_ENRICHMENT_COLUMNS & set(insert_payload)),
         )
 
-    public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
+        if not insert_response.data:
+            logger.error("[capture] insert failed after successful processing")
+            raise HTTPException(status_code=500, detail="Failed to insert capture record")
 
-    loop = asyncio.get_running_loop()
-    image_embedding = await loop.run_in_executor(None, get_image_embedding, image_bytes)
-
-    layer1_fn = functools.partial(get_layer1_tags, image_bytes, mime_type=file.content_type or "image/jpeg")
-    layer1 = await loop.run_in_executor(None, layer1_fn)
-
-    if layer1:
-        layer2_fn = functools.partial(get_layer2_tags, image_bytes, layer1, mime_type=file.content_type or "image/jpeg")
-        layer2 = await loop.run_in_executor(None, layer2_fn)
-    else:
-        layer2: list[str] = []
-
-    if TEXT_WEIGHT > 0.0 and (layer1 or layer2):
-        enriched_text = " ".join(layer1 + layer2)
-        try:
-            text_embedding: list[float] | None = await loop.run_in_executor(
-                None, get_text_embedding, enriched_text
-            )
-        except Exception as exc:
-            print(f"[capture] text embedding failed, falling back to image-only: {exc}")
-            text_embedding = None
-    else:
-        text_embedding = None
-
-    taxonomy_matches = _classify(image_embedding, text_embedding)
-    palette = _extract_palette(image_bytes)
-
-    capture_row = {
-        "image_url": public_url,
-        "embedding": image_embedding,
-        "taxonomy_matches": taxonomy_matches,
-        "layer1_tags": layer1 or None,
-        "layer2_tags": layer2 or None,
-        "tags": {"palette": palette},
-    }
-    insert_response = supabase.table("captures").insert(capture_row).execute()
-
-    if not insert_response.data:
-        raise HTTPException(status_code=500, detail="Failed to insert capture record")
-
-    return insert_response.data[0]
+        capture_record = insert_response.data[0]
+        logger.info(
+            "[capture] success: id=%s taxonomy_matches=%s reference_matches=%s gemini_layer1=%s gemini_layer2=%s",
+            capture_record.get("id"),
+            len(taxonomy_matches),
+            len(reference_matches),
+            bool(layer1),
+            bool(layer2),
+        )
+        return capture_record
+    except HTTPException:
+        logger.exception("[capture] request failed")
+        raise
+    except Exception:
+        logger.exception("[capture] unhandled failure")
+        raise

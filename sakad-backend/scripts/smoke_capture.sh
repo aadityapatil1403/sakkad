@@ -52,7 +52,7 @@ try:
 except json.JSONDecodeError as exc:
     raise SystemExit(f"{image_name}: invalid JSON response: {exc}") from exc
 
-required_keys = ("layer1_tags", "layer2_tags", "taxonomy_matches", "tags")
+required_keys = ("layer1_tags", "layer2_tags", "taxonomy_matches", "reference_matches", "reference_explanation", "tags")
 missing = [key for key in required_keys if key not in payload]
 if missing:
     raise SystemExit(f"{image_name}: missing response keys: {', '.join(missing)}")
@@ -65,16 +65,28 @@ taxonomy_matches = payload.get("taxonomy_matches")
 if not isinstance(taxonomy_matches, list):
     raise SystemExit(f"{image_name}: taxonomy_matches missing or invalid")
 
+reference_matches = payload.get("reference_matches")
+if not isinstance(reference_matches, list):
+    raise SystemExit(f"{image_name}: reference_matches missing or invalid")
+
 layer1 = payload.get("layer1_tags")
 layer2 = payload.get("layer2_tags")
+reference_explanation = payload.get("reference_explanation")
 if layer1 is not None and not isinstance(layer1, list):
     raise SystemExit(f"{image_name}: layer1_tags must be a list or null")
 if layer2 is not None and not isinstance(layer2, list):
     raise SystemExit(f"{image_name}: layer2_tags must be a list or null")
+if reference_explanation is not None and not isinstance(reference_explanation, str):
+    raise SystemExit(f"{image_name}: reference_explanation must be a string or null")
 
 top_matches = [
     f"{match.get('label')} ({match.get('score')})"
     for match in taxonomy_matches[:3]
+    if isinstance(match, dict)
+]
+top_references = [
+    f"{match.get('title') or match.get('designer')} ({match.get('score')})"
+    for match in reference_matches[:3]
     if isinstance(match, dict)
 ]
 
@@ -82,6 +94,8 @@ print(f"=== {image_name} ===")
 print("layer1:", layer1)
 print("layer2:", layer2)
 print("top taxonomy:", top_matches)
+print("top references:", top_references)
+print("reference explanation:", reference_explanation)
 print("palette:", palette)
 print()
 PY

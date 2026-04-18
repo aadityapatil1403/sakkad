@@ -151,6 +151,22 @@ def mean_rank(ranks: list[int | None]) -> float | None:
     return round(sum(values) / len(values), 3)
 
 
+def _missing_text_result(*, image_name: str, data: dict[str, Any], config: Config) -> dict[str, Any]:
+    return {
+        "image": image_name,
+        "expected_primary_labels": data["entry"]["expected_primary_labels"],
+        "acceptable_secondary_labels": data["entry"].get("acceptable_secondary_labels", []),
+        "layer1": data["layer1"],
+        "layer2": data["layer2"],
+        "predictions": [],
+        "top1_hit": False,
+        "top3_hit": False,
+        "primary_rank": None,
+        "missing_text_features": True,
+        "missing_text_variant": config.text_variant,
+    }
+
+
 def main() -> None:
     args = parse_args()
     manifest = load_manifest(args.manifest)
@@ -187,9 +203,14 @@ def main() -> None:
         ranks: list[int | None] = []
         top1_hits = 0
         top3_hits = 0
+        missing_text_feature_images = 0
 
         for image_name, data in per_image_data.items():
             text_embedding = None if config.text_variant is None else data["text_embeddings"].get(config.text_variant)
+            if config.text_variant is not None and text_embedding is None:
+                missing_text_feature_images += 1
+                image_results.append(_missing_text_result(image_name=image_name, data=data, config=config))
+                continue
             predictions = classify(
                 taxonomy=taxonomy_fashion,
                 image_embedding=data["image_embedding"],
@@ -212,6 +233,7 @@ def main() -> None:
                 "layer1": data["layer1"],
                 "layer2": data["layer2"],
                 "predictions": predictions,
+                "missing_text_features": False,
                 **metrics,
             })
 
@@ -223,6 +245,7 @@ def main() -> None:
             "top1_hits": top1_hits,
             "top3_hits": top3_hits,
             "mean_primary_rank": mean_rank(ranks),
+            "missing_text_feature_images": missing_text_feature_images,
             "image_results": image_results,
         }
         report["configs"].append(summary)
@@ -239,7 +262,8 @@ def main() -> None:
         print(
             f"{config['config']}: top1={config['top1_hits']}/{len(manifest)} "
             f"top3={config['top3_hits']}/{len(manifest)} "
-            f"mean_primary_rank={config['mean_primary_rank']}"
+            f"mean_primary_rank={config['mean_primary_rank']} "
+            f"missing_text_features={config['missing_text_feature_images']}"
         )
 
     if args.output_json:

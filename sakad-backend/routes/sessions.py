@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from services.supabase_client import supabase
 
 router = APIRouter()
@@ -17,9 +18,7 @@ def _normalize_capture(capture: dict) -> dict:
         "image_url": capture.get("image_url"),
         "created_at": capture.get("created_at"),
         "taxonomy_matches": capture.get("taxonomy_matches") or [],
-        "tags": {
-            "palette": palette or [],
-        },
+        "tags": {"palette": palette or []},
         "layer1_tags": capture.get("layer1_tags") or [],
         "layer2_tags": capture.get("layer2_tags") or [],
         "reference_matches": capture.get("reference_matches") or [],
@@ -35,16 +34,13 @@ def _get_session_captures(session_id: str) -> list[dict]:
         .order("created_at")
         .execute()
     )
-
     rows = response.data or []
     return [_normalize_capture(row) for row in rows]
 
 
 @router.post("/api/sessions/start")
 async def start_session():
-    response = supabase.table(SESSIONS_TABLE).insert({
-        "user_id": DEV_USER_ID,
-    }).execute()
+    response = supabase.table(SESSIONS_TABLE).insert({"user_id": DEV_USER_ID}).execute()
     if not response.data:
         raise HTTPException(status_code=500, detail="Failed to start session")
     return response.data[0]
@@ -87,10 +83,7 @@ async def get_session(session_id: str):
     if not session_response.data:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    session = session_response.data[0]
-    captures = _get_session_captures(session_id)
-
     return {
-        "session": session,
-        "captures": captures,
+        "session": session_response.data[0],
+        "captures": _get_session_captures(session_id),
     }
