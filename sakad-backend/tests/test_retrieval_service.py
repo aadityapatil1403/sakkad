@@ -1,6 +1,8 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from services import retrieval_service
+
 
 def test_retrieval_returns_stable_shape_and_ranking() -> None:
     rows = [
@@ -26,13 +28,11 @@ def test_retrieval_returns_stable_shape_and_ranking() -> None:
         },
     ]
 
-    with patch("routes.capture._reference_cache", None), \
-         patch("routes.capture.supabase") as mock_supa:
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service.supabase") as mock_supa:
         mock_supa.table().select().execute.return_value = SimpleNamespace(data=rows)
 
-        from routes.capture import get_reference_matches
-
-        result = get_reference_matches([1.0, 0.0], limit=2)
+        result = retrieval_service.get_reference_matches([1.0, 0.0], limit=2)
 
     assert [item["id"] for item in result] == ["ref-1", "ref-2"]
     for item in result:
@@ -49,14 +49,12 @@ def test_retrieval_returns_stable_shape_and_ranking() -> None:
 
 
 def test_empty_corpus_returns_empty_list_and_logs() -> None:
-    with patch("routes.capture._reference_cache", None), \
-         patch("routes.capture.supabase") as mock_supa, \
-         patch("routes.capture.logger") as mock_logger:
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service.supabase") as mock_supa, \
+         patch("services.retrieval_service.logger") as mock_logger:
         mock_supa.table().select().execute.return_value = SimpleNamespace(data=[])
 
-        from routes.capture import get_reference_matches
-
-        result = get_reference_matches([1.0, 0.0])
+        result = retrieval_service.get_reference_matches([1.0, 0.0])
 
     assert result == []
     mock_logger.info.assert_called()
@@ -86,13 +84,11 @@ def test_malformed_rows_do_not_crash_request_path() -> None:
         },
     ]
 
-    with patch("routes.capture._reference_cache", None), \
-         patch("routes.capture.supabase") as mock_supa:
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service.supabase") as mock_supa:
         mock_supa.table().select().execute.return_value = SimpleNamespace(data=rows)
 
-        from routes.capture import get_reference_matches
-
-        result = get_reference_matches([1.0, 0.0])
+        result = retrieval_service.get_reference_matches([1.0, 0.0])
 
     assert [item["id"] for item in result] == ["good-row"]
 
@@ -112,27 +108,23 @@ def test_limit_handling_respects_requested_count() -> None:
         for idx in range(4)
     ]
 
-    with patch("routes.capture._reference_cache", None), \
-         patch("routes.capture.supabase") as mock_supa:
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service.supabase") as mock_supa:
         mock_supa.table().select().execute.return_value = SimpleNamespace(data=rows)
 
-        from routes.capture import get_reference_matches
-
-        result = get_reference_matches([1.0, 0.0], limit=2)
+        result = retrieval_service.get_reference_matches([1.0, 0.0], limit=2)
 
     assert len(result) == 2
 
 
 def test_missing_reference_corpus_degrades_to_empty_results() -> None:
-    with patch("routes.capture._reference_cache", None), \
-         patch("routes.capture._reference_corpus_available", True), \
-         patch("routes.capture.supabase") as mock_supa, \
-         patch("routes.capture.logger") as mock_logger:
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service._reference_corpus_available", True), \
+         patch("services.retrieval_service.supabase") as mock_supa, \
+         patch("services.retrieval_service.logger") as mock_logger:
         mock_supa.table().select().execute.side_effect = RuntimeError("relation reference_corpus does not exist")
 
-        from routes.capture import get_reference_matches
-
-        result = get_reference_matches([1.0, 0.0])
+        result = retrieval_service.get_reference_matches([1.0, 0.0])
 
     assert result == []
     mock_logger.warning.assert_called()
