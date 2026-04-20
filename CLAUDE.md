@@ -6,41 +6,91 @@
 
 ### What Is This?
 
-Sakkad is a fashion design research tool for Snap Spectacles. Students capture fashion inspiration with AR glasses — images flow to a FastAPI backend that embeds them with SigLIP, classifies against a 100-label fashion taxonomy, and clusters them so a companion web app can surface aesthetic relationships in real time.
+Sakkad is a fashion design research tool built for Snap Spectacles and a companion web app. The live experience is designed as a dual-screen demo: one person wears Spectacles and captures inspiration in the physical world while a second screen shows the Sakkad web app updating as sessions and captures flow in.
+
+The product is aimed at fashion design students. The Spectacles side handles onboarding, wrist-based session control, and pinch-to-crop capture. The backend stores images, computes SigLIP embeddings, classifies captures against a fashion-focused taxonomy, and prepares the data needed for the partner-built web app to show sessions, spatial canvases, clustering, and downstream generation workflows.
 
 ### Tech Stack
 
-- **Backend:** FastAPI (Python) · SigLIP `google/siglip-base-patch16-224` (813MB, lazy-loaded) · Gemini (backend-proxied, never exposed to client)
-- **Frontend:** Partner-owned — Lens Studio (Spectacles AR) + web app
-- **Database:** Supabase — pgvector for embeddings, Storage for images, Realtime for live updates
-- **Deploy:** Railway $5/mo (8GB RAM tier — required for SigLIP)
-- **Auth:** DEV_USER_ID hardcoded for MVP (Supabase Auth post-demo only)
+- **Backend:** FastAPI (Python) owned by Aaditya
+- **Vision model:** SigLIP `google/siglip-base-patch16-224`, lazy-loaded locally for capture embeddings and taxonomy scoring
+- **Generation/tagging:** Gemini, always backend-proxied
+- **Frontend:** Partner-owned Lens Studio Spectacles experience + partner web app
+- **Database:** Supabase for Postgres, pgvector, Storage, and planned Realtime updates
+- **Deploy target:** Railway, 8GB RAM tier, because SigLIP is large
+- **Auth:** `DEV_USER_ID` hardcoded for the MVP; full auth is intentionally deferred until after the demo if time allows
 
-### File Structure
+### Product Shape
+
+- **Live demo setup:** Product overview video, live onboarding on Spectacles, a classmate taking live captures, session appearing in the web app, then a switch to a pre-seeded outdoor account for the richer spatial canvas and generation story
+- **Spectacles experience:** Onboarding flow, wrist UI, persistent HUD, live session start/end, pinch-and-drag capture, capture count and environmental metadata
+- **Web app experience:** Home collage with evolving clusters, sessions overlay, session canvas, relationship statements, generated images that can be chained back into the canvas
+
+### Current Backend State
+
+- `POST /api/capture` is live: upload to Supabase Storage, compute embedding, enrich metadata, and persist the capture
+- `GET /api/gallery` is live
+- SigLIP is working locally and is the intended deployed model
+- Sessions table exists in Supabase
+- Classification work is in progress and currently blends SigLIP with Gemini-produced descriptors
+- Sessions API is the current Week 2 focus
+- Planned next phases are clusters, generation, reflection, Realtime integration, and demo polish
+
+### Ownership Split
+
+- **Aaditya:** FastAPI backend, ML pipeline, taxonomy, classification, deployment, API contract
+- **Partner:** Lens Studio onboarding/capture UX, on-device RSG Gemini object label, web app frontend, session canvas, frontend integration
+
+### Fashion Taxonomy
+
+The taxonomy is intentionally fashion-first rather than general-purpose vision tagging. It targets roughly 100 labels across three tiers:
+
+- **Fashion / Streetwear:** aesthetics such as gorpcore, quiet luxury, techwear, workwear, archive fashion, tailoring, maximalism, monochrome, layering culture
+- **Visual / Environmental context:** aesthetics such as brutalism, japandi, bauhaus, material study, golden hour, biophilic, urban industrial
+- **Visual art / reference:** aesthetics such as editorial, documentary, swiss graphic, surrealism, vaporwave, risograph, collage
+
+SigLIP is used here because labels should score independently; a single image can belong to multiple aesthetics at once.
+
+### Architecture Principles
+
+- Spectacles captures should land in a shared Supabase-backed system so the web app can observe the same data
+- Gemini keys must never reach the client or Lens; all Gemini traffic goes through FastAPI
+- The MVP optimizes for demo reliability over full product completeness
+- Railway deployment should preserve local-model behavior rather than replacing SigLIP with a remote service
+
+### Repo Structure
 
 ```
 sakkad/
-├── sakad-backend/        # FastAPI app (Aaditya owns)
-│   ├── main.py           # App entry point, router registration
-│   ├── config.py         # Env vars (Supabase URL/key, Gemini key)
-│   ├── routes/           # One file per route group
-│   │   ├── capture.py    # POST /api/capture ✅
-│   │   ├── gallery.py    # GET /api/gallery ✅
-│   │   ├── sessions.py   # Sessions endpoints (Week 2)
-│   │   └── health.py     # GET /api/health
+├── sakad-backend/
+│   ├── main.py                 # FastAPI entrypoint
+│   ├── config.py               # Environment-backed config
+│   ├── routes/
+│   │   ├── capture.py          # Capture ingest pipeline
+│   │   ├── gallery.py          # Gallery reads
+│   │   ├── sessions.py         # Session lifecycle APIs
+│   │   └── health.py           # Health/status endpoint
 │   ├── services/
-│   │   ├── clip_service.py      # SigLIP model wrapper (lazy-load)
-│   │   └── supabase_client.py   # Supabase singleton
-│   ├── test_clip.py      # Manual SigLIP smoke test
-│   └── requirements.txt
+│   │   ├── clip_service.py     # SigLIP load + embed helpers
+│   │   ├── gemini_service.py   # Backend Gemini integration
+│   │   ├── retrieval_service.py# Similarity / retrieval logic
+│   │   └── supabase_client.py  # Supabase client factory
+│   ├── scripts/
+│   │   ├── seed_taxonomy.py
+│   │   ├── seed_reference_corpus.py
+│   │   └── evaluate_classifier.py
+│   ├── migrations/             # Schema evolution for captures/taxonomy/reference data
+│   ├── tests/                  # API, seeding, retrieval, and classifier tests
+│   └── test-images/            # Manual eval fixtures
 ├── docs/
-│   ├── prds/             # Product requirements
-│   ├── plans/            # Design documents
-│   ├── solutions/        # Compounded learnings
+│   ├── prds/
+│   ├── plans/
+│   ├── superpowers/            # Design specs and implementation plans
 │   └── CHANGELOG.md
 └── .claude/
-    ├── rules/            # Coding standards (auto-loaded)
-    └── plans/            # Implementation plans
+    ├── commands/                # Workflow playbooks
+    ├── hooks/                   # Harness automation
+    └── rules/                   # Coding standards
 ```
 
 ### Key Commands
@@ -55,12 +105,26 @@ cd sakad-backend && python -m pytest
 # Lint
 cd sakad-backend && ruff check .
 
-# Seed taxonomy (Week 2 task)
+# Type check
+cd sakad-backend && mypy --strict .
+
+# Seed taxonomy and reference data
 cd sakad-backend && python scripts/seed_taxonomy.py
+cd sakad-backend && python scripts/seed_reference_corpus.py
+
+# Evaluate capture/classification behavior
+cd sakad-backend && python scripts/evaluate_classifier.py
 
 # Manual SigLIP smoke test
 cd sakad-backend && python test_clip.py
 ```
+
+### Near-Term Milestones
+
+- **Week 2:** Sessions API, taxonomy seeding, classification validation, capture enrichment
+- **Week 3:** Session detail endpoints, clustering endpoints, generation endpoint, API contract, partner handoff
+- **Week 4:** Railway deploy, Supabase Realtime, session reflection, live frontend integration
+- **Week 5:** Demo account seeding, performance polish, backup walkthrough video, full health endpoint
 
 ---
 

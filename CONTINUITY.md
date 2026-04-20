@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- End-to-end pipeline smoke test: all 5 test images processed successfully (furcoat, japanjersey, western, workwear, leather_jacket) — layer1/layer2 tags, taxonomy_matches, palette all returning (2026-04-16). Known issue: leather_jacket.jpg layer2 returned null (Gemini tag validation failure).
-- Gemini layer1/layer2 tagging merged to main: layer1_tags (10 words) + layer2_tags (10 hyphenated) + blended taxonomy_matches live on POST /api/capture (2026-04-15)
-- Layer 1/2 Gemini tagging + blended classification: 60/40 image/text embedding blend, gemini_service with shared helper + lru_cache client (2026-04-14)
+- `CLAUDE.md` updated to match the current Sakkad product story, ownership split, backend status, demo shape, and near-term milestones (2026-04-20)
+- `AGENTS.md` written — compact harness guide for Codex covering workflow decision matrix, skills→equivalents, quality gates, hooks, coding standards, state file rules (2026-04-18)
+- End-to-end pipeline smoke test: all 5 test images processed successfully (furcoat, japanjersey, western, workwear, leather_jacket) — layer1/layer2 tags, taxonomy_matches, palette all returning (2026-04-16)
 
 ### Now
 
