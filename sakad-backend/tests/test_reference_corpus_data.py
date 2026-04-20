@@ -21,7 +21,7 @@ def load_reference_corpus() -> list[dict]:
 def test_reference_corpus_is_small_curated_non_empty() -> None:
     entries = load_reference_corpus()
 
-    assert 1 <= len(entries) <= 12
+    assert 1 <= len(entries) <= 20
 
 
 def test_reference_corpus_entries_have_required_fields() -> None:

@@ -97,8 +97,8 @@ class TestCaptureTextEmbeddingPath:
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture._classify", return_value=[]) as mock_classify, \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=[]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=([], None)), \
              patch("routes.capture.get_reference_matches", return_value=[]), \
              patch("routes.capture.generate_reference_explanation", return_value=None), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -134,8 +134,8 @@ class TestCaptureFallbacks:
 
         with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=[]), \
-             patch("routes.capture.get_layer2_tags", return_value=[]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=([], None)), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=([], None)), \
              patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
              patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -170,14 +170,15 @@ class TestCaptureFallbacks:
         payload = response.json()
         assert payload["reference_matches"][0]["id"] == "ref-1"
         assert payload["tags"]["palette"] == ["#000000"]
+        assert payload["gemini_models"] == {"layer1": None, "layer2": None}
 
     def test_capture_succeeds_when_explanation_generation_fails(self) -> None:
         from unittest.mock import MagicMock, patch
 
         with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-3.1-flash-lite-preview")), \
              patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
              patch("routes.capture.generate_reference_explanation", side_effect=RuntimeError("Gemini unavailable")), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -212,14 +213,18 @@ class TestCaptureFallbacks:
         insert_payload = mock_supa.table().insert.call_args.args[0]
         assert insert_payload["reference_matches"][0]["id"] == "ref-1"
         assert insert_payload["reference_explanation"] is None
+        assert response.json()["gemini_models"] == {
+            "layer1": "gemini-2.5-flash",
+            "layer2": "gemini-3.1-flash-lite-preview",
+        }
 
     def test_capture_persists_session_id_when_provided(self) -> None:
         from unittest.mock import MagicMock, patch
 
         with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
              patch("routes.capture.get_reference_matches", return_value=[]), \
              patch("routes.capture.generate_reference_explanation", return_value=None), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -255,8 +260,8 @@ class TestCaptureFallbacks:
         with patch("routes.capture._missing_capture_enrichment_columns", set()), \
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
              patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
              patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -300,8 +305,8 @@ class TestCaptureFallbacks:
         with patch("routes.capture._missing_capture_enrichment_columns", set()), \
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
              patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
              patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -347,8 +352,8 @@ class TestCaptureFallbacks:
         with patch("routes.capture._missing_capture_enrichment_columns", set()), \
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
              patch("routes.capture.get_reference_matches", return_value=[]), \
              patch("routes.capture.generate_reference_explanation", return_value=None), \
              patch("routes.capture.supabase") as mock_supa, \
@@ -380,8 +385,8 @@ class TestCaptureFallbacks:
         with patch("routes.capture.get_text_embedding") as mock_get_text_embedding, \
              patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
              patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags", return_value=["black"]), \
-             patch("routes.capture.get_layer2_tags", return_value=["wide-leg"]), \
+             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
+             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
              patch("routes.capture.get_reference_matches", return_value=[]), \
              patch("routes.capture.generate_reference_explanation", return_value=None), \
              patch("routes.capture.supabase") as mock_supa, \

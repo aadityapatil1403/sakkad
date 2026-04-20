@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     CLIP_MODEL_NAME: str = "Marqo/marqo-fashionSigLIP"
     TAXONOMY_EMBEDDING_MODEL: str = "Marqo/marqo-fashionSigLIP"
     GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_FALLBACK_MODELS: str = ""
 
     model_config = SettingsConfigDict(
         env_file=".env",

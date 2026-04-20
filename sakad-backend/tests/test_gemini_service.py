@@ -2,6 +2,8 @@
 import json
 from unittest.mock import MagicMock, patch
 
+from google.genai import errors
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -71,6 +73,76 @@ class TestGetLayer1Tags:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
+
+    def test_uses_configured_model_name(self) -> None:
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "indigo", "denim", "wide", "burgundy", "matte"]
+        payload = json.dumps({"tags": tags})
+        mock_client = _make_mock_client(payload)
+
+        with patch("services.gemini_service._get_client", return_value=mock_client), \
+             patch("services.gemini_service.settings") as mock_settings:
+            mock_settings.GEMINI_API_KEY = "key"
+            mock_settings.GEMINI_MODEL = "gemini-primary"
+            mock_settings.GEMINI_FALLBACK_MODELS = ""
+            import services.gemini_service as gs
+            result = gs.get_layer1_tags(b"fake-image-bytes")
+
+        assert result == tags
+        assert mock_client.models.generate_content.call_args.kwargs["model"] == "gemini-primary"
+
+    def test_returns_model_name_with_tags(self) -> None:
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "indigo", "denim", "wide", "burgundy", "matte"]
+        payload = json.dumps({"tags": tags})
+
+        with patch("services.gemini_service._get_client", return_value=_make_mock_client(payload)), \
+             patch("services.gemini_service.settings") as mock_settings:
+            mock_settings.GEMINI_API_KEY = "key"
+            mock_settings.GEMINI_MODEL = "gemini-primary"
+            mock_settings.GEMINI_FALLBACK_MODELS = ""
+            import services.gemini_service as gs
+            result_tags, model_name = gs.get_layer1_tags_with_model(b"fake-image-bytes")
+
+        assert result_tags == tags
+        assert model_name == "gemini-primary"
+
+    def test_falls_back_after_capacity_error(self) -> None:
+        tags = ["black", "leather", "oversized", "shiny", "structured",
+                "indigo", "denim", "wide", "burgundy", "matte"]
+        payload = json.dumps({"tags": tags})
+        mock_client = MagicMock()
+        mock_client.models.generate_content.side_effect = [
+            errors.ServerError(
+                503,
+                {
+                    "error": {
+                        "code": 503,
+                        "message": "This model is currently experiencing high demand.",
+                        "status": "UNAVAILABLE",
+                    },
+                },
+                MagicMock(),
+            ),
+            _mock_response(payload),
+        ]
+
+        with patch("services.gemini_service._get_client", return_value=mock_client), \
+             patch("services.gemini_service.settings") as mock_settings, \
+             patch("services.gemini_service.logger") as mock_logger:
+            mock_settings.GEMINI_API_KEY = "key"
+            mock_settings.GEMINI_MODEL = "gemini-primary"
+            mock_settings.GEMINI_FALLBACK_MODELS = "gemini-fallback"
+            import services.gemini_service as gs
+            result = gs.get_layer1_tags(b"fake-image-bytes")
+
+        assert result == tags
+        assert mock_client.models.generate_content.call_count == 2
+        first_call = mock_client.models.generate_content.call_args_list[0]
+        second_call = mock_client.models.generate_content.call_args_list[1]
+        assert first_call.kwargs["model"] == "gemini-primary"
+        assert second_call.kwargs["model"] == "gemini-fallback"
+        mock_logger.warning.assert_called()
 
 
 # ---------------------------------------------------------------------------
@@ -220,7 +292,7 @@ class TestClientTimeout:
         assert http_options is not None, "http_options not passed to genai.Client"
         assert isinstance(http_options, genai_types.HttpOptions)
         assert http_options.timeout is not None, "timeout must be set (not None)"
-        assert http_options.timeout > 0, "timeout must be a positive value"
+        assert http_options.timeout == 60_000
 
 
 class TestApiKeyGuard:
@@ -249,3 +321,24 @@ class TestApiKeyGuard:
 
         assert result == []
         mock_get_client.assert_not_called()
+
+
+class TestGeminiFallbackBehavior:
+    def test_capacity_error_without_fallback_returns_empty_without_exception_log(self) -> None:
+        import services.gemini_service as gs
+
+        mock_client = MagicMock()
+        mock_client.models.generate_content.side_effect = RuntimeError("temporary capacity error")
+
+        with patch("services.gemini_service._get_client", return_value=mock_client), \
+             patch("services.gemini_service._is_capacity_error", return_value=True), \
+             patch("services.gemini_service.settings") as mock_settings, \
+             patch("services.gemini_service.logger") as mock_logger:
+            mock_settings.GEMINI_API_KEY = "key"
+            mock_settings.GEMINI_MODEL = "gemini-primary"
+            mock_settings.GEMINI_FALLBACK_MODELS = ""
+            result = gs.get_layer1_tags(b"fake-image-bytes")
+
+        assert result == []
+        mock_logger.warning.assert_called_once()
+        mock_logger.exception.assert_not_called()

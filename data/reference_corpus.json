@@ -110,5 +110,173 @@
       "reference_type": "styling_language",
       "notes": "Helpful for polished looks with intentional dissonance."
     }
+  },
+  {
+    "id": "f28d5e32-c7b8-4d89-a7b3-1efc87d4e401",
+    "designer": "Ralph Lauren",
+    "brand": "Ralph Lauren Purple Label",
+    "collection_or_era": "Spring 2024 menswear",
+    "title": "Western ranch refinement",
+    "description": "Refined western tailoring with suede truckers, denim shirts, bootcut trousers, polished leather boots, silver hardware, ranch-wear codes, and an elevated Americana attitude.",
+    "taxonomy_tags": ["cowboy_core", "western_americana", "new_americana", "tailoring", "denim"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Primary high-fashion anchor for western, ranch, and elevated Americana retrieval."
+    }
+  },
+  {
+    "id": "6a1f7b62-b8aa-42c5-8cc8-df7697b9f0a2",
+    "designer": "Raf Simons",
+    "brand": "Calvin Klein 205W39NYC",
+    "collection_or_era": "Fall 2018 Americana",
+    "title": "Cinematic Americana uniforms",
+    "description": "American uniform dressing filtered through cinema: western shirts, diner-coded separates, plastic-coated outerwear, denim, checks, fire-brigade color, and a stark art-directed Americana mood.",
+    "taxonomy_tags": ["new_americana", "western_americana", "workwear", "uniform", "americana"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Useful when an image feels American, cinematic, uniform-like, or western-coded without being literal cowboy wear."
+    }
+  },
+  {
+    "id": "3ca8212e-c476-4c9c-ae0e-1af572dff841",
+    "designer": "Junya Watanabe",
+    "brand": "Junya Watanabe Man",
+    "collection_or_era": "Spring 2018 menswear",
+    "title": "Legit workwear collaborations",
+    "description": "Authentic workwear and outdoor pieces re-cut through fashion: chore jackets, utility trousers, Carhartt canvas, Levi's denim, anoraks, backpack patchwork, and an emphasis on durable function.",
+    "taxonomy_tags": ["workwear", "utilitarian", "outdoor", "technical", "denim"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Strong anchor for chore coats, carpenter details, utility layering, and legit workwear styling."
+    }
+  },
+  {
+    "id": "d6301b93-1747-4cf1-8c6f-5efb8adfe3bb",
+    "designer": "Junya Watanabe",
+    "brand": "Junya Watanabe Man",
+    "collection_or_era": "Fall 2025 menswear",
+    "title": "Filson cruiser field workwear",
+    "description": "Heritage field jackets and logger outerwear translated into luxury menswear through Mackinaw cruisers, hunting pockets, roomy shoulders, waxed textures, plaid wool, and hard-working outdoor codes.",
+    "taxonomy_tags": ["workwear", "heritage", "fieldwear", "utilitarian", "vintage_americana"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Best used for rugged heritage workwear, field jackets, plaid wool, and outdoorsman silhouettes."
+    }
+  },
+  {
+    "id": "53a3ee70-72cb-4f36-bf7d-9fd6164d31a5",
+    "designer": "Ann Demeulemeester",
+    "brand": "Ann Demeulemeester",
+    "collection_or_era": "Spring 2003 ready-to-wear",
+    "title": "Poetic black biker leather",
+    "description": "Washed black leather, lean trousers, rebellious boots, silver hardware, and a poetic punk mood that turns biker dressing into something romantic, intellectual, and nocturnal.",
+    "taxonomy_tags": ["biker", "moto_culture", "monochrome", "rock", "darkwear"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Good anchor for black leather, poetic biker styling, and post-punk romance."
+    }
+  },
+  {
+    "id": "adcb564c-9fef-4b1a-a0ef-240e5d0bdc5b",
+    "designer": "Nicolas Ghesquiere",
+    "brand": "Balenciaga",
+    "collection_or_era": "Spring 2009 ready-to-wear",
+    "title": "Motocross futurism",
+    "description": "Technical leathers, sophisticated motocross pants, asymmetric structure, metallic surfaces, and a futuristic speed-driven silhouette that fuses biker utility with high-fashion precision.",
+    "taxonomy_tags": ["biker", "moto_culture", "technical", "futurist", "leather"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Useful for moto pants, technical leather jackets, and sleek high-fashion biker references."
+    }
+  },
+  {
+    "id": "5602baf3-d3c0-41f9-aeb0-0c7cbab7d88f",
+    "designer": "Grace Wales Bonner",
+    "brand": "Wales Bonner x Adidas Originals",
+    "collection_or_era": "Autumn/Winter 2024 collaboration",
+    "title": "Polished soulful sportswear",
+    "description": "Tailored tracksuits, luxe knitwear, football and running references, rich brown palettes, crochet and refined trim, and a soulful way of lifting sportswear into elegance.",
+    "taxonomy_tags": ["sportswear_luxe", "streetwear", "athletic", "tailoring", "retro_sport"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "collaboration",
+      "notes": "Primary anchor for luxe sportswear and elevated adidas-coded styling."
+    }
+  },
+  {
+    "id": "7828c5dd-78b7-4588-9499-c8126652284b",
+    "designer": "Martine Rose",
+    "brand": "Martine Rose x Nike",
+    "collection_or_era": "Women's football collaboration era",
+    "title": "Subcultural football tailoring",
+    "description": "Football-coded sportswear warped through club culture and tailoring: square-toe sneakers, track references, jersey logic, cheeky proportion play, and a London subcultural swagger.",
+    "taxonomy_tags": ["sportswear_luxe", "streetwear", "football", "club_kid", "athletic"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "collaboration",
+      "notes": "Good for soccer-streetwear, jersey dressing, and fashion-sport hybrids with attitude."
+    }
+  },
+  {
+    "id": "84da58a9-45d7-4b0b-b914-6f47f6cb3994",
+    "designer": "Anthony Vaccarello",
+    "brand": "Saint Laurent",
+    "collection_or_era": "Resort 2026",
+    "title": "Sportif chic night glamour",
+    "description": "Color-blocked cagoules, track tops, technical nylon, elongated shoulders, and a slinky evening polish that turns athletic separates into nightlife luxury.",
+    "taxonomy_tags": ["sportswear_luxe", "tailoring", "sportif", "night_glamour", "technical"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Useful for high-fashion anoraks, luxe track jackets, and athletic-meets-evening silhouettes."
+    }
+  },
+  {
+    "id": "46d758f0-e2dd-45b1-bbe6-2222674f20a8",
+    "designer": "Tom Ford",
+    "brand": "Gucci",
+    "collection_or_era": "Mid-1990s sex-glamour revival",
+    "title": "Seventies sex-glam revival",
+    "description": "Slinky shirts, sharp flares, louche tailoring, satin, velvet, dark-glam leather, and a polished 1970s nightclub sensuality that feels decadent and high-voltage.",
+    "taxonomy_tags": ["70s_revival", "glam", "tailoring", "disco", "sexed_up"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "designer_signature",
+      "notes": "Primary anchor for luxe 70s glamour, flares, and sensual revival dressing."
+    }
+  },
+  {
+    "id": "359c03ec-1e10-45df-ae49-7cdf1f9e9e6a",
+    "designer": "Hedi Slimane",
+    "brand": "Celine",
+    "collection_or_era": "Fall 2020 ready-to-wear",
+    "title": "Bourgeois seventies revival",
+    "description": "Parisian bourgeois dressing filtered through the 1970s: checked skirts, silk blouses, horse-bit belts, aviators, fitted blazers, boots, and a crisp unisex nostalgia.",
+    "taxonomy_tags": ["70s_revival", "old_money", "preppy", "tailoring", "bourgeois"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Strong for 70s bourgeois styling, polished vintage references, and conservative-luxe silhouettes."
+    }
+  },
+  {
+    "id": "e20a2d8a-a28b-4671-b080-fbcce5b32bc9",
+    "designer": "Matthieu Blazy",
+    "brand": "Bottega Veneta",
+    "collection_or_era": "Pre-Fall 2024",
+    "title": "Modern late-seventies utility",
+    "description": "Late-1960s and 1970s utility reframed with modern precision: purposeful peacoats, workwear-leaning leather, sober palettes, ease, and everyday clothes elevated into monuments.",
+    "taxonomy_tags": ["70s_revival", "workwear", "tailoring", "utilitarian", "minimal"],
+    "image_url": null,
+    "metadata": {
+      "reference_type": "runway_collection",
+      "notes": "Helpful for subdued 70s revival, utilitarian luxury, and practical-but-elevated silhouettes."
+    }
   }
 ]

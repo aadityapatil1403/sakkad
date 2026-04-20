@@ -11,7 +11,7 @@ from PIL import Image
 
 from config import settings
 from services.clip_service import get_image_embedding, get_text_embedding
-from services.gemini_service import get_layer1_tags, get_layer2_tags
+from services.gemini_service import get_layer1_tags_with_model, get_layer2_tags_with_model
 from services.retrieval_service import get_reference_matches
 from services.supabase_client import supabase
 
@@ -242,18 +242,26 @@ async def capture(
         loop = asyncio.get_running_loop()
         image_embedding = await loop.run_in_executor(None, get_image_embedding, image_bytes)
 
-        layer1_fn = functools.partial(get_layer1_tags, image_bytes, mime_type=file.content_type or "image/jpeg")
-        layer1 = await loop.run_in_executor(None, layer1_fn)
+        layer1_fn = functools.partial(
+            get_layer1_tags_with_model,
+            image_bytes,
+            mime_type=file.content_type or "image/jpeg",
+        )
+        layer1, layer1_model = await loop.run_in_executor(None, layer1_fn)
         if not layer1:
             logger.warning("[capture] gemini layer1 unavailable; continuing with fallback path")
 
         if layer1:
             layer2_fn = functools.partial(
-                get_layer2_tags, image_bytes, layer1, mime_type=file.content_type or "image/jpeg"
+                get_layer2_tags_with_model,
+                image_bytes,
+                layer1,
+                mime_type=file.content_type or "image/jpeg",
             )
-            layer2 = await loop.run_in_executor(None, layer2_fn)
+            layer2, layer2_model = await loop.run_in_executor(None, layer2_fn)
         else:
             layer2 = []
+            layer2_model = None
         if layer1 and not layer2:
             logger.warning("[capture] gemini layer2 unavailable; continuing with fallback path")
 
@@ -310,13 +318,19 @@ async def capture(
 
         capture_record = insert_response.data[0]
         logger.info(
-            "[capture] success: id=%s taxonomy_matches=%s reference_matches=%s gemini_layer1=%s gemini_layer2=%s",
+            "[capture] success: id=%s taxonomy_matches=%s reference_matches=%s gemini_layer1=%s gemini_layer2=%s layer1_model=%s layer2_model=%s",
             capture_record.get("id"),
             len(taxonomy_matches),
             len(reference_matches),
             bool(layer1),
             bool(layer2),
+            layer1_model,
+            layer2_model,
         )
+        capture_record["gemini_models"] = {
+            "layer1": layer1_model,
+            "layer2": layer2_model,
+        }
         return capture_record
     except HTTPException:
         logger.exception("[capture] request failed")

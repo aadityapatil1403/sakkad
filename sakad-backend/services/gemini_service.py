@@ -5,6 +5,7 @@ from collections.abc import Callable
 from typing import TypeVar
 
 from google import genai
+from google.genai import errors
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 
@@ -13,8 +14,7 @@ from models.gemini import Layer1TagsResponse, Layer2TagsResponse
 
 logger = logging.getLogger(__name__)
 
-_GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
-_TIMEOUT_MS = 45_000  # 30s covers two sequential Gemini calls
+_TIMEOUT_MS = 60_000
 _RAW_RESPONSE_LOG_LIMIT = 800
 _UNICODE_HYPHENS_RE = re.compile(r"[‐‑‒–—−]")
 _HYPHEN_SPACING_RE = re.compile(r"\s*-\s*")
@@ -53,6 +53,16 @@ Return ONLY a valid JSON object with this shape:
 """
 
 _TagsResponseT = TypeVar("_TagsResponseT", bound=BaseModel)
+
+
+def _get_gemini_models() -> list[str]:
+    models = [settings.GEMINI_MODEL.strip()]
+    models.extend(
+        model.strip()
+        for model in settings.GEMINI_FALLBACK_MODELS.split(",")
+        if model.strip()
+    )
+    return [model for model in models if model]
 
 
 def _truncate_raw_response(raw_response: str | None) -> str | None:
@@ -182,6 +192,13 @@ def _get_client() -> genai.Client:
     )
 
 
+def _is_capacity_error(exc: Exception) -> bool:
+    if not isinstance(exc, errors.ServerError):
+        return False
+
+    return getattr(exc, "status_code", None) == 503
+
+
 def _call_gemini_tags(
     prompt: str,
     image_bytes: bytes,
@@ -190,56 +207,84 @@ def _call_gemini_tags(
     normalizer: Callable[[str], str],
     validator: Callable[[str], str | None],
     layer: str,
-) -> list[str]:
+) -> tuple[list[str], str | None]:
     """Call Gemini, parse schema-backed tags, apply normalization and validation."""
-    try:
-        client = _get_client()
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
-        response = client.models.generate_content(
-            model=_GEMINI_MODEL,
-            contents=[prompt, image_part],  # type: ignore[arg-type]
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=response_model,
-            ),
-        )
-        raw_response = response.text
-        if not raw_response:
-            _log_failure(
-                layer=layer,
-                reason="empty response text",
-                raw_response=raw_response,
+    client = _get_client()
+    image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
+    models = _get_gemini_models()
+
+    for index, model_name in enumerate(models):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[prompt, image_part],  # type: ignore[arg-type]
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=response_model,
+                ),
             )
-            return []
+            raw_response = response.text
+            if not raw_response:
+                _log_failure(
+                    layer=layer,
+                    reason="empty response text",
+                    raw_response=raw_response,
+                    details={"model": model_name},
+                )
+                return [], None
 
-        tags = _parse_tag_response(
-            raw_response,
-            layer=layer,
-            response_model=response_model,
-        )
-        if tags is None:
-            return []
+            tags = _parse_tag_response(
+                raw_response,
+                layer=layer,
+                response_model=response_model,
+            )
+            if tags is None:
+                return [], None
 
-        validated_tags = _validate_tags(
-            tags,
-            layer=layer,
-            raw_response=raw_response,
-            normalizer=normalizer,
-            validator=validator,
-        )
-        if validated_tags is None:
-            return []
+            validated_tags = _validate_tags(
+                tags,
+                layer=layer,
+                raw_response=raw_response,
+                normalizer=normalizer,
+                validator=validator,
+            )
+            if validated_tags is None:
+                return [], None
 
-        return validated_tags
-    except Exception as exc:
-        logger.exception("[gemini_service] %s: API error: %s", layer, exc)
-        return []
+            return validated_tags, model_name
+        except Exception as exc:
+            has_fallback = index < len(models) - 1
+            if _is_capacity_error(exc):
+                logger.warning(
+                    "[gemini_service] %s: model %s unavailable (503), %s",
+                    layer,
+                    model_name,
+                    "trying fallback" if has_fallback else "no fallback available",
+                )
+                if has_fallback:
+                    continue
+                return [], None
+
+            if has_fallback:
+                logger.warning(
+                    "[gemini_service] %s: model %s failed, trying fallback: %s",
+                    layer,
+                    model_name,
+                    exc,
+                )
+                continue
+
+            logger.exception("[gemini_service] %s: API error: %s", layer, exc)
+            return [], None
+
+    return [], None
 
 
-def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[str]:
-    """Return 10 single-word visual descriptors for the image, or [] on failure."""
+def get_layer1_tags_with_model(
+    image_bytes: bytes, mime_type: str = "image/jpeg"
+) -> tuple[list[str], str | None]:
     if not settings.GEMINI_API_KEY:
-        return []
+        return [], None
     return _call_gemini_tags(
         prompt=_LAYER1_PROMPT,
         image_bytes=image_bytes,
@@ -251,10 +296,18 @@ def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[s
     )
 
 
-def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
-    """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
+def get_layer1_tags(image_bytes: bytes, mime_type: str = "image/jpeg") -> list[str]:
+    """Return 10 single-word visual descriptors for the image, or [] on failure."""
+    return get_layer1_tags_with_model(image_bytes, mime_type=mime_type)[0]
+
+
+def get_layer2_tags_with_model(
+    image_bytes: bytes,
+    layer1: list[str],
+    mime_type: str = "image/jpeg",
+) -> tuple[list[str], str | None]:
     if not settings.GEMINI_API_KEY:
-        return []
+        return [], None
     prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=", ".join(layer1))
     return _call_gemini_tags(
         prompt=prompt,
@@ -265,3 +318,8 @@ def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "ima
         validator=_validate_layer2_tag,
         layer="layer2",
     )
+
+
+def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
+    """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
+    return get_layer2_tags_with_model(image_bytes, layer1, mime_type=mime_type)[0]
