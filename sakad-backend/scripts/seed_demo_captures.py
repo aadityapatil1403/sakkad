@@ -279,7 +279,7 @@ def try_upload_source_asset(
             image_bytes=image_bytes,
             content_type=content_type,
         )
-    except RuntimeError as exc:
+    except Exception as exc:
         return None, [f"specs-bucket upload skipped: {exc}"]
     return source_url, []
 
