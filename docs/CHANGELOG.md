@@ -7,6 +7,7 @@ All notable changes to Sakkad will be documented in this file.
 ### Added
 
 - Initial project setup with Claude Code configuration
+- **2026-04-21** — `sakad-backend/eval/demo_dataset_manifest.json`, `sakad-backend/scripts/seed_demo_captures.py`, `sakad-backend/tests/test_seed_demo_captures.py`, `docs/eval_demo_dataset.md`: Added a manifest-driven demo dataset workflow with 34 target captures, runtime session seeding through `/api/sessions/start` + `/api/capture`, quality flagging for weak taxonomy/reference hits, and evaluation notes for safest live-demo assets
 - **2026-04-18** — `AGENTS.md`: Added Codex harness guide — workflow decision matrix, skills→manual equivalents, quality gates, hook awareness, coding standards, session checklists; designed as permanent AGENTS.md system prompt so Codex follows the same workflow discipline as Claude
 - **2026-04-14** — `services/gemini_service.py`: Gemini Flash 2.0 vision tagging — `get_layer1_tags()` returns 10 single-word visual descriptors, `get_layer2_tags()` returns 10 hyphenated two-word fashion descriptors; non-fatal (returns `[]` on any error)
 - **2026-04-14** — `routes/capture.py`: Blended classification — layer1+2 tags joined into text embedding, blended 60% image / 40% text before taxonomy classification; `layer1_tags` and `layer2_tags` stored in captures table
@@ -14,6 +15,7 @@ All notable changes to Sakkad will be documented in this file.
 
 ### Changed
 
+- **2026-04-21** — `CONTINUITY.md`, `docs/superpowers/specs/2026-04-21-demo-dataset-quality-design.md`, `docs/superpowers/plans/2026-04-21-demo-dataset-quality.md`: Shifted active workflow tracking to the demo dataset/output-quality task and documented the design/plan constraints around `specs-bucket`, session alias mapping, and placeholder assets
 - **2026-04-21** — `sakad-backend/routes/capture.py`, `services/clip_service.py`, `services/color_service.py`, `services/enrich_service.py`: Refactored capture processing into focused services; classification now returns domain-capped `taxonomy_matches` as `Record<string, number>` and the route is reduced to upload + insert orchestration
 - **2026-04-21** — `sakad-backend/tests/test_capture_classify.py`, `test_clip_classify.py`, `test_color_service.py`, `test_enrich_service.py`, `test_sessions_api.py`: Migrated tests to the new service boundaries and dict-shaped taxonomy contract
 - **2026-04-21** — `sakad-backend/scripts/evaluate_classifier.py`, `smoke_capture.sh`, `verify_capture_eval.sh`: Updated evaluation/smoke tooling to match cosine-similarity classification without softmax and dict-shaped taxonomy output

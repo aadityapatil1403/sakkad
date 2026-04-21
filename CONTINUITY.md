@@ -21,26 +21,30 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Review findings fixed: session detail now degrades safely on legacy databases missing `captures.session_id`, retrieval retries after transient corpus-load errors, and `seed_reference_corpus.py` deletes stale rows only after successful upserts (2026-04-21)
-- Backend refactor implemented: extracted `color_service.py` and `enrich_service.py`, moved taxonomy classification into `clip_service.py`, and slimmed `routes/capture.py` to storage + insert orchestration (2026-04-21)
-- Capture contract migrated: `taxonomy_matches` now stores/returns `dict[str, float]`; sessions fixtures, capture tests, classifier eval, and smoke scripts updated to match (2026-04-21)
-- Markdown reorg completed: agent briefs/plans/worktree notes moved under `docs/`, plus new root `README.md` and `API_CONTRACT.md` added (2026-04-21)
+- Review fixes applied to demo seeding: `specs-bucket` upload is now best-effort and generated evaluation docs keep unseeded manifest rows visible after a run (2026-04-21)
+- Demo dataset tooling added: 34-entry manifest, `seed_demo_captures.py`, tests, design spec/plan, and evaluation doc scaffold are now in place (2026-04-21)
+- Backend refactor finished functionally; remaining verify gap is still `ruff`/`mypy` availability in this shell (2026-04-21)
 
 ### Now
 
-**feat/backend-refactor — Final Verification**
+**chore/demo-seed — Demo Dataset + Output Quality**
 
-- [x] Implement six-task backend refactor plan
-- [x] Run full pytest suite in worktree (`81 passed`)
-- [ ] Run `ruff check .` in an environment where Ruff is installed
-- [ ] Run `mypy --strict .` in an environment where mypy is installed
-- [ ] Commit and push branch once remaining verify tools are available
+- [x] Read demo dataset brief and current capture/session patterns
+- [x] Write design spec and implementation plan
+- [x] Build manifest-driven demo dataset manifest covering current `sakad-backend/test-images/` assets plus placeholders
+- [x] Add `scripts/seed_demo_captures.py` with seeding + evaluation output
+- [x] Run `python -m pytest tests/ -x -q` (`86 passed`)
+- [ ] Run `python scripts/seed_demo_captures.py` in a configured environment and document output quality
 
-**Exit criteria:** pytest/lint/type-check all pass, then branch is ready to commit/push.
+**Exit criteria:** live seed completes with Supabase credentials, docs capture actual taxonomy/reference outcomes, and missing placeholder assets are replaced with royalty-free images where needed.
 
 ### Next
 
-- Week 3: `GET /api/captures/{id}`, `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), seed 30+ demo captures, share live URL with partner
+- Provide `SUPABASE_URL` and `SUPABASE_SERVICE_KEY`, then rerun `python scripts/seed_demo_captures.py`
+- Replace the 24 placeholder filenames in `sakad-backend/eval/demo_dataset_manifest.json` with real royalty-free images in `sakad-backend/test-images/`
+- Refresh `docs/eval_demo_dataset.md` from the successful seeded run and lock the 3-5 safest live-demo images
+- Finish verify gate for `backend-refactor` once `ruff` and `mypy` are available
+- Week 3: `GET /api/captures/{id}`, `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), share live URL with partner
 - Week 4: Deploy to Railway, Supabase Realtime on captures table, `GET /api/sessions/{id}/reflection`
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
 
@@ -50,25 +54,25 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 | Field     | Value                         |
 | --------- | ----------------------------- |
-| Command   | /new-feature backend-refactor |
+| Command   | /new-feature demo-dataset-quality |
 | Phase     | 5 — Verify                    |
-| Next step | Run lint/type tools in a provisioned environment |
+| Next step | Provide runtime env, run live seed, and refresh docs from actual output |
 
 ### Checklist
 
-- [x] Worktree created (`feat/backend-refactor`)
+- [x] Worktree created (`chore/demo-seed`)
 - [x] Project state read
-- [x] Plugins verified
-- [x] PRD created — N/A: refactor spec, no new product requirements
-- [x] Research done — codebase audit complete, all 64 tests confirmed passing
-- [x] Brainstorming complete — Approach C selected (strict 4-service layout)
-- [x] Plan written — `docs/superpowers/plans/2026-04-21-backend-refactor.md`
-- [x] Plan review loop (1 iteration) — P0/P1 gaps called out and folded into implementation before code changes
+- [x] Plugins verified — Codex environment uses manual equivalent workflow steps
+- [x] PRD created — N/A: internal demo dataset/evaluation task
+- [x] Research done — brief, routes, scripts, manifests, taxonomy, and test images reviewed
+- [x] Brainstorming complete — manifest-driven approach selected over one-off or DB-bypass approaches
+- [x] Plan written — `docs/superpowers/plans/2026-04-21-demo-dataset-quality.md`
+- [x] Plan review loop (1 iteration) — P1 constraints around UUID session ids and `specs-bucket` handling folded into the plan before implementation
 - [x] TDD execution complete
-- [x] Code review loop (1 iteration) — no remaining P0/P1/P2 findings in changed files
+- [x] Code review loop (2 iterations) — reviewer-found P1/P2 issues fixed; no remaining P0/P1/P2 findings in changed files
 - [x] Simplified
-- [ ] Verified (tests/lint/types) — pytest passed; `ruff` and `mypy` unavailable in current shell
-- [x] E2E use cases tested — N/A: internal refactor, no user-facing behavior changes
+- [ ] Verified (tests/lint/types) — pytest passed; live seed blocked by missing Supabase env in current shell
+- [ ] E2E use cases tested (if user-facing) — N/A: internal seeding/eval tooling
 - [ ] Learnings documented (if any)
 - [x] State files updated
 - [ ] Committed and pushed
@@ -80,12 +84,12 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Open Questions
 
-- Whether to keep `taxonomy_matches` as the long-term canonical external contract or add a compatibility adapter for any consumer still expecting ranked arrays
-- Taxonomy accuracy is still uneven on some demo images (`western.jpg`, `furcoat.jpg`); likely a taxonomy/data-tuning problem rather than a route/service-structure problem
+- Whether `specs-bucket` already exists in the target Supabase project, since `/api/capture` itself still uploads to the `captures` bucket
+- Whether the current taxonomy/reference corpus is strong enough on abstract/environmental imagery, or if those captures should stay secondary in the live demo mix
 
 ## Blockers
 
-- `ruff` and `mypy` are not installed in the current shell environment, so the full verify gate cannot complete until those tools are provisioned
+- Live seeding is blocked in the current shell because `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are unset
 
 ---
 
