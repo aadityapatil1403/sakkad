@@ -49,8 +49,8 @@ image_name = sys.argv[1]
 expected = sys.argv[2]
 acceptable = sys.argv[3]
 payload = json.loads(Path(sys.argv[4]).read_text())
-predictions = payload.get("taxonomy_matches", [])
-top = [f"{match.get('label')} ({match.get('score')})" for match in predictions[:5]]
+predictions = payload.get("taxonomy_matches", {})
+top = [f"{label} ({score})" for label, score in list(predictions.items())[:5]]
 
 print(f"=== {image_name} ===")
 print(f"expected primary: {expected}")

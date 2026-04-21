@@ -62,7 +62,7 @@ if not isinstance(palette, list):
     raise SystemExit(f"{image_name}: tags.palette missing or invalid")
 
 taxonomy_matches = payload.get("taxonomy_matches")
-if not isinstance(taxonomy_matches, list):
+if not isinstance(taxonomy_matches, dict):
     raise SystemExit(f"{image_name}: taxonomy_matches missing or invalid")
 
 reference_matches = payload.get("reference_matches")
@@ -80,9 +80,8 @@ if reference_explanation is not None and not isinstance(reference_explanation, s
     raise SystemExit(f"{image_name}: reference_explanation must be a string or null")
 
 top_matches = [
-    f"{match.get('label')} ({match.get('score')})"
-    for match in taxonomy_matches[:3]
-    if isinstance(match, dict)
+    f"{label} ({score})"
+    for label, score in list(taxonomy_matches.items())[:3]
 ]
 top_references = [
     f"{match.get('title') or match.get('designer')} ({match.get('score')})"

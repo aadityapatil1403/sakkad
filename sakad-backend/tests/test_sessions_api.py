@@ -10,8 +10,9 @@ class FakeResponse:
 
 
 class FakeQuery:
-    def __init__(self, data):
+    def __init__(self, data, *, execute_side_effect: Exception | None = None):
         self.data = data
+        self.execute_side_effect = execute_side_effect
 
     def select(self, *_args, **_kwargs):
         return self
@@ -23,28 +24,41 @@ class FakeQuery:
         return self
 
     def execute(self):
+        if self.execute_side_effect is not None:
+            raise self.execute_side_effect
         return FakeResponse(self.data)
 
 
 class FakeSupabase:
-    def __init__(self, *, sessions_data, captures_data):
+    def __init__(self, *, sessions_data, captures_data, captures_error: Exception | None = None):
         self.sessions_data = sessions_data
         self.captures_data = captures_data
+        self.captures_error = captures_error
 
     def table(self, name):
         if name == "sessions":
             return FakeQuery(self.sessions_data)
         if name == "captures":
-            return FakeQuery(self.captures_data)
+            return FakeQuery(self.captures_data, execute_side_effect=self.captures_error)
         raise AssertionError(f"Unexpected table: {name}")
 
 
-def _client_with_supabase(monkeypatch, *, sessions_data, captures_data) -> TestClient:
+def _client_with_supabase(
+    monkeypatch,
+    *,
+    sessions_data,
+    captures_data,
+    captures_error: Exception | None = None,
+) -> TestClient:
     app = FastAPI()
     app.include_router(router)
     monkeypatch.setattr(
         "routes.sessions.supabase",
-        FakeSupabase(sessions_data=sessions_data, captures_data=captures_data),
+        FakeSupabase(
+            sessions_data=sessions_data,
+            captures_data=captures_data,
+            captures_error=captures_error,
+        ),
     )
     return TestClient(app)
 
@@ -62,7 +76,7 @@ def test_get_session_returns_session_detail_with_enriched_captures(monkeypatch) 
             "session_id": "session-1",
             "image_url": "https://example.com/look.jpg",
             "created_at": "2026-04-17T10:01:00Z",
-            "taxonomy_matches": [{"label": "Gorpcore", "score": 0.91}],
+            "taxonomy_matches": {"Gorpcore": 0.91},
             "tags": {"palette": ["#111111", "#eeeeee"]},
             "layer1_tags": ["technical"],
             "layer2_tags": ["outdoor-shell"],
@@ -78,7 +92,7 @@ def test_get_session_returns_session_detail_with_enriched_captures(monkeypatch) 
     assert payload["session"]["id"] == "session-1"
     assert len(payload["captures"]) == 1
     assert payload["captures"][0]["image_url"] == "https://example.com/look.jpg"
-    assert payload["captures"][0]["taxonomy_matches"][0]["label"] == "Gorpcore"
+    assert payload["captures"][0]["taxonomy_matches"]["Gorpcore"] == 0.91
     assert payload["captures"][0]["tags"]["palette"] == ["#111111", "#eeeeee"]
     assert payload["captures"][0]["layer1_tags"] == ["technical"]
     assert payload["captures"][0]["layer2_tags"] == ["outdoor-shell"]
@@ -108,7 +122,7 @@ def test_get_session_normalizes_missing_optional_capture_fields(monkeypatch) -> 
             "session_id": "session-2",
             "image_url": "https://example.com/plain.jpg",
             "created_at": "2026-04-17T11:00:00Z",
-            "taxonomy_matches": [{"label": "Minimal", "score": 0.7}],
+            "taxonomy_matches": {"Minimal": 0.7},
             "tags": None,
             "layer1_tags": None,
             "layer2_tags": None,
@@ -121,7 +135,7 @@ def test_get_session_normalizes_missing_optional_capture_fields(monkeypatch) -> 
 
     assert response.status_code == 200
     capture = response.json()["captures"][0]
-    assert capture["taxonomy_matches"][0]["label"] == "Minimal"
+    assert capture["taxonomy_matches"]["Minimal"] == 0.7
     assert capture["tags"] == {"palette": []}
     assert capture["layer1_tags"] == []
     assert capture["layer2_tags"] == []
@@ -138,7 +152,7 @@ def test_get_session_keeps_captures_when_reference_fields_are_absent(monkeypatch
             "session_id": "session-3",
             "image_url": "https://example.com/no-reference-columns.jpg",
             "created_at": "2026-04-17T12:00:00Z",
-            "taxonomy_matches": [{"label": "Utility", "score": 0.82}],
+            "taxonomy_matches": {"Utility": 0.82},
             "tags": {"palette": ["#123456"]},
             "layer1_tags": ["structured"],
             "layer2_tags": ["workwear-jacket"],
@@ -152,3 +166,20 @@ def test_get_session_keeps_captures_when_reference_fields_are_absent(monkeypatch
     assert capture["image_url"] == "https://example.com/no-reference-columns.jpg"
     assert capture["reference_matches"] == []
     assert capture["reference_explanation"] is None
+
+
+def test_get_session_degrades_to_empty_captures_when_session_id_column_is_missing(monkeypatch) -> None:
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-legacy"}],
+        captures_data=[],
+        captures_error=RuntimeError("column session_id does not exist"),
+    )
+
+    response = client.get("/api/sessions/session-legacy")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "session": {"id": "session-legacy"},
+        "captures": [],
+    }

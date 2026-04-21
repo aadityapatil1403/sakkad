@@ -125,10 +125,6 @@ def main() -> None:
 
     existing_rows = fetch_existing_rows()
     canonical_ids = {entry["id"] for entry in entries}
-    deleted_count = 0
-    if not args.keep_stale:
-        deleted_count = delete_stale_rows(existing_rows, canonical_ids)
-
     for index, entry in enumerate(entries, start=1):
         print(f"Seeding {index}/{total}: {entry['title']}...", flush=True)
         row = build_row(entry)
@@ -137,6 +133,10 @@ def main() -> None:
             success_count += 1
         else:
             print(f"  WARNING: upsert returned no data for '{entry['id']}'", flush=True)
+
+    deleted_count = 0
+    if not args.keep_stale:
+        deleted_count = delete_stale_rows(existing_rows, canonical_ids)
 
     print(
         f"\nDone. {success_count}/{total} rows successfully upserted."

@@ -14,6 +14,10 @@ All notable changes to Sakkad will be documented in this file.
 
 ### Changed
 
+- **2026-04-21** — `sakad-backend/routes/capture.py`, `services/clip_service.py`, `services/color_service.py`, `services/enrich_service.py`: Refactored capture processing into focused services; classification now returns domain-capped `taxonomy_matches` as `Record<string, number>` and the route is reduced to upload + insert orchestration
+- **2026-04-21** — `sakad-backend/tests/test_capture_classify.py`, `test_clip_classify.py`, `test_color_service.py`, `test_enrich_service.py`, `test_sessions_api.py`: Migrated tests to the new service boundaries and dict-shaped taxonomy contract
+- **2026-04-21** — `sakad-backend/scripts/evaluate_classifier.py`, `smoke_capture.sh`, `verify_capture_eval.sh`: Updated evaluation/smoke tooling to match cosine-similarity classification without softmax and dict-shaped taxonomy output
+- **2026-04-21** — `README.md`, `API_CONTRACT.md`, `docs/agents/`, `docs/planning/`, `docs/worktree/`, `docs/scripts/`: Reorganized repo markdown/docs and added top-level backend run/contract documentation
 - **2026-04-13** — Canonicalized taxonomy to `data/taxonomy.json` (100 entries) as single source of truth; deleted stale `sakad-backend/data/taxonomy.json` (94 entries)
 - **2026-04-13** — Reformatted all 100 taxonomy descriptions to SigLIP caption style (fashion_streetwear, art_reference, visual_context domains)
 - **2026-04-13** — Updated `seed_taxonomy.py` path to load from repo-root `data/taxonomy.json`
@@ -30,6 +34,10 @@ All notable changes to Sakkad will be documented in this file.
 - **2026-04-17** — `sakad-backend/routes/capture.py`, `scripts/seed_taxonomy.py`: Route and seeding script updates
 
 ### Fixed
+
+- **2026-04-21** — `sakad-backend/routes/sessions.py`: session-detail reads now degrade to empty captures when legacy databases are missing `captures.session_id`, matching the write-path compatibility behavior
+- **2026-04-21** — `sakad-backend/services/retrieval_service.py`: transient `reference_corpus` load failures no longer disable retrieval for the life of the process; only confirmed schema-missing errors are cached as unavailable
+- **2026-04-21** — `sakad-backend/scripts/seed_reference_corpus.py`: stale reference rows are deleted only after successful upserts, preventing partial data loss on failed seed runs
 
 ### Removed
 

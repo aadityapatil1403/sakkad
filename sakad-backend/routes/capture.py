@@ -1,127 +1,42 @@
-import ast
 import asyncio
 import functools
-import io
 import logging
 import uuid
 
-import numpy as np
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from PIL import Image
 
-from config import settings
-from services.clip_service import get_image_embedding, get_text_embedding
-from services.gemini_service import get_layer1_tags_with_model, get_layer2_tags_with_model
-from services.retrieval_service import get_reference_matches
+from services.enrich_service import enrich_capture
 from services.supabase_client import supabase
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
 STORAGE_BUCKET = "captures"
-CLASSIFICATION_DOMAIN = "fashion_streetwear"
-REFERENCE_CORPUS_TABLE = "reference_corpus"
-IMAGE_WEIGHT = 1.0
-TEXT_WEIGHT = 0.0
-
-_taxonomy_cache: list[dict] | None = None
 _missing_capture_enrichment_columns: set[str] = set()
 _ENRICHMENT_COLUMNS = {"session_id", "reference_matches", "reference_explanation"}
-
-
-def _load_taxonomy() -> list[dict]:
-    global _taxonomy_cache
-    if _taxonomy_cache is not None:
-        return _taxonomy_cache
-    response = (
-        supabase.table("taxonomy")
-        .select("id, label, domain, embedding, embedding_model")
-        .eq("domain", CLASSIFICATION_DOMAIN)
-        .execute()
-    )
-    rows = response.data or []
-    if not rows:
-        raise RuntimeError(
-            "Taxonomy is empty for domain "
-            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
-        )
-
-    parsed = []
-    for row in rows:
-        raw = row.get("embedding")
-        if raw is None:
-            continue
-        embedding_model = row.get("embedding_model")
-        if embedding_model != settings.TAXONOMY_EMBEDDING_MODEL:
-            raise RuntimeError(
-                "Taxonomy embeddings were seeded with a different model. "
-                "Re-run sakad-backend/scripts/seed_taxonomy.py before serving captures."
-            )
-        embedding = ast.literal_eval(raw) if isinstance(raw, str) else raw
-        parsed.append({
-            "id": row["id"],
-            "label": row["label"],
-            "domain": row["domain"],
-            "embedding": np.array(embedding, dtype=np.float32),
-        })
-    if not parsed:
-        raise RuntimeError(
-            "Taxonomy rows are missing embeddings for domain "
-            f"'{CLASSIFICATION_DOMAIN}'. Run sakad-backend/scripts/seed_taxonomy.py."
-        )
-    _taxonomy_cache = parsed
-    return _taxonomy_cache
-
-
-def generate_reference_explanation(
-    taxonomy_matches: list[dict] | None,
-    reference_matches: list[dict] | None,
-    layer1_tags: list[str] | None = None,
-    layer2_tags: list[str] | None = None,
-) -> str | None:
-    if not taxonomy_matches or not reference_matches:
-        return None
-
-    top_taxonomy = taxonomy_matches[0].get("label") or "the current taxonomy result"
-    top_reference = reference_matches[0]
-    reference_name = top_reference.get("title") or top_reference.get("designer") or "the top reference"
-    cue_source = layer2_tags or layer1_tags or []
-    cues = ", ".join(cue_source[:3])
-
-    explanation = f"This image reads closest to {top_taxonomy} and aligns with {reference_name}."
-    if cues:
-        explanation += f" Key visual cues include {cues}."
-    return explanation
 
 
 def _build_capture_insert_payload(
     *,
     public_url: str,
-    session_id: str | None,
-    image_embedding: list[float],
-    taxonomy_matches: list[dict],
-    layer1: list[str],
-    layer2: list[str],
-    palette: list[str],
-    reference_matches: list[dict],
-    reference_explanation: str | None,
+    enriched_capture: dict,
     include_enrichment: bool,
 ) -> dict:
     payload = {
         "image_url": public_url,
-        "embedding": image_embedding,
-        "taxonomy_matches": taxonomy_matches,
-        "layer1_tags": layer1 or None,
-        "layer2_tags": layer2 or None,
-        "tags": {"palette": palette},
+        "embedding": enriched_capture["embedding"],
+        "taxonomy_matches": enriched_capture["taxonomy_matches"],
+        "layer1_tags": enriched_capture["layer1_tags"],
+        "layer2_tags": enriched_capture["layer2_tags"],
+        "tags": enriched_capture["tags"],
     }
     if include_enrichment:
         if "session_id" not in _missing_capture_enrichment_columns:
-            payload["session_id"] = session_id
+            payload["session_id"] = enriched_capture["session_id"]
         if "reference_matches" not in _missing_capture_enrichment_columns:
-            payload["reference_matches"] = reference_matches
+            payload["reference_matches"] = enriched_capture["reference_matches"]
         if "reference_explanation" not in _missing_capture_enrichment_columns:
-            payload["reference_explanation"] = reference_explanation
+            payload["reference_explanation"] = enriched_capture["reference_explanation"]
     return payload
 
 
@@ -158,62 +73,6 @@ def _insert_capture(payload: dict, *, allow_retry_without_enrichment: bool) -> o
         return supabase.table("captures").insert(retry_payload).execute()
 
 
-def _classify(
-    image_embedding: list[float],
-    text_embedding: list[float] | None,
-) -> list[dict]:
-    taxonomy = _load_taxonomy()
-    img_vec = np.array(image_embedding, dtype=np.float32)
-
-    if text_embedding is not None:
-        txt_vec = np.array(text_embedding, dtype=np.float32)
-        blended = IMAGE_WEIGHT * img_vec + TEXT_WEIGHT * txt_vec
-        norm = np.linalg.norm(blended)
-        blended = blended / norm if norm > 0 else img_vec
-    else:
-        blended = img_vec
-
-    text_matrix = np.stack([row["embedding"] for row in taxonomy])
-    logits = 100.0 * (text_matrix @ blended)
-    exp = np.exp(logits - logits.max())
-    probs = exp / exp.sum()
-    k = min(5, len(taxonomy))
-    top_idx = np.argsort(probs)[::-1][:k]
-    return [
-        {
-            "id": taxonomy[i]["id"],
-            "label": taxonomy[i]["label"],
-            "domain": taxonomy[i]["domain"],
-            "score": round(float(probs[i]), 4),
-        }
-        for i in top_idx
-    ]
-
-
-def _kmeans_numpy(pixels: np.ndarray, k: int = 5, max_iter: int = 20) -> np.ndarray:
-    rng = np.random.default_rng(0)
-    centroids = pixels[rng.choice(len(pixels), k, replace=False)]
-    for _ in range(max_iter):
-        dists = np.linalg.norm(pixels[:, None] - centroids[None], axis=2)
-        labels = np.argmin(dists, axis=1)
-        new_centroids = np.array([
-            pixels[labels == i].mean(axis=0) if np.any(labels == i) else centroids[i]
-            for i in range(k)
-        ])
-        if np.allclose(centroids, new_centroids, atol=1.0):
-            break
-        centroids = new_centroids
-    return centroids
-
-
-def _extract_palette(image_bytes: bytes) -> list[str]:
-    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    image = image.resize((150, 150))
-    pixels = np.array(image).reshape(-1, 3).astype(np.float32)
-    centroids = _kmeans_numpy(pixels)
-    return [f"#{int(round(r)):02x}{int(round(g)):02x}{int(round(b)):02x}" for r, g, b in centroids]
-
-
 @router.post("/api/capture")
 async def capture(
     file: UploadFile = File(...),
@@ -240,71 +99,20 @@ async def capture(
         public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(filename)
 
         loop = asyncio.get_running_loop()
-        image_embedding = await loop.run_in_executor(None, get_image_embedding, image_bytes)
-
-        layer1_fn = functools.partial(
-            get_layer1_tags_with_model,
+        enrich_fn = functools.partial(
+            enrich_capture,
             image_bytes,
-            mime_type=file.content_type or "image/jpeg",
+            session_id,
+            file.content_type or "image/jpeg",
         )
-        layer1, layer1_model = await loop.run_in_executor(None, layer1_fn)
-        if not layer1:
-            logger.warning("[capture] gemini layer1 unavailable; continuing with fallback path")
-
-        if layer1:
-            layer2_fn = functools.partial(
-                get_layer2_tags_with_model,
-                image_bytes,
-                layer1,
-                mime_type=file.content_type or "image/jpeg",
-            )
-            layer2, layer2_model = await loop.run_in_executor(None, layer2_fn)
-        else:
-            layer2 = []
-            layer2_model = None
-        if layer1 and not layer2:
-            logger.warning("[capture] gemini layer2 unavailable; continuing with fallback path")
-
-        if TEXT_WEIGHT > 0.0 and (layer1 or layer2):
-            enriched_text = " ".join(layer1 + layer2)
-            try:
-                text_embedding: list[float] | None = await loop.run_in_executor(
-                    None, get_text_embedding, enriched_text
-                )
-            except Exception as exc:
-                logger.warning("[capture] text embedding failed; falling back to image-only: %s", exc)
-                text_embedding = None
-        else:
-            text_embedding = None
-
         try:
-            taxonomy_matches = _classify(image_embedding, text_embedding)
+            enriched_capture = await loop.run_in_executor(None, enrich_fn)
         except RuntimeError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
-        reference_matches = get_reference_matches(image_embedding)
-        palette = _extract_palette(image_bytes)
-
-        try:
-            reference_explanation = generate_reference_explanation(
-                taxonomy_matches,
-                reference_matches,
-                layer1_tags=layer1 or None,
-                layer2_tags=layer2 or None,
-            )
-        except Exception:
-            logger.exception("[capture] reference explanation failed")
-            reference_explanation = None
 
         insert_payload = _build_capture_insert_payload(
             public_url=public_url,
-            session_id=session_id,
-            image_embedding=image_embedding,
-            taxonomy_matches=taxonomy_matches,
-            layer1=layer1,
-            layer2=layer2,
-            palette=palette,
-            reference_matches=reference_matches,
-            reference_explanation=reference_explanation,
+            enriched_capture=enriched_capture,
             include_enrichment=True,
         )
         insert_response = _insert_capture(
@@ -320,17 +128,14 @@ async def capture(
         logger.info(
             "[capture] success: id=%s taxonomy_matches=%s reference_matches=%s gemini_layer1=%s gemini_layer2=%s layer1_model=%s layer2_model=%s",
             capture_record.get("id"),
-            len(taxonomy_matches),
-            len(reference_matches),
-            bool(layer1),
-            bool(layer2),
-            layer1_model,
-            layer2_model,
+            len(enriched_capture["taxonomy_matches"]),
+            len(enriched_capture["reference_matches"]),
+            bool(enriched_capture["layer1_tags"]),
+            bool(enriched_capture["layer2_tags"]),
+            enriched_capture["gemini_models"]["layer1"],
+            enriched_capture["gemini_models"]["layer2"],
         )
-        capture_record["gemini_models"] = {
-            "layer1": layer1_model,
-            "layer2": layer2_model,
-        }
+        capture_record["gemini_models"] = enriched_capture["gemini_models"]
         return capture_record
     except HTTPException:
         logger.exception("[capture] request failed")

@@ -135,3 +135,35 @@ def test_parse_args_can_keep_stale_rows_when_requested() -> None:
         args = seed_reference_corpus.parse_args()
 
     assert args.keep_stale is True
+
+
+def test_main_deletes_stale_rows_only_after_successful_upserts() -> None:
+    with _load_module() as seed_reference_corpus:
+        seed_reference_corpus.parse_args = MagicMock(return_value=SimpleNamespace(keep_stale=False))
+        seed_reference_corpus.load_entries = MagicMock(return_value=[
+            {
+                "id": "a",
+                "designer": "Designer A",
+                "brand": "Brand A",
+                "collection_or_era": "Era A",
+                "title": "Look A",
+                "description": "Desc A",
+                "taxonomy_tags": ["tag-a"],
+            }
+        ])
+        seed_reference_corpus.fetch_existing_rows = MagicMock(return_value={"stale": {"id": "stale"}})
+        seed_reference_corpus.build_row = MagicMock(return_value={"id": "a", "embedding": [0.1, 0.2]})
+        seed_reference_corpus.delete_stale_rows = MagicMock(return_value=1)
+
+        table = MagicMock()
+        table.upsert.return_value.execute.return_value = SimpleNamespace(data=[{"id": "a"}])
+        seed_reference_corpus.supabase = MagicMock()
+        seed_reference_corpus.supabase.table.return_value = table
+
+        seed_reference_corpus.main()
+
+        seed_reference_corpus.delete_stale_rows.assert_called_once_with(
+            {"stale": {"id": "stale"}},
+            {"a"},
+        )
+        assert table.upsert.return_value.execute.called

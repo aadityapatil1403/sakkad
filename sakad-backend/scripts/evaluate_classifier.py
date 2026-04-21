@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+from collections import defaultdict
 import json
 import sys
 from dataclasses import dataclass
@@ -101,7 +102,7 @@ def classify(
     text_embedding: np.ndarray | None,
     image_weight: float,
     text_weight: float,
-) -> list[dict[str, Any]]:
+) -> dict[str, float]:
     if text_embedding is None or text_weight == 0.0:
         blended = image_embedding
     elif image_weight == 0.0:
@@ -111,28 +112,35 @@ def classify(
     blended = normalize_vector(blended)
 
     text_matrix = np.stack([row["embedding"] for row in taxonomy])
-    logits = 100.0 * (text_matrix @ blended)
-    exp = np.exp(logits - logits.max())
-    probs = exp / exp.sum()
-    top_idx = np.argsort(probs)[::-1][:5]
-    return [
-        {
-            "label": taxonomy[i]["label"],
-            "domain": taxonomy[i]["domain"],
-            "score": round(float(probs[i]), 4),
-            "rank": rank + 1,
-        }
-        for rank, i in enumerate(top_idx)
-    ]
+    sims = (text_matrix @ blended).tolist()
+    scores = {
+        row["label"]: round(float(score), 4)
+        for row, score in zip(taxonomy, sims, strict=True)
+    }
+
+    domain_caps: dict[str, int] = {"fashion_streetwear": 3, "_default": 1}
+    by_domain: dict[str, list[tuple[str, float]]] = defaultdict(list)
+    for row in taxonomy:
+        label = row["label"]
+        by_domain[row["domain"]].append((label, scores[label]))
+
+    if len(by_domain) == 1:
+        return dict(sorted(scores.items(), key=lambda item: item[1], reverse=True)[:5])
+
+    capped: list[tuple[str, float]] = []
+    for domain, rows in by_domain.items():
+        cap = domain_caps.get(domain, domain_caps["_default"])
+        capped.extend(sorted(rows, key=lambda item: item[1], reverse=True)[:cap])
+    return dict(sorted(capped, key=lambda item: item[1], reverse=True))
 
 
 def evaluate_prediction(
     *,
-    predictions: list[dict[str, Any]],
+    predictions: dict[str, float],
     expected_primary: list[str],
     acceptable_secondary: list[str],
 ) -> dict[str, Any]:
-    labels = [pred["label"] for pred in predictions]
+    labels = list(predictions.keys())
     all_expected = expected_primary + acceptable_secondary
     top1_hit = labels[0] in all_expected if labels else False
     top3_hit = any(label in all_expected for label in labels[:3])
@@ -232,7 +240,10 @@ def main() -> None:
                 "acceptable_secondary_labels": data["entry"].get("acceptable_secondary_labels", []),
                 "layer1": data["layer1"],
                 "layer2": data["layer2"],
-                "predictions": predictions,
+                "predictions": [
+                    {"label": label, "score": score}
+                    for label, score in predictions.items()
+                ],
                 "missing_text_features": False,
                 **metrics,
             })

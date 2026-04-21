@@ -128,3 +128,30 @@ def test_missing_reference_corpus_degrades_to_empty_results() -> None:
 
     assert result == []
     mock_logger.warning.assert_called()
+
+
+def test_transient_reference_corpus_error_does_not_disable_future_retries() -> None:
+    rows = [{
+        "id": "ref-1",
+        "designer": "Designer A",
+        "brand": "Brand A",
+        "collection_or_era": "SS99",
+        "title": "Look 1",
+        "description": "First look",
+        "image_url": "https://example.com/1.jpg",
+        "embedding": [1.0, 0.0],
+    }]
+
+    with patch("services.retrieval_service._reference_cache", None), \
+         patch("services.retrieval_service._reference_corpus_available", True), \
+         patch("services.retrieval_service.supabase") as mock_supa:
+        mock_supa.table().select().execute.side_effect = [
+            RuntimeError("temporary timeout"),
+            SimpleNamespace(data=rows),
+        ]
+
+        first_result = retrieval_service.get_reference_matches([1.0, 0.0])
+        second_result = retrieval_service.get_reference_matches([1.0, 0.0])
+
+    assert first_result == []
+    assert [item["id"] for item in second_result] == ["ref-1"]

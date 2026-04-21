@@ -42,9 +42,12 @@ def _load_reference_corpus() -> list[dict]:
             .execute()
         )
     except Exception as exc:
-        _reference_corpus_available = False
-        _reference_cache = []
-        logger.warning("[retrieval] reference corpus unavailable; disabling retrieval: %s", exc)
+        if _is_missing_reference_corpus_schema(exc):
+            _reference_corpus_available = False
+            _reference_cache = []
+            logger.warning("[retrieval] reference corpus unavailable; disabling retrieval: %s", exc)
+        else:
+            logger.warning("[retrieval] reference corpus temporarily unavailable; will retry: %s", exc)
         return []
 
     parsed_rows = []
@@ -67,6 +70,17 @@ def _load_reference_corpus() -> list[dict]:
     if not _reference_cache:
         logger.info("[retrieval] empty reference corpus")
     return _reference_cache
+
+
+def _is_missing_reference_corpus_schema(exc: Exception) -> bool:
+    message = str(exc).lower()
+    return (
+        REFERENCE_CORPUS_TABLE in message and "does not exist" in message
+    ) or (
+        "schema cache" in message and REFERENCE_CORPUS_TABLE in message
+    ) or (
+        "relation" in message and REFERENCE_CORPUS_TABLE in message and "does not exist" in message
+    )
 
 
 def get_reference_matches(image_embedding: list[float], limit: int = 5) -> list[dict]:

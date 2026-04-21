@@ -1,10 +1,12 @@
 # sakad-backend/tests/test_capture_classify.py
 """
-Tests for _classify() in routes/capture.py.
+Tests for classify() in services/clip_service.py and capture pipeline integration.
 """
-from unittest.mock import patch
+import io
+from unittest.mock import MagicMock, patch
 
 import numpy as np
+import pytest
 
 
 _FAKE_TAXONOMY = [
@@ -30,138 +32,93 @@ _FAKE_TAXONOMY = [
 
 
 class TestClassify:
-    def _run(
-        self,
-        image_embedding: list[float],
-        text_embedding: list[float] | None,
-        *,
-        image_weight: float = 1.0,
-        text_weight: float = 0.0,
-    ) -> list[dict]:
-        from routes.capture import _classify
+    def _run(self, image_embedding: list[float]) -> dict[str, float]:
+        from services.clip_service import classify
 
-        with (
-            patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY),
-            patch("routes.capture.IMAGE_WEIGHT", image_weight),
-            patch("routes.capture.TEXT_WEIGHT", text_weight),
-        ):
-            return _classify(image_embedding, text_embedding)
+        with patch("services.clip_service._load_taxonomy", return_value=_FAKE_TAXONOMY):
+            return classify(image_embedding)
 
     def test_no_text_embedding_returns_top_label_matching_image_vector(self) -> None:
-        result = self._run([1.0, 0.0, 0.0], text_embedding=None)
-        assert result[0]["label"] == "label-A"
+        result = self._run([1.0, 0.0, 0.0])
 
-    def test_text_embedding_shifts_top_result(self) -> None:
-        result_no_text = self._run([1.0, 0.0, 0.0], text_embedding=None)
-        result_with_text = self._run(
-            [1.0, 0.0, 0.0],
-            text_embedding=[0.0, 1.0, 0.0],
-            image_weight=0.8,
-            text_weight=0.2,
-        )
-        assert result_no_text[0]["label"] == "label-A"
-        assert result_with_text[0]["label"] == "label-A"
-        assert result_with_text[1]["label"] == "label-B"
+        assert next(iter(result)) == "label-A"
+
+    def test_top_result_ordering_reflects_cosine_similarity(self) -> None:
+        result_a = self._run([1.0, 0.0, 0.0])
+        result_b = self._run([0.0, 1.0, 0.0])
+
+        assert next(iter(result_a)) == "label-A"
+        assert next(iter(result_b)) == "label-B"
 
     def test_returns_all_labels_when_taxonomy_has_3(self) -> None:
-        result = self._run([1.0, 0.0, 0.0], text_embedding=None)
+        result = self._run([1.0, 0.0, 0.0])
+
         assert len(result) == 3
 
-    def test_result_has_required_keys(self) -> None:
-        result = self._run([1.0, 0.0, 0.0], text_embedding=None)
-        for item in result:
-            assert "id" in item
-            assert "label" in item
-            assert "domain" in item
-            assert "score" in item
-
     def test_empty_taxonomy_raises_runtime_error(self) -> None:
-        from routes.capture import _classify
-        import pytest
+        from services.clip_service import classify
 
-        with patch("routes.capture._load_taxonomy", return_value=[]):
-            with pytest.raises(ValueError):
-                _classify([1.0, 0.0, 0.0], text_embedding=None)
-
-    def test_scores_sum_to_1(self) -> None:
-        result = self._run([1.0, 0.0, 0.0], text_embedding=None)
-        total = sum(r["score"] for r in result)
-        assert abs(total - 1.0) < 1e-3
+        with patch("services.clip_service._load_taxonomy", return_value=[]):
+            with pytest.raises(RuntimeError):
+                classify([1.0, 0.0, 0.0])
 
 
-class TestCaptureTextEmbeddingPath:
-    def test_image_only_runtime_skips_text_embedding(self) -> None:
-        from unittest.mock import MagicMock, patch
+class TestCaptureRouteIntegration:
+    def _make_enriched(
+        self,
+        *,
+        layer1: list[str] | None = None,
+        layer2: list[str] | None = None,
+        layer1_model: str | None = "gemini-2.5-flash",
+        layer2_model: str | None = None,
+        reference_matches: list[dict] | None = None,
+        reference_explanation: str | None = None,
+        session_id: str | None = None,
+    ) -> dict:
+        return {
+            "embedding": [1.0, 0.0, 0.0],
+            "taxonomy_matches": {"label-A": 0.9},
+            "layer1_tags": layer1,
+            "layer2_tags": layer2,
+            "tags": {"palette": ["#000000"]},
+            "reference_matches": reference_matches or [],
+            "reference_explanation": reference_explanation,
+            "gemini_models": {"layer1": layer1_model, "layer2": layer2_model},
+            "session_id": session_id,
+        }
 
-        with patch("routes.capture.get_text_embedding") as mock_get_text_embedding, \
-             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture._classify", return_value=[]) as mock_classify, \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=([], None)), \
-             patch("routes.capture.get_reference_matches", return_value=[]), \
-             patch("routes.capture.generate_reference_explanation", return_value=None), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
-            mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
-            mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
-            mock_supa.table().insert().execute.return_value = MagicMock(data=[{"id": "1"}])
+    def _make_client(self):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from routes.capture import router
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
+        app = FastAPI()
+        app.include_router(router)
+        return TestClient(app)
 
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
-                "/api/capture",
-                files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
-            )
-
-        assert response.status_code == 200
-        mock_get_text_embedding.assert_not_called()
-        mock_classify.assert_called_once()
-        _, kwargs = mock_classify.call_args
-        assert kwargs.get("text_embedding") is None or mock_classify.call_args[0][1] is None
-
-
-class TestCaptureFallbacks:
     def test_capture_succeeds_when_gemini_tag_generation_fails(self) -> None:
-        from unittest.mock import MagicMock, patch
+        enriched = self._make_enriched(
+            layer1=None,
+            layer2=None,
+            layer1_model=None,
+            layer2_model=None,
+            reference_matches=[{"id": "ref-1", "title": "Look 1", "score": 0.91}],
+            reference_explanation="Looks aligned with Look 1",
+        )
 
-        with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=([], None)), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=([], None)), \
-             patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
-             patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
             mock_supa.table().insert().execute.return_value = MagicMock(data=[{
+                **enriched,
                 "id": "1",
-                "taxonomy_matches": [{"label": "label-A", "score": 1.0}],
-                "reference_matches": [{"id": "ref-1", "title": "Look 1", "score": 0.91}],
-                "reference_explanation": "Looks aligned with Look 1",
-                "tags": {"palette": ["#000000"]},
-                "layer1_tags": None,
-                "layer2_tags": None,
+                "image_url": "http://example.com/img.jpg",
             }])
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
+            response = self._make_client().post(
                 "/api/capture",
                 files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
             )
@@ -173,76 +130,54 @@ class TestCaptureFallbacks:
         assert payload["gemini_models"] == {"layer1": None, "layer2": None}
 
     def test_capture_succeeds_when_explanation_generation_fails(self) -> None:
-        from unittest.mock import MagicMock, patch
+        enriched = self._make_enriched(
+            layer1=["black"],
+            layer2=["wide-leg"],
+            layer1_model="gemini-2.5-flash",
+            layer2_model="gemini-3.1-flash-lite-preview",
+            reference_matches=[{"id": "ref-1", "title": "Look 1", "score": 0.91}],
+            reference_explanation=None,
+        )
 
-        with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-3.1-flash-lite-preview")), \
-             patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
-             patch("routes.capture.generate_reference_explanation", side_effect=RuntimeError("Gemini unavailable")), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
             mock_supa.table().insert().execute.return_value = MagicMock(data=[{
+                **enriched,
                 "id": "1",
-                "taxonomy_matches": [{"label": "label-A", "score": 1.0}],
-                "reference_matches": [{"id": "ref-1", "title": "Look 1", "score": 0.91}],
-                "reference_explanation": None,
-                "tags": {"palette": ["#000000"]},
-                "layer1_tags": ["black"],
-                "layer2_tags": ["wide-leg"],
+                "image_url": "http://example.com/img.jpg",
             }])
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
+            response = self._make_client().post(
                 "/api/capture",
                 files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
             )
 
         assert response.status_code == 200
-        insert_payload = mock_supa.table().insert.call_args.args[0]
-        assert insert_payload["reference_matches"][0]["id"] == "ref-1"
-        assert insert_payload["reference_explanation"] is None
         assert response.json()["gemini_models"] == {
             "layer1": "gemini-2.5-flash",
             "layer2": "gemini-3.1-flash-lite-preview",
         }
 
     def test_capture_persists_session_id_when_provided(self) -> None:
-        from unittest.mock import MagicMock, patch
+        enriched = self._make_enriched(session_id="session-1")
 
-        with patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_reference_matches", return_value=[]), \
-             patch("routes.capture.generate_reference_explanation", return_value=None), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
-            mock_supa.table().insert().execute.return_value = MagicMock(data=[{"id": "1", "session_id": "session-1"}])
+            mock_supa.table().insert().execute.return_value = MagicMock(data=[{
+                **enriched,
+                "id": "1",
+                "image_url": "http://example.com/img.jpg",
+            }])
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
+            response = self._make_client().post(
                 "/api/capture",
                 files={
                     "file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg"),
@@ -255,17 +190,17 @@ class TestCaptureFallbacks:
         assert insert_payload["session_id"] == "session-1"
 
     def test_capture_retries_without_enrichment_columns_when_schema_is_old(self) -> None:
-        from unittest.mock import MagicMock, patch
+        enriched = self._make_enriched(
+            session_id="session-1",
+            reference_matches=[{"id": "ref-1", "title": "Look 1", "score": 0.91}],
+            reference_explanation="Looks aligned with Look 1",
+        )
 
-        with patch("routes.capture._missing_capture_enrichment_columns", set()), \
-             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
-             patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture._missing_capture_enrichment_columns", set()),
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
             mock_insert = mock_supa.table().insert
@@ -274,16 +209,7 @@ class TestCaptureFallbacks:
                 MagicMock(data=[{"id": "1"}]),
             ]
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
+            response = self._make_client().post(
                 "/api/capture",
                 files={
                     "file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg"),
@@ -300,17 +226,17 @@ class TestCaptureFallbacks:
         assert second_payload["session_id"] == "session-1"
 
     def test_capture_retries_only_missing_enrichment_columns(self) -> None:
-        from unittest.mock import MagicMock, patch
+        enriched = self._make_enriched(
+            session_id="session-1",
+            reference_matches=[{"id": "ref-1", "title": "Look 1", "score": 0.91}],
+            reference_explanation="Looks aligned with Look 1",
+        )
 
-        with patch("routes.capture._missing_capture_enrichment_columns", set()), \
-             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_reference_matches", return_value=[{"id": "ref-1", "title": "Look 1", "score": 0.91}]), \
-             patch("routes.capture.generate_reference_explanation", return_value="Looks aligned with Look 1"), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture._missing_capture_enrichment_columns", set()),
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
             mock_insert = mock_supa.table().insert
@@ -319,16 +245,7 @@ class TestCaptureFallbacks:
                 MagicMock(data=[{"id": "1"}]),
             ]
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
+            response = self._make_client().post(
                 "/api/capture",
                 files={
                     "file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg"),
@@ -346,68 +263,21 @@ class TestCaptureFallbacks:
         assert second_payload["session_id"] == "session-1"
 
     def test_capture_does_not_mask_non_schema_insert_failures(self) -> None:
-        from unittest.mock import MagicMock, patch
-        import pytest
+        enriched = self._make_enriched()
 
-        with patch("routes.capture._missing_capture_enrichment_columns", set()), \
-             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_reference_matches", return_value=[]), \
-             patch("routes.capture.generate_reference_explanation", return_value=None), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
+        with (
+            patch("routes.capture._missing_capture_enrichment_columns", set()),
+            patch("routes.capture.enrich_capture", return_value=enriched),
+            patch("routes.capture.supabase") as mock_supa,
+        ):
             mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
             mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
             mock_supa.table().insert().execute.side_effect = RuntimeError("temporary database outage")
 
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
             with pytest.raises(RuntimeError, match="temporary database outage"):
-                client.post(
+                self._make_client().post(
                     "/api/capture",
                     files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
                 )
 
         assert mock_supa.table().insert().execute.call_count == 1
-
-    def test_image_first_taxonomy_path_still_skips_text_embedding_with_enrichment(self) -> None:
-        from unittest.mock import MagicMock, patch
-
-        with patch("routes.capture.get_text_embedding") as mock_get_text_embedding, \
-             patch("routes.capture._load_taxonomy", return_value=_FAKE_TAXONOMY), \
-             patch("routes.capture.get_image_embedding", return_value=[1.0, 0.0, 0.0]), \
-             patch("routes.capture.get_layer1_tags_with_model", return_value=(["black"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_layer2_tags_with_model", return_value=(["wide-leg"], "gemini-2.5-flash")), \
-             patch("routes.capture.get_reference_matches", return_value=[]), \
-             patch("routes.capture.generate_reference_explanation", return_value=None), \
-             patch("routes.capture.supabase") as mock_supa, \
-             patch("routes.capture._extract_palette", return_value=["#000000"]):
-            mock_supa.storage.from_().upload.return_value = MagicMock(error=None)
-            mock_supa.storage.from_().get_public_url.return_value = "http://example.com/img.jpg"
-            mock_supa.table().insert().execute.return_value = MagicMock(data=[{"id": "1"}])
-
-            from fastapi import FastAPI
-            from fastapi.testclient import TestClient
-            from routes.capture import router
-
-            app = FastAPI()
-            app.include_router(router)
-            client = TestClient(app)
-
-            import io
-            response = client.post(
-                "/api/capture",
-                files={"file": ("test.jpg", io.BytesIO(b"fake"), "image/jpeg")},
-            )
-
-        assert response.status_code == 200
-        mock_get_text_embedding.assert_not_called()

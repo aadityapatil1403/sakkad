@@ -17,7 +17,7 @@ def _normalize_capture(capture: dict) -> dict:
         "session_id": capture.get("session_id"),
         "image_url": capture.get("image_url"),
         "created_at": capture.get("created_at"),
-        "taxonomy_matches": capture.get("taxonomy_matches") or [],
+        "taxonomy_matches": capture.get("taxonomy_matches") or {},
         "tags": {"palette": palette or []},
         "layer1_tags": capture.get("layer1_tags") or [],
         "layer2_tags": capture.get("layer2_tags") or [],
@@ -26,14 +26,27 @@ def _normalize_capture(capture: dict) -> dict:
     }
 
 
-def _get_session_captures(session_id: str) -> list[dict]:
-    response = (
-        supabase.table(CAPTURES_TABLE)
-        .select("*")
-        .eq("session_id", session_id)
-        .order("created_at")
-        .execute()
+def _missing_session_id_column(exc: Exception) -> bool:
+    message = str(exc).lower()
+    return "session_id" in message and (
+        ("column" in message and "does not exist" in message)
+        or ("schema cache" in message and "column" in message)
     )
+
+
+def _get_session_captures(session_id: str) -> list[dict]:
+    try:
+        response = (
+            supabase.table(CAPTURES_TABLE)
+            .select("*")
+            .eq("session_id", session_id)
+            .order("created_at")
+            .execute()
+        )
+    except Exception as exc:
+        if _missing_session_id_column(exc):
+            return []
+        raise
     rows = response.data or []
     return [_normalize_capture(row) for row in rows]
 
