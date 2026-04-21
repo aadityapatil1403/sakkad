@@ -1,0 +1,116 @@
+[
+  {
+    "image": "furcoat.jpg",
+    "expected_primary_labels": [
+      "Y2K",
+      "Club Kid"
+    ],
+    "acceptable_secondary_labels": [
+      "Skater",
+      "Maximalism",
+      "Streetwear"
+    ]
+  },
+  {
+    "image": "japanjersey.jpg",
+    "expected_primary_labels": [
+      "Streetwear",
+      "Maximalism"
+    ],
+    "acceptable_secondary_labels": [
+      "Y2K",
+      "Sportswear Luxe",
+      "Hip-Hop Fashion"
+    ]
+  },
+  {
+    "image": "western.jpg",
+    "expected_primary_labels": [
+      "Western Americana",
+      "Cowboy Core"
+    ],
+    "acceptable_secondary_labels": [
+      "New Americana",
+      "Vintage Americana",
+      "Denim-on-Denim"
+    ]
+  },
+  {
+    "image": "workwear.jpg",
+    "expected_primary_labels": [
+      "Workwear",
+      "Utilitarian"
+    ],
+    "acceptable_secondary_labels": [
+      "Quiet Outdoors",
+      "Streetwear"
+    ]
+  },
+  {
+    "image": "leather_jacket.jpg",
+    "expected_primary_labels": [
+      "Biker",
+      "Moto Culture"
+    ],
+    "acceptable_secondary_labels": [
+      "Denim Culture",
+      "Punk",
+      "Skater"
+    ]
+  },
+  {
+    "image": "formal_wear.jpg",
+    "expected_primary_labels": [
+      "Tailoring",
+      "Soft Tailoring"
+    ],
+    "acceptable_secondary_labels": [
+      "Quiet Luxury",
+      "Old Money"
+    ]
+  },
+  {
+    "image": "monochromatic.jpg",
+    "expected_primary_labels": [
+      "Monochrome",
+      "Biker"
+    ],
+    "acceptable_secondary_labels": [
+      "Moto Culture",
+      "Color Blocking"
+    ]
+  },
+  {
+    "image": "old_money.jpg",
+    "expected_primary_labels": [
+      "Old Money",
+      "Preppy"
+    ],
+    "acceptable_secondary_labels": [
+      "Preppy Revival",
+      "Quiet Luxury"
+    ]
+  },
+  {
+    "image": "soccer_streetwear.jpg",
+    "expected_primary_labels": [
+      "Streetwear",
+      "Sportswear Luxe"
+    ],
+    "acceptable_secondary_labels": [
+      "Maximalism",
+      "Hip-Hop Fashion"
+    ]
+  },
+  {
+    "image": "vintage.jpg",
+    "expected_primary_labels": [
+      "Vintage Americana",
+      "70s Revival"
+    ],
+    "acceptable_secondary_labels": [
+      "New Americana",
+      "Denim Culture"
+    ]
+  }
+]

@@ -1,0 +1,618 @@
+[
+  {
+    "id": "japanese-streetwear",
+    "label": "Japanese Streetwear",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Japanese Streetwear, dark layered silhouettes, asymmetric shirting, dropped crotches, longline outerwear, tabi-like footwear, and avant street styling create an off-balance Harajuku silhouette. Charcoal, washed black, ink navy, olive, and ecru dominate technical cotton, gabardine, raw hems, and sculptural drape tied to Tokyo designer fashion rather than flashy faux fur or western denim styling.",
+    "visual_references": [
+      "Yohji Yamamoto",
+      "Comme des Garcons",
+      "Harajuku"
+    ]
+  },
+  {
+    "id": "gorpcore",
+    "label": "Gorpcore",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Gorpcore, nylon shells, fleece zip-ups, trail sneakers, and cargo pockets are built in moss, slate, rust, and safety orange. The silhouette is practical and weather-ready, borrowing from hiking uniforms, alpine gear, and performance outerwear culture.",
+    "visual_references": [
+      "Arc'teryx",
+      "Salomon",
+      "The North Face"
+    ]
+  },
+  {
+    "id": "quiet-luxury",
+    "label": "Quiet Luxury",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Quiet Luxury, immaculate coats, fine-gauge knitwear, pleated trousers, soft shirting, loafers, and smooth leather accessories create a discreetly expensive silhouette. Camel, cream, taupe, navy, chocolate, and soft black appear in cashmere, brushed wool, silk, and polished leather with wealth signaled through cut, fabric, and restraint rather than logos.",
+    "visual_references": [
+      "The Row",
+      "Loro Piana",
+      "Phoebe Philo"
+    ]
+  },
+  {
+    "id": "y2k",
+    "label": "Y2K",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Y2K, low-rise or baggy denim, cropped tops, faux fur trims, tinted glasses, metallic chains, glossy synthetics, and hyper-styled early internet details create a flashy turn-of-the-millennium silhouette. Silver, icy blue, pink, lime, black, and acid brights pair with rhinestones, tiny bags, pointed footwear, and nightclub-era accessories.",
+    "visual_references": [
+      "Blumarine",
+      "Paris Hilton",
+      "TRL era"
+    ]
+  },
+  {
+    "id": "dark-academia",
+    "label": "Dark Academia",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Dark Academia, tweed blazers, pleated trousers, wool coats, and knit vests build a scholarly silhouette in espresso, oxblood, charcoal, and antique ivory. Heavy textures, leather satchels, loafers, and library-toned layering evoke old universities, poetry, and candlelit interiors.",
+    "visual_references": [
+      "Oxford",
+      "Ralph Lauren",
+      "The Secret History"
+    ]
+  },
+  {
+    "id": "avant-garde",
+    "label": "Avant-garde",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Avant-garde, asymmetric cuts, sculptural volume, and unexpected voids distort the body into a runway object rather than a conventional outfit. Matte black, bone, pewter, and blood red dominate surfaces of bonded wool, neoprene, coated cotton, and experimental draping.",
+    "visual_references": [
+      "Rei Kawakubo",
+      "Rick Owens",
+      "Maison Margiela"
+    ]
+  },
+  {
+    "id": "workwear",
+    "label": "Workwear",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Workwear, canvas chore jackets, corduroy collars, carpenter or double-knee pants, boxy overshirts, and sturdy leather shoes create a practical labor-inspired silhouette. Faded charcoal, khaki, tobacco, olive, indigo, and ecru appear in duck canvas, denim, corduroy, and matte leather with patch pockets, utility seams, and durable hardware.",
+    "visual_references": [
+      "Carhartt WIP",
+      "Dickies",
+      "Ben Davis"
+    ]
+  },
+  {
+    "id": "techwear",
+    "label": "Techwear",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Techwear, angular shells, modular straps, articulated knees, and waterproof layers create a sharp urban survival silhouette. Black, graphite, and storm grey technical fabrics with taped seams and matte hardware suggest cybernetic mobility and weather defense.",
+    "visual_references": [
+      "Acronym",
+      "Guerrilla Group",
+      "Nike ACG"
+    ]
+  },
+  {
+    "id": "old-money",
+    "label": "Old Money",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Old Money, navy blazers, pleated chinos, oxford shirts, fine-gauge sweaters, sweater-over-shoulders styling, loafers, and restrained jewelry create an inherited-wealth leisure silhouette. Cream, navy, khaki, racing green, camel, and white appear in wool, cashmere, cotton poplin, and polished leather with country-club, equestrian, and ivy leisure references rather than relaxed linen suiting or streetwear jerseys.",
+    "visual_references": [
+      "Ralph Lauren",
+      "Loro Piana",
+      "Ivy League"
+    ]
+  },
+  {
+    "id": "normcore",
+    "label": "Normcore",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Normcore, straight jeans, plain crewnecks, zip fleeces, and generic sneakers are styled with deliberate anti-fashion neutrality. Heather grey, medium wash denim, white, navy, and black keep the palette anonymous and suburban.",
+    "visual_references": [
+      "Uniqlo",
+      "Gap",
+      "Seinfeld"
+    ]
+  },
+  {
+    "id": "preppy",
+    "label": "Preppy",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Preppy, oxford shirts, rugby tops, cable knits, pleated chinos or skirts, loafers, and crest-coded layers create a polished collegiate silhouette. Navy, forest green, burgundy, cream, and khaki pair with striped trims, club ties, lettered knitwear, and campus-ready tailoring rather than athletic shorts and sneaker-led styling.",
+    "visual_references": [
+      "Tommy Hilfiger",
+      "Brooks Brothers",
+      "Ivy Style"
+    ]
+  },
+  {
+    "id": "bohemian",
+    "label": "Bohemian",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Bohemian, flowing skirts, embroidered blouses, slouchy layers, and soft suede accessories create a free-moving silhouette. Ochre, rust, cream, plum, and faded floral prints mix with fringe, crochet, and artisan textile references.",
+    "visual_references": [
+      "Etro",
+      "Isabel Marant",
+      "1970s bohemia"
+    ]
+  },
+  {
+    "id": "cottagecore",
+    "label": "Cottagecore",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Cottagecore, puff sleeves, prairie dresses, aprons, and soft cardigans create a pastoral silhouette in butter, sage, rose, and milk white. Cotton eyelet, linen, tiny florals, and lace trims evoke gardens, heirloom linens, and rural domestic romance.",
+    "visual_references": [
+      "Gunne Sax",
+      "D\u00f4en",
+      "English countryside"
+    ]
+  },
+  {
+    "id": "clean-girl",
+    "label": "Clean Girl",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Clean Girl, fitted tanks, smooth trousers, sleek blazers, and minimal gold accents produce a polished body-conscious silhouette. White, beige, oatmeal, chocolate, and soft black appear in ribbed jersey, polished cotton, and glossy skin-adjacent styling.",
+    "visual_references": [
+      "Hailey Bieber",
+      "The Row",
+      "minimal influencer style"
+    ]
+  },
+  {
+    "id": "maximalism",
+    "label": "Maximalism",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Maximalism, bold jewelry, multiple prints, saturated color, and exaggerated proportion stack into a visually dense outfit. Velvet, jacquard, sequins, embroidery, and clashing accessories create an intentional overload of texture and pattern.",
+    "visual_references": [
+      "Alessandro Michele",
+      "Dolce & Gabbana",
+      "Iris Apfel"
+    ]
+  },
+  {
+    "id": "90s-minimalism",
+    "label": "90s Minimalism",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing 90s Minimalism, slip dresses, narrow tanks, clean suiting, and slim coats create a refined and nearly architectural silhouette. Black, stone, espresso, ivory, and muted grey appear in satin, fine wool, and matte leather with almost no decoration.",
+    "visual_references": [
+      "Calvin Klein",
+      "Jil Sander",
+      "Helmut Lang"
+    ]
+  },
+  {
+    "id": "grunge",
+    "label": "Grunge",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Grunge, flannel shirts, ripped denim, oversized knits, and worn combat boots create a slouched silhouette with visible wear and tear. Muddy red, forest green, faded black, and dirty grey pair with distressed textures and thrifted layering.",
+    "visual_references": [
+      "Kurt Cobain",
+      "Seattle scene",
+      "Marc Jacobs grunge"
+    ]
+  },
+  {
+    "id": "punk",
+    "label": "Punk",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Punk, torn tees, leather jackets, bondage straps, and aggressive hardware produce a confrontational silhouette. Black, tartan red, silver, and white are amplified by safety pins, studs, chains, and DIY destruction.",
+    "visual_references": [
+      "Vivienne Westwood",
+      "Sex Pistols",
+      "London punk"
+    ]
+  },
+  {
+    "id": "skater",
+    "label": "Skater",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Skater, baggy denim, graphic hoodies, oversized tees, and flat skate shoes create a loose and low-slung silhouette. Faded blacks, washed indigo, off-white, and sunbleached brights evoke skate parks, asphalt, and worn cotton jersey.",
+    "visual_references": [
+      "Supreme",
+      "Thrasher",
+      "Vans"
+    ]
+  },
+  {
+    "id": "utilitarian",
+    "label": "Utilitarian",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Utilitarian, field jackets, cargo pockets, belted layers, tactical vests, and straight practical trousers emphasize storage, function, and modular dressing over ornament. Olive, khaki, sand, black, and stone dominate canvas, ripstop, twill, and weathered nylon with military, expedition, and fieldwear cues.",
+    "visual_references": [
+      "Engineered Garments",
+      "military surplus",
+      "field uniforms"
+    ]
+  },
+  {
+    "id": "denim-culture",
+    "label": "Denim Culture",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Denim Culture, raw or dark-wash selvedge jeans, trucker jackets, five-pocket construction, visible topstitching, and heritage denim layering center the outfit around indigo craftsmanship. Deep indigo, tobacco, ecru, and washed blue appear in rigid denim with whiskering, selvedge edges, chain stitching, and collector-minded denim references rather than generic casual jeans.",
+    "visual_references": [
+      "Levi's Vintage Clothing",
+      "Kapital",
+      "selvedge denim"
+    ]
+  },
+  {
+    "id": "tailoring",
+    "label": "Tailoring",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Tailoring, structured or double-breasted blazers, defined lapels, pressed wide or straight trousers, dress shirts or open refined collars, and polished leather shoes create a formal precise silhouette. Navy, charcoal, black, camel, ivory, and sage appear in wool suiting, linen suiting, crisp poplin, satin lapels, sharp crease lines, and suit construction details associated with menswear tailoring and formal dressing.",
+    "visual_references": [
+      "Savile Row",
+      "Giorgio Armani",
+      "Saint Laurent"
+    ]
+  },
+  {
+    "id": "sportswear-luxe",
+    "label": "Sportswear Luxe",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Sportswear Luxe, football jerseys, elevated rugby tops, sleek training jackets, zip knits, athletic shorts or relaxed trousers, and premium sneakers are styled as fashion rather than pure sport. Black, cream, navy, scarlet, cobalt, forest green, and jewel tones appear in lustrous jersey, satin, technical knit, soft leather, and embroidered sport details that feel expensive, polished, and runway-aware instead of collegiate preppy.",
+    "visual_references": [
+      "Celine",
+      "Lacoste",
+      "sport-luxury runway"
+    ]
+  },
+  {
+    "id": "romantic",
+    "label": "Romantic",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Romantic, soft drape, ruffles, sheer layers, and delicate waist emphasis create a tender and fluid silhouette. Blush, ivory, mauve, powder blue, and antique gold pair with chiffon, lace, satin, and floral detail.",
+    "visual_references": [
+      "Valentino",
+      "Erdem",
+      "Victorian romance"
+    ]
+  },
+  {
+    "id": "subversive-basics",
+    "label": "Subversive Basics",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Subversive Basics, wardrobe staples like tees, tanks, and shirts are cut with slashes, twists, sheer panels, or displaced seams. Neutral colors keep the palette familiar while the construction quietly destabilizes the expected silhouette.",
+    "visual_references": [
+      "Helmut Lang",
+      "Maison Margiela",
+      "Dion Lee"
+    ]
+  },
+  {
+    "id": "archive-fashion",
+    "label": "Archive Fashion",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Archive Fashion, rare runway pieces, unusual pattern cutting, and historically specific garments are styled with collector precision. Faded blacks, complex hardware, technical nylon, and iconic seasonal details reference sought-after designer eras.",
+    "visual_references": [
+      "Raf Simons",
+      "Helmut Lang",
+      "Grailed archive culture"
+    ]
+  },
+  {
+    "id": "indie-sleaze",
+    "label": "Indie Sleaze",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Indie Sleaze, sheer tights, leather jackets, messy tees, and nightlife styling create a disheveled after-hours silhouette. Flash-lit blacks, metallics, leopard spots, and cigarette-grey textures evoke dive bars, early blogs, and party photography.",
+    "visual_references": [
+      "American Apparel",
+      "The Cobrasnake",
+      "late-2000s nightlife"
+    ]
+  },
+  {
+    "id": "club-kid",
+    "label": "Club Kid",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Club Kid, exaggerated faux fur, theatrical volume, tinted glasses, metallic accessories, dramatic sleeves, platform or pointed shoes, and nightlife spectacle transform the body into performance. Synthetic shine, UV brights, vinyl, glitter, clubwear layering, and costume-like styling reference queer nightlife and outrageous party dressing.",
+    "visual_references": [
+      "Leigh Bowery",
+      "Club Kids",
+      "Limelight"
+    ]
+  },
+  {
+    "id": "resort",
+    "label": "Resort",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Resort, loose shirts, fluid trousers, caftans, and easy dresses are built for sun, movement, and polished escape. Linen, silk, raffia, and open weaves in white, turquoise, coral, and sand reference luxury travel and warm-weather leisure.",
+    "visual_references": [
+      "Pucci",
+      "Missoni",
+      "Mediterranean resort wear"
+    ]
+  },
+  {
+    "id": "coastal",
+    "label": "Coastal",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Coastal, windbreakers, striped knits, easy shorts, and lightweight shirting create a breezy shoreline silhouette. Sea blue, weathered white, driftwood beige, and faded red are paired with washed cotton, rope details, and salt-air textures.",
+    "visual_references": [
+      "nautical wear",
+      "J.Crew",
+      "East Coast seaside"
+    ]
+  },
+  {
+    "id": "gender-fluid",
+    "label": "Gender-fluid",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Gender-fluid, soft suiting, skirts with shirting, pearls with work boots, and fluid drape dissolve rigid gender coding. Mixed tailoring, sheer layers, and neutral-to-jewel palettes create an intentional blend of masc and femme signals.",
+    "visual_references": [
+      "Harris Reed",
+      "Palomo Spain",
+      "Telfar"
+    ]
+  },
+  {
+    "id": "biker",
+    "label": "Biker",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Biker, black leather moto jackets with snap or band collars, zip closures, dark jeans, heavy boots or loafers, and exposed metal hardware create a road-ready rebellious silhouette. Black, tobacco, petrol, oxblood, white, and oxidized silver sit on worn leather, matte denim, stacked soles, and rugged accessories tied to motorcycle culture.",
+    "visual_references": [
+      "Schott",
+      "Belstaff",
+      "motorcycle culture"
+    ]
+  },
+  {
+    "id": "soft-tailoring",
+    "label": "Soft Tailoring",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Soft Tailoring, relaxed or double-breasted blazers, open-collar shirting, fluid wide-leg trousers, patch pockets, loafers, and unstructured shoulders shape the body with ease instead of rigidity. Sage, taupe, cream, dusty blue, chocolate, and tan appear in linen, drapey wool, silk, and soft cotton with soft-shoulder suit construction, relaxed suiting, and refined proportion.",
+    "visual_references": [
+      "Giorgio Armani",
+      "Lemaire",
+      "Dries Van Noten"
+    ]
+  },
+  {
+    "id": "neo-romantic",
+    "label": "Neo-Romantic",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Neo-Romantic, billowing sleeves, poetic drape, narrow waists, and dark floral surfaces create a moody theatrical silhouette. Ink navy, plum, burgundy, black, and faded cream appear in velvet, lace, and washed silk with art-school drama.",
+    "visual_references": [
+      "Ann Demeulemeester",
+      "Alexander McQueen",
+      "1980s neo-romanticism"
+    ]
+  },
+  {
+    "id": "deconstructed-classics",
+    "label": "Deconstructed Classics",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Deconstructed Classics, traditional blazers, shirts, and trousers are taken apart through exposed linings, uneven hems, and shifted closures. The palette stays largely neutral so altered construction and visible tailoring logic remain the focus.",
+    "visual_references": [
+      "Maison Margiela",
+      "Junya Watanabe",
+      "suit deconstruction"
+    ]
+  },
+  {
+    "id": "techno-minimalism",
+    "label": "Techno Minimalism",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Techno Minimalism, clean narrow layers, sleek outerwear, and restrained utility details create a machine-like silhouette with minimal noise. Black, graphite, white, and electric blue appear in smooth synthetics, bonded fabrics, and glossy matte contrasts.",
+    "visual_references": [
+      "Helmut Lang",
+      "Prada Sport",
+      "Berlin techno"
+    ]
+  },
+  {
+    "id": "oversized-structure",
+    "label": "Oversized Structure",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Oversized Structure, wide shoulders, enlarged shirting, voluminous trousers, and architectural outerwear create deliberate mass around the body. Crisp poplin, dense wool, and sculpted denim in black, white, and muted blue emphasize proportion over decoration.",
+    "visual_references": [
+      "Balenciaga",
+      "Jil Sander",
+      "Demna-era proportion"
+    ]
+  },
+  {
+    "id": "moto-culture",
+    "label": "Moto Culture",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Moto Culture, moto jackets with racing seams, zip fronts, protective paneling, contrast stripes, gloves, and performance-inspired leather or technical pieces turn the outfit toward motorsport references rather than classic biker minimalism. Black, red, white, silver, and petrol blue appear in leather, technical mesh, and sport hardware with a fast track-oriented silhouette.",
+    "visual_references": [
+      "Dainese",
+      "Ducati racing",
+      "Balenciaga moto references"
+    ]
+  },
+  {
+    "id": "artisan-craft",
+    "label": "Artisan Craft",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Artisan Craft, handwoven textiles, visible mending, natural dyes, and irregular surfaces create a tactile handmade silhouette. Earth pigments, undyed fibers, raw edges, and leatherwork reference workshop processes and regional textile traditions.",
+    "visual_references": [
+      "Bode",
+      "Visvim",
+      "handcrafted ateliers"
+    ]
+  },
+  {
+    "id": "vintage-americana",
+    "label": "Vintage Americana",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Vintage Americana, faded denim, western shirts, varsity knits, work jackets, flared jeans, suede layers, and broken-in boots build a nostalgic all-American silhouette. Sun-worn red, cream, indigo, tobacco, dusty blue, and faded brown appear in aged cotton, worn flannel, washed canvas, and soft suede referencing road trips, ranch wear, and secondhand mid-century casual dress.",
+    "visual_references": [
+      "RRL",
+      "Levi's",
+      "American vintage"
+    ]
+  },
+  {
+    "id": "cowboy-core",
+    "label": "Cowboy Core",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Cowboy Core, cowboy hats, western denim shirts with snap buttons, bootcut or flared jeans, pointed-toe leather boots, and statement belts define a direct western-inspired silhouette. Cognac, tobacco, cream, indigo, rust, and gold pair with pearl necklaces, bandanas, bolo ties, buckle details, and rodeo-coded accessories.",
+    "visual_references": [
+      "Beyonce Cowboy Carter",
+      "Levi's western",
+      "Nudie Jeans"
+    ]
+  },
+  {
+    "id": "western-americana",
+    "label": "Western Americana",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Western Americana, ranchwear, rodeo tailoring, western shirts, cowboy hats, bootcut denim, leather belts, and pointed boots turn frontier dress codes into contemporary fashion. Tobacco, rust, cream, indigo, faded blue, and turquoise appear in suede, denim, leather, pearl details, and heritage western accessories.",
+    "visual_references": [
+      "Ralph Lauren RRL",
+      "Stetson",
+      "Nudie Jeans"
+    ]
+  },
+  {
+    "id": "denim-on-denim",
+    "label": "Denim-on-Denim",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Denim-on-Denim, a matching or tonal denim jacket or shirt is worn with denim jeans or skirt in the same or contrasting wash, creating a head-to-toe denim composition known as the Canadian tuxedo. Light wash on light wash, dark indigo sets, or mixed-wash combinations are unified by the denim fabric across the full silhouette.",
+    "visual_references": [
+      "Levi's",
+      "Canadian tuxedo",
+      "Britney and Justin 2001"
+    ]
+  },
+  {
+    "id": "70s-revival",
+    "label": "70s Revival",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing 70s Revival, flared or wide-leg trousers, fitted knits, pointed collars, suede jackets, platform shoes, and warm-toned separates recreate a 1970s silhouette with modern styling. Camel, burnt orange, chocolate, mustard, olive, cream, and faded indigo appear in corduroy, suede, jersey, and washed denim with retro ease.",
+    "visual_references": [
+      "Gucci Tom Ford era",
+      "Saint Laurent 70s",
+      "flare denim revival"
+    ]
+  },
+  {
+    "id": "new-americana",
+    "label": "New Americana",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing New Americana, patchwork, varsity details, western shirting, workwear jackets, faded denim, and heritage motifs are reworked through a contemporary streetwear or craft lens. Indigo, cream, red, tobacco, khaki, and washed blue appear in quilted textiles, bandana prints, denim, canvas, and nostalgic American symbols with updated proportion.",
+    "visual_references": [
+      "Bode",
+      "Cactus Plant Flea Market",
+      "ERL"
+    ]
+  },
+  {
+    "id": "monochrome",
+    "label": "Monochrome",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Monochrome, the outfit is built from one tonal family such as all black, all grey, or all cream, with silhouette and texture replacing color contrast. Leather, denim, wool, jersey, and knit stack within the same color range so tonal layering, matte-versus-shine contrast, and shape become the main visual signal.",
+    "visual_references": [
+      "Rick Owens",
+      "Jil Sander",
+      "tonal dressing"
+    ]
+  },
+  {
+    "id": "color-blocking",
+    "label": "Color Blocking",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Color Blocking, large uninterrupted fields of saturated color divide the silhouette into bold graphic sections. Cobalt, tomato red, emerald, yellow, and white are arranged in crisp shapes with minimal print or texture noise.",
+    "visual_references": [
+      "Roksanda",
+      "Pierre Cardin",
+      "1960s mod"
+    ]
+  },
+  {
+    "id": "print-mixing",
+    "label": "Print Mixing",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Print Mixing, stripes, florals, checks, and abstract motifs are layered together with intentional clash and rhythm. The silhouette often stays simple so the visual energy comes from pattern scale, repetition, and chromatic collision.",
+    "visual_references": [
+      "Dries Van Noten",
+      "Etro",
+      "street-style maximalism"
+    ]
+  },
+  {
+    "id": "layering-culture",
+    "label": "Layering Culture",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Layering Culture, multiple shirts, vests, outerwear, scarves, and long hems stack to build depth and visible outfit construction. Contrasting lengths, collars, and textures in muted neutrals or mixed palettes create an intentionally complex silhouette.",
+    "visual_references": [
+      "Tokyo street style",
+      "Sacai",
+      "styling-editorial layering"
+    ]
+  },
+  {
+    "id": "quiet-outdoors",
+    "label": "Quiet Outdoors",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Quiet Outdoors, field jackets, knit layers, soft flannels, and sturdy trousers create an understated rural utility silhouette. Moss, bark, stone, and cream in brushed wool, waxed cotton, and corduroy suggest refined outdoor life without overt performance gear.",
+    "visual_references": [
+      "Barbour",
+      "Margaret Howell",
+      "country wear"
+    ]
+  },
+  {
+    "id": "coastal-grandmother",
+    "label": "Coastal Grandmother",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Coastal Grandmother, linen button-downs, wide-leg pants, soft sweaters, and easy sandals create an elegant home-by-the-sea silhouette. White, oatmeal, chambray, flax, and pale blue reference Nancy Meyers interiors, beach houses, and relaxed domestic luxury.",
+    "visual_references": [
+      "Nancy Meyers",
+      "Diane Keaton",
+      "beach house chic"
+    ]
+  },
+  {
+    "id": "preppy-revival",
+    "label": "Preppy Revival",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Preppy Revival, rugby shirts, pleats, loafers, striped knits, school colors, sweaters, and ivy-coded pieces are styled with sharper proportion and contemporary attitude. Navy, red, green, cream, and khaki pair with crest motifs, collegiate layering, polished bottoms, and nostalgic campus references that feel newly styled rather than streetwear jerseys, athletic shorts, or sneaker-heavy sport fits.",
+    "visual_references": [
+      "Miu Miu",
+      "Tommy Hilfiger",
+      "Ivy revival"
+    ]
+  },
+  {
+    "id": "draped-form",
+    "label": "Draped Form",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Draped Form, fabric wraps, falls, and gathers around the body in fluid arcs rather than fixed seams and rigid lines. Jersey, silk, and soft wool in stone, black, clay, and cream create sculptural movement with Grecian and modernist references.",
+    "visual_references": [
+      "Madame Gr\u00e8s",
+      "Rick Owens",
+      "Issey Miyake"
+    ]
+  },
+  {
+    "id": "safari",
+    "label": "Safari",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Safari, belted safari jackets, utility shirts, tailored shorts, and field pockets shape a practical warm-climate silhouette. Sand, khaki, tobacco, olive, and sun-faded white in cotton twill and linen reference expedition wear and desert travel imagery.",
+    "visual_references": [
+      "Yves Saint Laurent safari",
+      "Ralph Lauren",
+      "expedition uniforms"
+    ]
+  },
+  {
+    "id": "streetwear",
+    "label": "Streetwear",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Streetwear, graphic hoodies, football or rugby jerseys, oversized tees, baggy denim, athletic shorts, statement sneakers, caps, and logo-heavy layering create a relaxed hype-aware urban silhouette. Black, white, primary brights, camo, washed indigo, forest green, scarlet, and team colors reference skate culture, hip-hop styling, sportswear crossover, and drop-driven street fashion.",
+    "visual_references": [
+      "Supreme",
+      "Stussy",
+      "Off-White"
+    ]
+  },
+  {
+    "id": "hip-hop-fashion",
+    "label": "Hip-Hop Fashion",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Hip-Hop Fashion, oversized jerseys, baggy denim, timberland boots, chunky gold chains, fitted caps, and athletic brands create a silhouette rooted in Black American street culture. Logomania, luxury brand mixing, and bold scale reference hip-hop's influence on global fashion from the 1990s through today.",
+    "visual_references": [
+      "FUBU",
+      "Sean John",
+      "Dapper Dan"
+    ]
+  }
+]
