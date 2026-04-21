@@ -21,26 +21,22 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Review findings fixed: session detail now degrades safely on legacy databases missing `captures.session_id`, retrieval retries after transient corpus-load errors, and `seed_reference_corpus.py` deletes stale rows only after successful upserts (2026-04-21)
-- Backend refactor implemented: extracted `color_service.py` and `enrich_service.py`, moved taxonomy classification into `clip_service.py`, and slimmed `routes/capture.py` to storage + insert orchestration (2026-04-21)
-- Capture contract migrated: `taxonomy_matches` now stores/returns `dict[str, float]`; sessions fixtures, capture tests, classifier eval, and smoke scripts updated to match (2026-04-21)
-- Markdown reorg completed: agent briefs/plans/worktree notes moved under `docs/`, plus new root `README.md` and `API_CONTRACT.md` added (2026-04-21)
+- API contract normalized for read surfaces: `GET /api/gallery` and `GET /api/sessions/{id}` now share one capture serializer, `GET /api/captures/{id}` was added, and backend-local `sakad-backend/API_CONTRACT.md` now documents the stable partner contract (2026-04-21)
+- Backend refactor completed and verified with pytest; follow-up work is now focused on stable read contracts for partner consumption (2026-04-21)
 
 ### Now
 
-**feat/backend-refactor — Final Verification**
+**feat/api-contract — Read Contract Normalization**
 
-- [x] Implement six-task backend refactor plan
-- [x] Run full pytest suite in worktree (`81 passed`)
-- [ ] Run `ruff check .` in an environment where Ruff is installed
-- [ ] Run `mypy --strict .` in an environment where mypy is installed
-- [ ] Commit and push branch once remaining verify tools are available
+- [x] Audit `GET /api/gallery`, `GET /api/sessions`, `GET /api/sessions/{id}` against the required capture shape
+- [x] Add `GET /api/captures/{id}` and normalize capture read payloads
+- [x] Write backend-local `API_CONTRACT.md` and finish targeted test coverage
 
-**Exit criteria:** pytest/lint/type-check all pass, then branch is ready to commit/push.
+**Exit criteria:** complete for pytest-scoped verification; full lint/type verification still depends on local tooling availability.
 
 ### Next
 
-- Week 3: `GET /api/captures/{id}`, `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), seed 30+ demo captures, share live URL with partner
+- Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), seed 30+ demo captures, share live URL with partner
 - Week 4: Deploy to Railway, Supabase Realtime on captures table, `GET /api/sessions/{id}/reflection`
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
 
@@ -50,25 +46,25 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 | Field     | Value                         |
 | --------- | ----------------------------- |
-| Command   | /new-feature backend-refactor |
-| Phase     | 5 — Verify                    |
-| Next step | Run lint/type tools in a provisioned environment |
+| Command   | /new-feature api-contract |
+| Phase     | 5 — Verify |
+| Next step | Provision `ruff` and `mypy` if full verify gate is needed before commit |
 
 ### Checklist
 
-- [x] Worktree created (`feat/backend-refactor`)
+- [x] Worktree created (`feature/api-contract`)
 - [x] Project state read
 - [x] Plugins verified
-- [x] PRD created — N/A: refactor spec, no new product requirements
-- [x] Research done — codebase audit complete, all 64 tests confirmed passing
-- [x] Brainstorming complete — Approach C selected (strict 4-service layout)
-- [x] Plan written — `docs/superpowers/plans/2026-04-21-backend-refactor.md`
-- [x] Plan review loop (1 iteration) — P0/P1 gaps called out and folded into implementation before code changes
+- [x] PRD created — N/A: direct partner contract task from brief
+- [x] Research done — audited route/test surface and brief requirements for read endpoints
+- [x] Brainstorming complete — normalize reads through one shared capture serializer instead of per-route ad hoc shapes
+- [x] Plan written — `docs/superpowers/plans/2026-04-21-api-contract.md`
+- [x] Plan review loop (1 iteration) — PASS
 - [x] TDD execution complete
 - [x] Code review loop (1 iteration) — no remaining P0/P1/P2 findings in changed files
 - [x] Simplified
 - [ ] Verified (tests/lint/types) — pytest passed; `ruff` and `mypy` unavailable in current shell
-- [x] E2E use cases tested — N/A: internal refactor, no user-facing behavior changes
+- [x] E2E use cases tested — API happy path and `404` path covered for capture detail
 - [ ] Learnings documented (if any)
 - [x] State files updated
 - [ ] Committed and pushed
@@ -80,12 +76,11 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Open Questions
 
-- Whether to keep `taxonomy_matches` as the long-term canonical external contract or add a compatibility adapter for any consumer still expecting ranked arrays
-- Taxonomy accuracy is still uneven on some demo images (`western.jpg`, `furcoat.jpg`); likely a taxonomy/data-tuning problem rather than a route/service-structure problem
+- Whether `GET /api/sessions` should eventually gain preview metadata for the web app, or remain a pure session list while detail routes own capture reads
 
 ## Blockers
 
-- `ruff` and `mypy` are not installed in the current shell environment, so the full verify gate cannot complete until those tools are provisioned
+- `ruff` and `mypy` are not installed in the current shell environment, so the full verify gate still cannot complete once implementation is done
 
 ---
 

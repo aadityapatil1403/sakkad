@@ -94,9 +94,13 @@ def test_get_session_returns_session_detail_with_enriched_captures(monkeypatch) 
     assert payload["captures"][0]["image_url"] == "https://example.com/look.jpg"
     assert payload["captures"][0]["taxonomy_matches"]["Gorpcore"] == 0.91
     assert payload["captures"][0]["tags"]["palette"] == ["#111111", "#eeeeee"]
+    assert payload["captures"][0]["tags"]["attributes"] is None
+    assert payload["captures"][0]["tags"]["mood"] is None
+    assert payload["captures"][0]["tags"]["layer2"] is None
     assert payload["captures"][0]["layer1_tags"] == ["technical"]
     assert payload["captures"][0]["layer2_tags"] == ["outdoor-shell"]
-    assert payload["captures"][0]["reference_matches"][0]["id"] == "ref-1"
+    assert payload["captures"][0]["reference_matches"][0]["brand"] is None
+    assert payload["captures"][0]["reference_matches"][0]["title"] == "Arc'teryx shell"
     assert payload["captures"][0]["reference_explanation"] is not None
 
 
@@ -136,10 +140,15 @@ def test_get_session_normalizes_missing_optional_capture_fields(monkeypatch) -> 
     assert response.status_code == 200
     capture = response.json()["captures"][0]
     assert capture["taxonomy_matches"]["Minimal"] == 0.7
-    assert capture["tags"] == {"palette": []}
-    assert capture["layer1_tags"] == []
-    assert capture["layer2_tags"] == []
-    assert capture["reference_matches"] == []
+    assert capture["tags"] == {
+        "palette": None,
+        "attributes": None,
+        "mood": None,
+        "layer2": None,
+    }
+    assert capture["layer1_tags"] is None
+    assert capture["layer2_tags"] is None
+    assert capture["reference_matches"] is None
     assert capture["reference_explanation"] is None
 
 
@@ -164,7 +173,7 @@ def test_get_session_keeps_captures_when_reference_fields_are_absent(monkeypatch
     assert response.status_code == 200
     capture = response.json()["captures"][0]
     assert capture["image_url"] == "https://example.com/no-reference-columns.jpg"
-    assert capture["reference_matches"] == []
+    assert capture["reference_matches"] is None
     assert capture["reference_explanation"] is None
 
 

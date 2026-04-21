@@ -14,6 +14,7 @@ All notable changes to Sakkad will be documented in this file.
 
 ### Changed
 
+- **2026-04-21** — `sakad-backend/routes/capture.py`, `routes/gallery.py`, `routes/sessions.py`, `services/read_contract.py`, `tests/test_read_api.py`, `test_sessions_api.py`, `sakad-backend/API_CONTRACT.md`: Normalized capture read payloads behind one shared serializer, added `GET /api/captures/{id}`, enforced object-shaped `taxonomy_matches` across read endpoints, and documented the stable partner-facing contract
 - **2026-04-21** — `sakad-backend/routes/capture.py`, `services/clip_service.py`, `services/color_service.py`, `services/enrich_service.py`: Refactored capture processing into focused services; classification now returns domain-capped `taxonomy_matches` as `Record<string, number>` and the route is reduced to upload + insert orchestration
 - **2026-04-21** — `sakad-backend/tests/test_capture_classify.py`, `test_clip_classify.py`, `test_color_service.py`, `test_enrich_service.py`, `test_sessions_api.py`: Migrated tests to the new service boundaries and dict-shaped taxonomy contract
 - **2026-04-21** — `sakad-backend/scripts/evaluate_classifier.py`, `smoke_capture.sh`, `verify_capture_eval.sh`: Updated evaluation/smoke tooling to match cosine-similarity classification without softmax and dict-shaped taxonomy output

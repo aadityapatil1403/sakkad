@@ -6,6 +6,7 @@ import uuid
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from services.enrich_service import enrich_capture
+from services.read_contract import normalize_capture_read
 from services.supabase_client import supabase
 
 router = APIRouter()
@@ -71,6 +72,22 @@ def _insert_capture(payload: dict, *, allow_retry_without_enrichment: bool) -> o
             if key not in missing_columns
         }
         return supabase.table("captures").insert(retry_payload).execute()
+
+
+@router.get("/api/captures/{capture_id}")
+async def get_capture(capture_id: str) -> dict:
+    response = (
+        supabase.table("captures")
+        .select("*")
+        .eq("id", capture_id)
+        .limit(1)
+        .execute()
+    )
+    if response.data is None:
+        raise HTTPException(status_code=500, detail="Failed to fetch capture")
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Capture not found")
+    return normalize_capture_read(response.data[0])
 
 
 @router.post("/api/capture")

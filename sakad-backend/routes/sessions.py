@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
+from services.read_contract import normalize_capture_read
 from services.supabase_client import supabase
 
 router = APIRouter()
@@ -7,23 +8,6 @@ router = APIRouter()
 DEV_USER_ID = "00000000-0000-0000-0000-000000000001"
 SESSIONS_TABLE = "sessions"
 CAPTURES_TABLE = "captures"
-
-
-def _normalize_capture(capture: dict) -> dict:
-    tags = capture.get("tags") or {}
-    palette = tags.get("palette") if isinstance(tags, dict) else None
-    return {
-        "id": capture.get("id"),
-        "session_id": capture.get("session_id"),
-        "image_url": capture.get("image_url"),
-        "created_at": capture.get("created_at"),
-        "taxonomy_matches": capture.get("taxonomy_matches") or {},
-        "tags": {"palette": palette or []},
-        "layer1_tags": capture.get("layer1_tags") or [],
-        "layer2_tags": capture.get("layer2_tags") or [],
-        "reference_matches": capture.get("reference_matches") or [],
-        "reference_explanation": capture.get("reference_explanation"),
-    }
 
 
 def _missing_session_id_column(exc: Exception) -> bool:
@@ -48,7 +32,7 @@ def _get_session_captures(session_id: str) -> list[dict]:
             return []
         raise
     rows = response.data or []
-    return [_normalize_capture(row) for row in rows]
+    return [normalize_capture_read(row) for row in rows]
 
 
 @router.post("/api/sessions/start")
