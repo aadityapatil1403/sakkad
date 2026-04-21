@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from services.read_contract import normalize_capture_read
 from services.supabase_client import supabase
 
 router = APIRouter()
@@ -16,4 +17,5 @@ async def gallery():
     if response.data is None:
         raise HTTPException(status_code=500, detail="Failed to fetch gallery")
 
-    return response.data
+    rows = response.data or []
+    return [normalize_capture_read(row) for row in rows]
