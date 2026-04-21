@@ -1,0 +1,342 @@
+[
+  {
+    "filename": "western.jpg",
+    "bucket": "western / americana",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Western Americana", "Cowboy Core"],
+    "acceptable_taxonomy": ["New Americana", "Vintage Americana", "Denim-on-Denim"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "vintage.jpg",
+    "bucket": "western / americana",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Vintage Americana", "70s Revival"],
+    "acceptable_taxonomy": ["New Americana", "Denim Culture"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "western_rodeo_denim_01.jpg",
+    "bucket": "western / americana",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Western Americana"],
+    "acceptable_taxonomy": ["Cowboy Core", "New Americana"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add a rodeo denim portrait from Unsplash or Pexels."
+  },
+  {
+    "filename": "western_bootcut_suede_01.jpg",
+    "bucket": "western / americana",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Cowboy Core"],
+    "acceptable_taxonomy": ["Western Americana", "Vintage Americana"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add suede jacket or bootcut silhouette look."
+  },
+  {
+    "filename": "americana_fringe_hat_01.jpg",
+    "bucket": "western / americana",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["New Americana"],
+    "acceptable_taxonomy": ["Western Americana", "Cowboy Core"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add editorial western styling with hat or fringe."
+  },
+  {
+    "filename": "workwear.jpg",
+    "bucket": "workwear / utility",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Workwear", "Utilitarian"],
+    "acceptable_taxonomy": ["Quiet Outdoors", "Streetwear"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "leather_jacket.jpg",
+    "bucket": "workwear / utility",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Biker", "Moto Culture"],
+    "acceptable_taxonomy": ["Utilitarian", "Denim Culture"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "utility_vest_olive_01.jpg",
+    "bucket": "workwear / utility",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Utilitarian"],
+    "acceptable_taxonomy": ["Workwear", "Quiet Outdoors"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add a utility vest or overshirt look."
+  },
+  {
+    "filename": "carpenter_pants_canvas_01.jpg",
+    "bucket": "workwear / utility",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Workwear"],
+    "acceptable_taxonomy": ["Utilitarian", "Streetwear"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add canvas jacket or carpenter pants image."
+  },
+  {
+    "filename": "field_jacket_functional_01.jpg",
+    "bucket": "workwear / utility",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Quiet Outdoors"],
+    "acceptable_taxonomy": ["Utilitarian", "Workwear"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add functional field jacket or chore coat."
+  },
+  {
+    "filename": "japanjersey.jpg",
+    "bucket": "japanese streetwear / sporty",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Japanese Streetwear", "Streetwear"],
+    "acceptable_taxonomy": ["Maximalism", "Sportswear Luxe", "Hip-Hop Fashion"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "soccer_streetwear.jpg",
+    "bucket": "japanese streetwear / sporty",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Streetwear", "Sportswear Luxe"],
+    "acceptable_taxonomy": ["Japanese Streetwear", "Hip-Hop Fashion"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "tokyo_track_jacket_01.jpg",
+    "bucket": "japanese streetwear / sporty",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Japanese Streetwear"],
+    "acceptable_taxonomy": ["Streetwear", "Sportswear Luxe"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add Tokyo street shot with track jacket or sneakers."
+  },
+  {
+    "filename": "sporty_layered_jersey_01.jpg",
+    "bucket": "japanese streetwear / sporty",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Sportswear Luxe"],
+    "acceptable_taxonomy": ["Streetwear", "Japanese Streetwear"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add layered football jersey or tech-athletic styling."
+  },
+  {
+    "filename": "harajuku_oversized_01.jpg",
+    "bucket": "japanese streetwear / sporty",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Maximalism"],
+    "acceptable_taxonomy": ["Japanese Streetwear", "Streetwear"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add oversized layered streetwear with strong accessories."
+  },
+  {
+    "filename": "monochromatic.jpg",
+    "bucket": "minimalism / monochrome",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Monochrome", "90s Minimalism"],
+    "acceptable_taxonomy": ["Techno Minimalism", "Biker"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "formal_wear.jpg",
+    "bucket": "minimalism / monochrome",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Tailoring", "Soft Tailoring"],
+    "acceptable_taxonomy": ["Quiet Luxury", "Old Money"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "minimal_black_coat_01.jpg",
+    "bucket": "minimalism / monochrome",
+    "session_alias": "session_fashion",
+    "expected_taxonomy": ["Techno Minimalism"],
+    "acceptable_taxonomy": ["Monochrome", "90s Minimalism"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add black coat or column silhouette look."
+  },
+  {
+    "filename": "white_gallery_minimal_01.jpg",
+    "bucket": "minimalism / monochrome",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["90s Minimalism"],
+    "acceptable_taxonomy": ["Monochrome", "Quiet Luxury"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add clean white-on-white tailoring or gallery look."
+  },
+  {
+    "filename": "oversized_neutral_suit_01.jpg",
+    "bucket": "minimalism / monochrome",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Oversized Structure"],
+    "acceptable_taxonomy": ["Soft Tailoring", "90s Minimalism"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add oversized neutral suit or wide silhouette."
+  },
+  {
+    "filename": "architectural_shadow_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Avant-garde"],
+    "acceptable_taxonomy": ["Draped Form", "Techno Minimalism"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add sharp shadow-on-concrete architecture image."
+  },
+  {
+    "filename": "brutalist_stairwell_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Techno Minimalism"],
+    "acceptable_taxonomy": ["Avant-garde", "Monochrome"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add brutalist stairwell or strong geometric architecture."
+  },
+  {
+    "filename": "greenhouse_texture_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Artisan Craft"],
+    "acceptable_taxonomy": ["Bohemian", "Avant-garde"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add plant shadow or greenhouse detail image."
+  },
+  {
+    "filename": "rust_texture_macro_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Artisan Craft"],
+    "acceptable_taxonomy": ["Deconstructed Classics", "Avant-garde"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add rust, paint, or distressed surface macro."
+  },
+  {
+    "filename": "stone_wall_pattern_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Deconstructed Classics"],
+    "acceptable_taxonomy": ["Artisan Craft", "Avant-garde"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add patterned stone or tiled facade detail."
+  },
+  {
+    "filename": "desert_plant_silhouette_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Quiet Outdoors"],
+    "acceptable_taxonomy": ["Safari", "Coastal"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add desert plant or agave silhouette photo."
+  },
+  {
+    "filename": "window_reflection_grid_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Color Blocking"],
+    "acceptable_taxonomy": ["Techno Minimalism", "Avant-garde"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add reflective glass facade with color fields."
+  },
+  {
+    "filename": "concrete_curve_01.jpg",
+    "bucket": "abstract / environmental",
+    "session_alias": "session_abstract",
+    "expected_taxonomy": ["Draped Form"],
+    "acceptable_taxonomy": ["Avant-garde", "Techno Minimalism"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add curved concrete or sculptural architectural form."
+  },
+  {
+    "filename": "furcoat.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Y2K", "Club Kid"],
+    "acceptable_taxonomy": ["Maximalism", "Streetwear"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "old_money.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Old Money", "Preppy"],
+    "acceptable_taxonomy": ["Quiet Luxury", "Preppy Revival"],
+    "asset_status": "available",
+    "source_provider": "local",
+    "notes": "Existing local test image."
+  },
+  {
+    "filename": "editorial_red_background_01.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Color Blocking"],
+    "acceptable_taxonomy": ["Maximalism", "Neo-Romantic"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add studio editorial with strong monochrome backdrop."
+  },
+  {
+    "filename": "archive_runway_pose_01.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Archive Fashion"],
+    "acceptable_taxonomy": ["Avant-garde", "Deconstructed Classics"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add runway or archive-inspired fashion pose."
+  },
+  {
+    "filename": "romantic_sheer_editorial_01.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Neo-Romantic"],
+    "acceptable_taxonomy": ["Romantic", "Draped Form"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add sheer fabric or draped editorial image."
+  },
+  {
+    "filename": "deconstructed_layered_editorial_01.jpg",
+    "bucket": "mixed / editorial",
+    "session_alias": "session_mixed",
+    "expected_taxonomy": ["Deconstructed Classics"],
+    "acceptable_taxonomy": ["Archive Fashion", "Avant-garde"],
+    "asset_status": "manual_add",
+    "source_provider": "royalty_free_placeholder",
+    "notes": "Add layered or asymmetrical editorial styling."
+  }
+]

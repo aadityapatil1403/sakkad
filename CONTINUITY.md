@@ -21,22 +21,24 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- API contract normalized for read surfaces: `GET /api/gallery` and `GET /api/sessions/{id}` now share one capture serializer, `GET /api/captures/{id}` was added, and backend-local `sakad-backend/API_CONTRACT.md` now documents the stable partner contract (2026-04-21)
-- Backend refactor completed and verified with pytest; follow-up work is now focused on stable read contracts for partner consumption (2026-04-21)
+- API contract normalized: `GET /api/gallery` and `GET /api/sessions/{id}` share one capture serializer, `GET /api/captures/{id}` added, `sakad-backend/API_CONTRACT.md` documents stable partner contract (2026-04-21)
+- Demo dataset tooling added: 34-entry manifest, `seed_demo_captures.py`, tests, design spec/plan, and evaluation doc scaffold (2026-04-21)
+- PR #1 merged to main: backend refactor squash-merged, worktree cleaned up, main reset to `b51fe2d` (2026-04-21)
 
 ### Now
 
-**feat/api-contract — Read Contract Normalization**
+**Week 3 — Demo-readiness and Partner Contract**
 
-- [x] Audit `GET /api/gallery`, `GET /api/sessions`, `GET /api/sessions/{id}` against the required capture shape
-- [x] Add `GET /api/captures/{id}` and normalize capture read payloads
-- [x] Write backend-local `API_CONTRACT.md` and finish targeted test coverage
+- [ ] Run live demo seed (`python scripts/seed_demo_captures.py`) once `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` are set
+- [ ] Replace 24 placeholder images in `sakad-backend/eval/demo_dataset_manifest.json` with royalty-free images
+- [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
+- [ ] Improve `/api/health` for demo readiness
 
-**Exit criteria:** complete for pytest-scoped verification; full lint/type verification still depends on local tooling availability.
+**Exit criteria:** Partner can consume documented session/capture reads, live seed documents actual taxonomy/reference outcomes, clustering works on seeded demo data.
 
 ### Next
 
-- Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), seed 30+ demo captures, share live URL with partner
+- Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), share live URL with partner
 - Week 4: Deploy to Railway, Supabase Realtime on captures table, `GET /api/sessions/{id}/reflection`
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
 
@@ -44,43 +46,28 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value                         |
-| --------- | ----------------------------- |
-| Command   | /new-feature api-contract |
-| Phase     | 5 — Verify |
-| Next step | Provision `ruff` and `mypy` if full verify gate is needed before commit |
+| Field     | Value |
+| --------- | ----- |
+| Command   | none  |
+| Phase     | —     |
+| Next step | —     |
 
 ### Checklist
 
-- [x] Worktree created (`feature/api-contract`)
-- [x] Project state read
-- [x] Plugins verified
-- [x] PRD created — N/A: direct partner contract task from brief
-- [x] Research done — audited route/test surface and brief requirements for read endpoints
-- [x] Brainstorming complete — normalize reads through one shared capture serializer instead of per-route ad hoc shapes
-- [x] Plan written — `docs/superpowers/plans/2026-04-21-api-contract.md`
-- [x] Plan review loop (1 iteration) — PASS
-- [x] TDD execution complete
-- [x] Code review loop (1 iteration) — no remaining P0/P1/P2 findings in changed files
-- [x] Simplified
-- [ ] Verified (tests/lint/types) — pytest passed; `ruff` and `mypy` unavailable in current shell
-- [x] E2E use cases tested — API happy path and `404` path covered for capture detail
-- [ ] Learnings documented (if any)
-- [x] State files updated
-- [ ] Committed and pushed
-- [ ] PR created
-- [ ] PR reviews addressed
-- [ ] Branch finished
+(cleared — both feature/api-contract and chore/demo-seed merged to main)
 
 ---
 
 ## Open Questions
 
 - Whether `GET /api/sessions` should eventually gain preview metadata for the web app, or remain a pure session list while detail routes own capture reads
+- Whether `specs-bucket` already exists in the target Supabase project (used by demo seeding script for source asset archival)
+- Whether the current taxonomy/reference corpus is strong enough on abstract/environmental imagery, or if those captures should stay secondary in the live demo mix
 
 ## Blockers
 
-- `ruff` and `mypy` are not installed in the current shell environment, so the full verify gate still cannot complete once implementation is done
+- Live seeding is blocked until `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are available in the shell
+- `ruff` and `mypy` are not installed in the current shell environment
 
 ---
 
@@ -109,4 +96,4 @@ Clear Done section, start fresh
 
 Claude should say:
 
-> "Loaded project state. Current focus: Week 2 backend core — Sessions API, taxonomy seeding, and classification. Ready to continue or start something new?"
+> "Loaded project state. Current focus: Week 3 — demo seeding, clustering, and partner handoff. Ready to continue or start something new?"
