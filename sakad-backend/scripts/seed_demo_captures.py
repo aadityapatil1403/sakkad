@@ -1,4 +1,4 @@
-"""Seed the demo capture corpus through the existing FastAPI pipeline."""
+"""Seed the demo capture corpus through the live FastAPI server."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import requests
 from dotenv import load_dotenv
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
@@ -61,10 +62,10 @@ def resolve_dataset_entries(
     return resolved
 
 
-def ensure_demo_sessions(client: Any, aliases: list[str] | tuple[str, ...]) -> dict[str, str]:
+def ensure_demo_sessions(base_url: str, aliases: list[str] | tuple[str, ...]) -> dict[str, str]:
     session_map: dict[str, str] = {}
     for alias in aliases:
-        response = client.post("/api/sessions/start")
+        response = requests.post(f"{base_url}/api/sessions/start")
         if response.status_code != 200:
             raise RuntimeError(f"failed to start demo session {alias}: {response.text}")
         payload = response.json()
@@ -85,13 +86,21 @@ def ensure_runtime_environment() -> None:
         )
 
 
+def check_server_running(base_url: str) -> None:
+    try:
+        requests.get(f"{base_url}/api/health", timeout=3)
+    except Exception:
+        print(f"ERROR: Backend not running at {base_url}. Start with: uvicorn main:app --reload", flush=True)
+        sys.exit(1)
+
+
 def extract_top_taxonomy(payload: dict[str, Any]) -> tuple[str | None, float | None]:
     taxonomy_matches = payload.get("taxonomy_matches") or {}
     if not isinstance(taxonomy_matches, dict) or not taxonomy_matches:
         return None, None
-    label, score = next(iter(taxonomy_matches.items()))
+    label = max(taxonomy_matches, key=lambda k: taxonomy_matches[k])
     try:
-        return str(label), float(score)
+        return str(label), float(taxonomy_matches[label])
     except (TypeError, ValueError):
         return str(label), None
 
@@ -245,6 +254,14 @@ def render_report_markdown(summary: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def ensure_specs_bucket(supabase: Any) -> None:
+    existing = supabase.storage.list_buckets()
+    existing_ids = {b.id for b in existing}
+    if SPECS_BUCKET not in existing_ids:
+        supabase.storage.create_bucket(SPECS_BUCKET, options={"public": False})
+        print(f"Created storage bucket: {SPECS_BUCKET}", flush=True)
+
+
 def upload_source_asset(
     supabase: Any,
     *,
@@ -287,10 +304,12 @@ def try_upload_source_asset(
 def seed_available_entries() -> dict[str, Any]:
     ensure_runtime_environment()
 
-    from fastapi.testclient import TestClient
+    base_url = os.getenv("BACKEND_URL", "http://localhost:8000")
+    check_server_running(base_url)
 
-    from main import app
     from services.supabase_client import supabase
+
+    ensure_specs_bucket(supabase)
 
     manifest = load_manifest()
     entries = resolve_dataset_entries(manifest)
@@ -308,50 +327,48 @@ def seed_available_entries() -> dict[str, Any]:
     if not available_entries:
         raise RuntimeError("no available demo dataset images found in test-images/")
 
+    session_map = ensure_demo_sessions(base_url, SESSION_ALIASES)
+    print("Demo sessions:", json.dumps(session_map, indent=2), flush=True)
+
     results: list[dict[str, Any]] = []
-    with TestClient(app) as client:
-        session_map = ensure_demo_sessions(client, SESSION_ALIASES)
-        print("Demo sessions:", json.dumps(session_map, indent=2), flush=True)
+    for index, entry in enumerate(available_entries, start=1):
+        local_path = Path(entry["local_path"])
+        image_bytes = local_path.read_bytes()
+        content_type = "image/jpeg"
+        source_url, upload_notes = try_upload_source_asset(
+            supabase,
+            filename=entry["filename"],
+            image_bytes=image_bytes,
+            content_type=content_type,
+        )
 
-        for index, entry in enumerate(available_entries, start=1):
-            local_path = Path(entry["local_path"])
-            image_bytes = local_path.read_bytes()
-            content_type = "image/jpeg"
-            source_url, upload_notes = try_upload_source_asset(
-                supabase,
-                filename=entry["filename"],
-                image_bytes=image_bytes,
-                content_type=content_type,
+        with open(local_path, "rb") as image_file:
+            response = requests.post(
+                f"{base_url}/api/capture",
+                files={"file": (entry["filename"], image_file, content_type)},
+                data={"session_id": session_map[entry["session_alias"]]},
             )
+        if response.status_code != 200:
+            raise RuntimeError(
+                f"capture failed for {entry['filename']}: "
+                f"{response.status_code} {response.text}"
+            )
+        payload = response.json()
+        result = evaluate_capture_result(entry, payload)
+        result["source_url"] = source_url
+        result["notes"].extend(upload_notes)
+        results.append(result)
 
-            response = client.post(
-                "/api/capture",
-                files={
-                    "file": (entry["filename"], image_bytes, content_type),
-                    "session_id": (None, session_map[entry["session_alias"]]),
-                },
-            )
-            if response.status_code != 200:
-                raise RuntimeError(
-                    f"capture failed for {entry['filename']}: "
-                    f"{response.status_code} {response.text}"
-                )
-            payload = response.json()
-            result = evaluate_capture_result(entry, payload)
-            result["source_url"] = source_url
-            result["notes"].extend(upload_notes)
-            results.append(result)
-
-            print(
-                f"[{index}/{len(available_entries)}] {entry['filename']}"
-                f" | session={entry['session_alias']}"
-                f" | top_taxonomy={result['actual_top_match']} ({result['actual_top_score']})"
-                f" | top_reference={result['top_reference']}"
-                f" | pass={result['pass']}",
-                flush=True,
-            )
-            for note in result["notes"]:
-                print(f"  FLAG: {note}", flush=True)
+        print(
+            f"[{index}/{len(available_entries)}] {entry['filename']}"
+            f" | session={entry['session_alias']}"
+            f" | top_taxonomy={result['actual_top_match']} ({result['actual_top_score']})"
+            f" | top_reference={result['top_reference']}"
+            f" | pass={result['pass']}",
+            flush=True,
+        )
+        for note in result["notes"]:
+            print(f"  FLAG: {note}", flush=True)
 
     summary = {
         "generated_at": datetime.now(UTC).isoformat(),

@@ -92,9 +92,12 @@ def delete_stale_rows(existing_rows: dict[str, dict], canonical_ids: set[str]) -
 
 def build_embedding_text(entry: dict) -> str:
     tags = ", ".join(entry["taxonomy_tags"])
+    bucket = entry.get("metadata", {}).get("bucket")
+    bucket_line = f"Bucket: {bucket}\n" if isinstance(bucket, str) and bucket.strip() else ""
     return (
         f"Designer: {entry['designer']}\n"
         f"Brand: {entry['brand']}\n"
+        f"{bucket_line}"
         f"Collection or era: {entry['collection_or_era']}\n"
         f"Title: {entry['title']}\n"
         f"Description: {entry['description']}\n"

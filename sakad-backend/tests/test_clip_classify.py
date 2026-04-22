@@ -53,10 +53,11 @@ class TestClipServiceClassify:
 
         assert next(iter(result)) == "label-A"
 
-    def test_scores_do_not_sum_to_one(self) -> None:
+    def test_scores_are_softmax_probabilities(self) -> None:
         result = self._run([1.0, 0.0, 0.0], _FAKE_TAXONOMY)
 
-        assert abs(sum(result.values()) - 1.0) > 0.01
+        assert abs(sum(result.values()) - 1.0) < 0.01
+        assert all(0.0 <= score <= 1.0 for score in result.values())
 
     def test_domain_caps_applied_multi_domain(self) -> None:
         result = self._run([1.0, 0.0, 0.0], _FAKE_TAXONOMY)

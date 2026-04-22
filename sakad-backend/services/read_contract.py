@@ -4,7 +4,7 @@ def _normalize_taxonomy_matches(value: object) -> dict[str, float]:
         for key, score in value.items():
             if isinstance(key, str) and isinstance(score, int | float):
                 normalized[key] = float(score)
-        return normalized
+        return dict(sorted(normalized.items(), key=lambda item: item[1], reverse=True))
 
     if isinstance(value, list):
         normalized = {}
@@ -15,7 +15,7 @@ def _normalize_taxonomy_matches(value: object) -> dict[str, float]:
             score = item.get("score")
             if isinstance(label, str) and isinstance(score, int | float):
                 normalized[label] = float(score)
-        return normalized
+        return dict(sorted(normalized.items(), key=lambda item: item[1], reverse=True))
 
     return {}
 

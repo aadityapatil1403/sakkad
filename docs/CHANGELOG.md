@@ -7,6 +7,7 @@ All notable changes to Sakkad will be documented in this file.
 ### Added
 
 - Initial project setup with Claude Code configuration
+- **2026-04-21** — `data/reference_corpus.json`, `sakad-backend/tests/test_reference_corpus_data.py`, `sakad-backend/tests/test_seed_reference_corpus.py`, `sakad-backend/scripts/seed_reference_corpus.py`, `docs/superpowers/specs/2026-04-21-reference-corpus-expansion-design.md`, `docs/superpowers/plans/2026-04-21-reference-corpus-expansion.md`: Expanded the designer reference corpus to 54 fashion references across western/americana, workwear/utility, biker/moto, Japanese streetwear, minimalism/tailoring, and avant-garde; added bucket metadata and bucket-aware embedding text; validated UUID IDs after a live seed failure; successfully reseeded Supabase
 - **2026-04-21** — `sakad-backend/eval/demo_dataset_manifest.json`, `sakad-backend/scripts/seed_demo_captures.py`, `sakad-backend/tests/test_seed_demo_captures.py`, `docs/eval_demo_dataset.md`: Added a manifest-driven demo dataset workflow with 34 target captures, runtime session seeding through `/api/sessions/start` + `/api/capture`, quality flagging for weak taxonomy/reference hits, and evaluation notes for safest live-demo assets
 - **2026-04-18** — `AGENTS.md`: Added Codex harness guide — workflow decision matrix, skills→manual equivalents, quality gates, hook awareness, coding standards, session checklists; designed as permanent AGENTS.md system prompt so Codex follows the same workflow discipline as Claude
 - **2026-04-14** — `services/gemini_service.py`: Gemini Flash 2.0 vision tagging — `get_layer1_tags()` returns 10 single-word visual descriptors, `get_layer2_tags()` returns 10 hyphenated two-word fashion descriptors; non-fatal (returns `[]` on any error)
@@ -38,9 +39,14 @@ All notable changes to Sakkad will be documented in this file.
 
 ### Fixed
 
+- **2026-04-21** — `sakad-backend/services/read_contract.py`, `sakad-backend/scripts/seed_demo_captures.py`, `sakad-backend/tests/test_read_api.py`, `sakad-backend/tests/test_seed_demo_captures.py`: fixed JSONB ordering bug — Postgres JSONB does not preserve dict insertion order, so `taxonomy_matches` keys came back in arbitrary order; `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` now uses `max()` instead of `next(iter())`; western.jpg now correctly reports Cowboy Core (0.9673) in the seed output; 3 new tests added (99 total)
+- **2026-04-21** — `sakad-backend/scripts/seed_demo_captures.py`, `sakad-backend/tests/test_seed_demo_captures.py`: replaced TestClient+app import with live HTTP calls via `requests`; added `check_server_running()` preflight that exits with a clear error if the backend is not running; zero ML imports in seed script
+- **2026-04-21** — `sakad-backend/services/clip_service.py`, `sakad-backend/tests/test_clip_classify.py`: restored softmax scoring in `_score_all()` — `logits = 100.0 * (text_matrix @ img_vec)` then softmax normalization, matching pre-refactor behavior; western.jpg → Cowboy Core 0.9673 confirmed; partner UI progress-bar rendering works correctly with 0–1 range; test updated from `scores_do_not_sum_to_one` to `scores_are_softmax_probabilities`
+- **2026-04-21** — `sakad-backend/scripts/seed_demo_captures.py`, `sakad-backend/tests/test_seed_demo_captures.py`: added `ensure_specs_bucket()` which idempotently creates the `specs-bucket` Supabase storage bucket before any uploads; previously the bucket was missing and uploads silently degraded with "Bucket not found"; 2 new tests added (95 total)
 - **2026-04-21** — `sakad-backend/routes/sessions.py`: session-detail reads now degrade to empty captures when legacy databases are missing `captures.session_id`, matching the write-path compatibility behavior
 - **2026-04-21** — `sakad-backend/services/retrieval_service.py`: transient `reference_corpus` load failures no longer disable retrieval for the life of the process; only confirmed schema-missing errors are cached as unavailable
 - **2026-04-21** — `sakad-backend/scripts/seed_reference_corpus.py`: stale reference rows are deleted only after successful upserts, preventing partial data loss on failed seed runs
+- **2026-04-21** — `data/reference_corpus.json`, `sakad-backend/tests/test_reference_corpus_data.py`: fixed live seed incompatibility by restoring UUID `id` values and asserting UUID validity in corpus tests
 
 ### Removed
 

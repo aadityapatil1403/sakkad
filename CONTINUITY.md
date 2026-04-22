@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- API contract normalized: `GET /api/gallery` and `GET /api/sessions/{id}` share one capture serializer, `GET /api/captures/{id}` added, `sakad-backend/API_CONTRACT.md` documents stable partner contract (2026-04-21)
-- Demo dataset tooling added: 34-entry manifest, `seed_demo_captures.py`, tests, design spec/plan, and evaluation doc scaffold (2026-04-21)
-- PR #1 merged to main: backend refactor squash-merged, worktree cleaned up, main reset to `b51fe2d` (2026-04-21)
+- Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly; 99 tests passing (2026-04-21)
+- Replaced TestClient with live HTTP calls in `seed_demo_captures.py`; added `check_server_running()` preflight; zero ML imports in seed script (2026-04-21)
+- Restored softmax scoring in `_score_all()`; fixed specs-bucket creation; 95 tests passing (2026-04-21)
 
 ### Now
 
@@ -54,19 +54,37 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Checklist
 
-(cleared — both feature/api-contract and chore/demo-seed merged to main)
+- [ ] Worktree created
+- [x] Project state read
+- [ ] Plugins verified
+- [ ] PRD created
+- [x] Research done
+- [x] Design guidance loaded (if UI)
+- [x] Brainstorming complete
+- [x] Plan written
+- [x] Plan review loop (1 iterations) — iterate until no P0/P1/P2
+- [x] TDD execution complete
+- [x] Code review loop (1 iterations) — iterate until no P0/P1/P2
+- [x] Simplified
+- [ ] Verified (tests/lint/types)
+- [ ] E2E use cases tested (if user-facing)
+- [x] Learnings documented (if any)
+- [x] State files updated
+- [ ] Committed and pushed
+- [ ] PR created
+- [ ] PR reviews addressed
+- [ ] Branch finished
 
 ---
 
 ## Open Questions
 
 - Whether `GET /api/sessions` should eventually gain preview metadata for the web app, or remain a pure session list while detail routes own capture reads
-- Whether `specs-bucket` already exists in the target Supabase project (used by demo seeding script for source asset archival)
+- Whether the taxonomy art_reference/visual_context labels (44 unseeded entries) should be seeded before the clustering pass, or if the demo proceeds with fashion_streetwear-only (56 labels)
 - Whether the current taxonomy/reference corpus is strong enough on abstract/environmental imagery, or if those captures should stay secondary in the live demo mix
 
 ## Blockers
 
-- Live seeding is blocked until `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are available in the shell
 - `ruff` and `mypy` are not installed in the current shell environment
 
 ---

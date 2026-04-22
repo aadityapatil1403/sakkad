@@ -150,6 +150,33 @@ def test_gallery_returns_taxonomy_matches_as_object(monkeypatch) -> None:
     }
 
 
+def test_taxonomy_matches_sorted_by_score_descending_regardless_of_key_order(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "routes.capture.supabase",
+        FakeSupabase(captures_data=[{
+            "id": "capture-sort",
+            "session_id": None,
+            "image_url": "https://example.com/sort.jpg",
+            "created_at": "2026-04-21T10:00:00Z",
+            "taxonomy_matches": {"Gorpcore": 0.0, "Cowboy Core": 0.9673, "Vintage Americana": 0.0287},
+            "tags": None,
+            "layer1_tags": None,
+            "layer2_tags": None,
+            "reference_matches": None,
+            "reference_explanation": None,
+        }]),
+    )
+
+    client = TestClient(_build_app())
+    response = client.get("/api/captures/capture-sort")
+
+    assert response.status_code == 200
+    tm = response.json()["taxonomy_matches"]
+    scores = list(tm.values())
+    assert scores == sorted(scores, reverse=True)
+    assert next(iter(tm)) == "Cowboy Core"
+
+
 def test_session_detail_returns_taxonomy_matches_as_object(monkeypatch) -> None:
     monkeypatch.setattr(
         "routes.sessions.supabase",

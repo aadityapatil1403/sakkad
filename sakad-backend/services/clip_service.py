@@ -112,9 +112,13 @@ def _load_taxonomy() -> list[dict]:
 
 def _score_all(image_embedding: list[float], taxonomy: list[dict]) -> dict[str, float]:
     image_vector = np.array(image_embedding, dtype=np.float32)
+    text_matrix = np.stack([row["embedding"] for row in taxonomy])
+    logits = 100.0 * (text_matrix @ image_vector)
+    exp_logits = np.exp(logits - logits.max())
+    probs = exp_logits / exp_logits.sum()
     score_pairs = [
-        (row["label"], round(float(row["embedding"] @ image_vector), 4))
-        for row in taxonomy
+        (row["label"], round(float(probs[i]), 4))
+        for i, row in enumerate(taxonomy)
     ]
     score_pairs.sort(key=lambda item: item[1], reverse=True)
     return dict(score_pairs)

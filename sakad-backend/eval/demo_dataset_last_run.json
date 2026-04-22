@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T23:32:42.645102+00:00",
+  "generated_at": "2026-04-22T02:39:18.540261+00:00",
   "manifest_entries_count": 25,
   "manifest_entries": [
     {
@@ -438,51 +438,41 @@
       "bucket": "western / americana",
       "session_alias": "session_fashion",
       "expected": "Western Americana, Cowboy Core",
-      "actual_top_match": "70s Revival",
-      "actual_top_score": 0.0644,
-      "top_reference": "Industrial minimal tailoring (0.0055)",
-      "pass": false,
-      "notes": [
-        "Taxonomy mismatch: expected one of ['Western Americana', 'Cowboy Core', 'New Americana', 'Vintage Americana', 'Denim-on-Denim'], got 70s Revival.",
-        "Reference score low: 0.0055 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
-      ],
+      "actual_top_match": "Cowboy Core",
+      "actual_top_score": 0.9673,
+      "top_reference": "Ranch tailoring in suede and denim (0.1175)",
+      "pass": true,
+      "notes": [],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T022909Z-1e2c1ea6-western.jpg"
     },
     {
       "image": "vintage.jpg",
       "bucket": "western / americana",
       "session_alias": "session_fashion",
       "expected": "Vintage Americana, 70s Revival",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0654,
-      "top_reference": "Deconstruction and exposed process (0.0118)",
-      "pass": false,
+      "actual_top_match": "70s Revival",
+      "actual_top_score": 0.7358,
+      "top_reference": "Silent ranch essentials (0.0917)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Vintage Americana', '70s Revival', 'New Americana', 'Denim Culture'], got Workwear.",
-        "Reference score low: 0.0118 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0917 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T022934Z-57d6e9a1-vintage.jpg"
     },
     {
       "image": "workwear.jpg",
       "bucket": "workwear / utility",
       "session_alias": "session_fashion",
       "expected": "Workwear, Utilitarian",
-      "actual_top_match": "Biker",
-      "actual_top_score": 0.1091,
-      "top_reference": "Industrial minimal tailoring (0.0494)",
-      "pass": false,
-      "notes": [
-        "Taxonomy mismatch: expected one of ['Workwear', 'Utilitarian', 'Quiet Outdoors', 'Streetwear'], got Biker.",
-        "Reference score low: 0.0494 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
-      ],
+      "actual_top_match": "Workwear",
+      "actual_top_score": 0.9988,
+      "top_reference": "Industrial uniform basics (0.1506)",
+      "pass": true,
+      "notes": [],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T022959Z-3bb4548d-workwear.jpg"
     },
     {
       "image": "leather_jacket.jpg",
@@ -490,48 +480,44 @@
       "session_alias": "session_fashion",
       "expected": "Biker, Moto Culture",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.1235,
-      "top_reference": "Deconstruction and exposed process (0.0273)",
+      "actual_top_score": 0.959,
+      "top_reference": "Distressed moto denim hybrids (0.0616)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0273 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0616 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023047Z-b0ab2049-leather_jacket.jpg"
     },
     {
       "image": "japanjersey.jpg",
       "bucket": "japanese streetwear / sporty",
       "session_alias": "session_fashion",
       "expected": "Japanese Streetwear, Streetwear",
-      "actual_top_match": "Maximalism",
-      "actual_top_score": 0.0511,
-      "top_reference": "Lumps and sculptural distortion (-0.0296)",
+      "actual_top_match": "Sportswear Luxe",
+      "actual_top_score": 0.9745,
+      "top_reference": "Graphic rock tee obsession (0.0333)",
       "pass": true,
       "notes": [
-        "Reference score low: -0.0296 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0333 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023117Z-aaa428e1-japanjersey.jpg"
     },
     {
       "image": "soccer_streetwear.jpg",
       "bucket": "japanese streetwear / sporty",
       "session_alias": "session_fashion",
       "expected": "Streetwear, Sportswear Luxe",
-      "actual_top_match": "Preppy",
-      "actual_top_score": 0.0856,
-      "top_reference": "Industrial minimal tailoring (0.0129)",
-      "pass": false,
+      "actual_top_match": "Streetwear",
+      "actual_top_score": 0.9699,
+      "top_reference": "Deformed sole streetwear (0.0766)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Streetwear', 'Sportswear Luxe', 'Japanese Streetwear', 'Hip-Hop Fashion'], got Preppy.",
-        "Reference score low: 0.0129 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0766 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023134Z-fd15a94e-soccer_streetwear.jpg"
     },
     {
       "image": "monochromatic.jpg",
@@ -539,32 +525,29 @@
       "session_alias": "session_fashion",
       "expected": "Monochrome, 90s Minimalism",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.0471,
-      "top_reference": "Deconstruction and exposed process (0.0728)",
+      "actual_top_score": 0.4848,
+      "top_reference": "Slim rocker moto (0.0897)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0728 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0897 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023156Z-d5a6c38b-monochromatic.jpg"
     },
     {
       "image": "formal_wear.jpg",
       "bucket": "minimalism / monochrome",
       "session_alias": "session_fashion",
       "expected": "Tailoring, Soft Tailoring",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0484,
-      "top_reference": "Industrial minimal tailoring (0.0098)",
-      "pass": false,
+      "actual_top_match": "Soft Tailoring",
+      "actual_top_score": 0.9465,
+      "top_reference": "Soft urban uniform (0.0618)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Tailoring', 'Soft Tailoring', 'Quiet Luxury', 'Old Money'], got Workwear.",
-        "Reference score low: 0.0098 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0618 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023233Z-51184c0d-formal_wear.jpg"
     },
     {
       "image": "furcoat.jpg",
@@ -572,15 +555,14 @@
       "session_alias": "session_mixed",
       "expected": "Y2K, Club Kid",
       "actual_top_match": "Y2K",
-      "actual_top_score": 0.124,
-      "top_reference": "Deconstruction and exposed process (0.0799)",
+      "actual_top_score": 0.9073,
+      "top_reference": "Distressed moto denim hybrids (0.0916)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0799 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0916 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023257Z-f25f0c1c-furcoat.jpg"
     },
     {
       "image": "old_money.jpg",
@@ -588,32 +570,29 @@
       "session_alias": "session_mixed",
       "expected": "Old Money, Preppy",
       "actual_top_match": "Preppy",
-      "actual_top_score": 0.1481,
-      "top_reference": "Industrial minimal tailoring (0.0076)",
+      "actual_top_score": 0.655,
+      "top_reference": "Industrial uniform basics (0.0471)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0076 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0471 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023306Z-aca6427b-old_money.jpg"
     },
     {
       "image": "western.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Avant-garde",
-      "actual_top_match": "70s Revival",
-      "actual_top_score": 0.0644,
-      "top_reference": "Industrial minimal tailoring (0.0055)",
+      "actual_top_match": "Cowboy Core",
+      "actual_top_score": 0.9673,
+      "top_reference": "Ranch tailoring in suede and denim (0.1175)",
       "pass": false,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Avant-garde', 'Draped Form', 'Techno Minimalism', 'Western Americana'], got 70s Revival.",
-        "Reference score low: 0.0055 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Taxonomy mismatch: expected one of ['Avant-garde', 'Draped Form', 'Techno Minimalism', 'Western Americana'], got Cowboy Core."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023322Z-e8ac1cdf-western.jpg"
     },
     {
       "image": "monochromatic.jpg",
@@ -621,33 +600,31 @@
       "session_alias": "session_abstract",
       "expected": "Techno Minimalism",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.0471,
-      "top_reference": "Deconstruction and exposed process (0.0728)",
+      "actual_top_score": 0.4848,
+      "top_reference": "Slim rocker moto (0.0897)",
       "pass": false,
       "notes": [
         "Taxonomy mismatch: expected one of ['Techno Minimalism', 'Monochrome', 'Avant-garde', '90s Minimalism'], got Biker.",
-        "Reference score low: 0.0728 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0897 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023339Z-5876c991-monochromatic.jpg"
     },
     {
       "image": "formal_wear.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Artisan Craft",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0484,
-      "top_reference": "Industrial minimal tailoring (0.0098)",
+      "actual_top_match": "Soft Tailoring",
+      "actual_top_score": 0.9465,
+      "top_reference": "Soft urban uniform (0.0618)",
       "pass": false,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Artisan Craft', 'Tailoring', 'Avant-garde', 'Quiet Luxury'], got Workwear.",
-        "Reference score low: 0.0098 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Taxonomy mismatch: expected one of ['Artisan Craft', 'Tailoring', 'Avant-garde', 'Quiet Luxury'], got Soft Tailoring.",
+        "Reference score low: 0.0618 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023430Z-922ac215-formal_wear.jpg"
     },
     {
       "image": "leather_jacket.jpg",
@@ -655,83 +632,73 @@
       "session_alias": "session_abstract",
       "expected": "Artisan Craft",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.1235,
-      "top_reference": "Deconstruction and exposed process (0.0273)",
+      "actual_top_score": 0.959,
+      "top_reference": "Distressed moto denim hybrids (0.0616)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0273 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0616 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023448Z-c1b0a132-leather_jacket.jpg"
     },
     {
       "image": "workwear.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Deconstructed Classics",
-      "actual_top_match": "Biker",
-      "actual_top_score": 0.1091,
-      "top_reference": "Industrial minimal tailoring (0.0494)",
-      "pass": false,
-      "notes": [
-        "Taxonomy mismatch: expected one of ['Deconstructed Classics', 'Workwear', 'Artisan Craft', 'Utilitarian'], got Biker.",
-        "Reference score low: 0.0494 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
-      ],
+      "actual_top_match": "Workwear",
+      "actual_top_score": 0.9988,
+      "top_reference": "Industrial uniform basics (0.1506)",
+      "pass": true,
+      "notes": [],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023502Z-c5d79367-workwear.jpg"
     },
     {
       "image": "vintage.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Quiet Outdoors",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0654,
-      "top_reference": "Deconstruction and exposed process (0.0118)",
+      "actual_top_match": "70s Revival",
+      "actual_top_score": 0.7358,
+      "top_reference": "Silent ranch essentials (0.0917)",
       "pass": false,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Quiet Outdoors', 'Safari', 'Vintage Americana', 'Coastal'], got Workwear.",
-        "Reference score low: 0.0118 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Taxonomy mismatch: expected one of ['Quiet Outdoors', 'Safari', 'Vintage Americana', 'Coastal'], got 70s Revival.",
+        "Reference score low: 0.0917 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023524Z-c4628a0f-vintage.jpg"
     },
     {
       "image": "japanjersey.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Color Blocking",
-      "actual_top_match": "Maximalism",
-      "actual_top_score": 0.0511,
-      "top_reference": "Lumps and sculptural distortion (-0.0296)",
-      "pass": false,
+      "actual_top_match": "Sportswear Luxe",
+      "actual_top_score": 0.9745,
+      "top_reference": "Graphic rock tee obsession (0.0333)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Color Blocking', 'Streetwear', 'Sportswear Luxe', 'Japanese Streetwear'], got Maximalism.",
-        "Reference score low: -0.0296 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0333 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023545Z-2ce7fdb5-japanjersey.jpg"
     },
     {
       "image": "soccer_streetwear.jpg",
       "bucket": "abstract / environmental",
       "session_alias": "session_abstract",
       "expected": "Draped Form",
-      "actual_top_match": "Preppy",
-      "actual_top_score": 0.0856,
-      "top_reference": "Industrial minimal tailoring (0.0129)",
-      "pass": false,
+      "actual_top_match": "Streetwear",
+      "actual_top_score": 0.9699,
+      "top_reference": "Deformed sole streetwear (0.0766)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Draped Form', 'Streetwear', 'Sportswear Luxe', 'Color Blocking'], got Preppy.",
-        "Reference score low: 0.0129 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0766 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023556Z-1f39821a-soccer_streetwear.jpg"
     },
     {
       "image": "old_money.jpg",
@@ -739,15 +706,14 @@
       "session_alias": "session_mixed",
       "expected": "Color Blocking",
       "actual_top_match": "Preppy",
-      "actual_top_score": 0.1481,
-      "top_reference": "Industrial minimal tailoring (0.0076)",
+      "actual_top_score": 0.655,
+      "top_reference": "Industrial uniform basics (0.0471)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0076 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0471 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023617Z-00b74560-old_money.jpg"
     },
     {
       "image": "furcoat.jpg",
@@ -755,15 +721,14 @@
       "session_alias": "session_mixed",
       "expected": "Archive Fashion",
       "actual_top_match": "Y2K",
-      "actual_top_score": 0.124,
-      "top_reference": "Deconstruction and exposed process (0.0799)",
+      "actual_top_score": 0.9073,
+      "top_reference": "Distressed moto denim hybrids (0.0916)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0799 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0916 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023653Z-d2102137-furcoat.jpg"
     },
     {
       "image": "monochromatic.jpg",
@@ -771,67 +736,61 @@
       "session_alias": "session_mixed",
       "expected": "Neo-Romantic",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.0471,
-      "top_reference": "Deconstruction and exposed process (0.0728)",
+      "actual_top_score": 0.4848,
+      "top_reference": "Slim rocker moto (0.0897)",
       "pass": false,
       "notes": [
         "Taxonomy mismatch: expected one of ['Neo-Romantic', 'Monochrome', '90s Minimalism', 'Soft Tailoring'], got Biker.",
-        "Reference score low: 0.0728 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0897 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023731Z-58f16fcc-monochromatic.jpg"
     },
     {
       "image": "formal_wear.jpg",
       "bucket": "mixed / editorial",
       "session_alias": "session_mixed",
       "expected": "Deconstructed Classics",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0484,
-      "top_reference": "Industrial minimal tailoring (0.0098)",
-      "pass": false,
+      "actual_top_match": "Soft Tailoring",
+      "actual_top_score": 0.9465,
+      "top_reference": "Soft urban uniform (0.0618)",
+      "pass": true,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Deconstructed Classics', 'Tailoring', 'Archive Fashion', 'Soft Tailoring'], got Workwear.",
-        "Reference score low: 0.0098 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0618 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023749Z-675a7c6f-formal_wear.jpg"
     },
     {
       "image": "western.jpg",
       "bucket": "mixed / editorial",
       "session_alias": "session_mixed",
       "expected": "Deconstructed Classics",
-      "actual_top_match": "70s Revival",
-      "actual_top_score": 0.0644,
-      "top_reference": "Industrial minimal tailoring (0.0055)",
+      "actual_top_match": "Cowboy Core",
+      "actual_top_score": 0.9673,
+      "top_reference": "Ranch tailoring in suede and denim (0.1175)",
       "pass": false,
       "notes": [
-        "Taxonomy mismatch: expected one of ['Deconstructed Classics', 'Western Americana', 'Archive Fashion', 'Avant-garde'], got 70s Revival.",
-        "Reference score low: 0.0055 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Taxonomy mismatch: expected one of ['Deconstructed Classics', 'Western Americana', 'Archive Fashion', 'Avant-garde'], got Cowboy Core."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023810Z-a9a2202a-western.jpg"
     },
     {
       "image": "vintage.jpg",
       "bucket": "western / americana",
       "session_alias": "session_fashion",
       "expected": "New Americana",
-      "actual_top_match": "Workwear",
-      "actual_top_score": 0.0654,
-      "top_reference": "Deconstruction and exposed process (0.0118)",
+      "actual_top_match": "70s Revival",
+      "actual_top_score": 0.7358,
+      "top_reference": "Silent ranch essentials (0.0917)",
       "pass": false,
       "notes": [
-        "Taxonomy mismatch: expected one of ['New Americana', 'Vintage Americana', 'Denim Culture', 'Western Americana'], got Workwear.",
-        "Reference score low: 0.0118 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Taxonomy mismatch: expected one of ['New Americana', 'Vintage Americana', 'Denim Culture', 'Western Americana'], got 70s Revival.",
+        "Reference score low: 0.0917 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023831Z-d06babb1-vintage.jpg"
     },
     {
       "image": "leather_jacket.jpg",
@@ -839,16 +798,19 @@
       "session_alias": "session_mixed",
       "expected": "Archive Fashion",
       "actual_top_match": "Biker",
-      "actual_top_score": 0.1235,
-      "top_reference": "Deconstruction and exposed process (0.0273)",
+      "actual_top_score": 0.959,
+      "top_reference": "Distressed moto denim hybrids (0.0616)",
       "pass": true,
       "notes": [
-        "Reference score low: 0.0273 <= 0.10.",
-        "specs-bucket upload skipped: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}"
+        "Reference score low: 0.0616 <= 0.10."
       ],
       "source_asset_status": "available",
-      "source_url": null
+      "source_url": "https://olokwhphxsjbwqmjqths.supabase.co/storage/v1/object/public/specs-bucket/demo-dataset/20260422T023849Z-fbf7363c-leather_jacket.jpg"
     }
   ],
-  "recommended_images": []
+  "recommended_images": [
+    "workwear.jpg",
+    "workwear.jpg",
+    "western.jpg"
+  ]
 }

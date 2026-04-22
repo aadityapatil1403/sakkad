@@ -81,12 +81,14 @@ def test_build_embedding_text_includes_core_fields() -> None:
             "title": "Monastic black drape tailoring",
             "description": "Severe black tailoring with elongated lines.",
             "taxonomy_tags": ["avant_garde", "draping"],
+            "metadata": {"bucket": "avant_garde"},
         }
 
         text = seed_reference_corpus.build_embedding_text(entry)
 
         assert "Designer: Yohji Yamamoto" in text
         assert "Collection or era: 1990s tailoring" in text
+        assert "Bucket: avant_garde" in text
         assert "Tags: avant_garde, draping" in text
 
 
