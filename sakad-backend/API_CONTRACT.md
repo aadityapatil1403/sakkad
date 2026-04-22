@@ -3,7 +3,9 @@
 ## Audit
 
 - `GET /api/gallery`: now returns the full normalized capture shape.
+- `POST /api/generate`: returns short render-ready text from existing capture/session data, with deterministic fallback when Gemini is unavailable.
 - `GET /api/sessions/{id}`: now returns normalized captures under `captures`.
+- `GET /api/sessions/{id}/reflection`: returns a short session recap, with deterministic fallback when Gemini is unavailable.
 - `GET /api/sessions`: remains a session-list endpoint, so the capture shape does not apply to its top-level items.
 
 ## Shared Capture Shape
@@ -82,6 +84,54 @@ Request: none
 
 Response `200`: array of shared capture shape
 
+### `POST /api/generate`
+
+Request body:
+
+```json
+{
+  "kind": "inspiration_prompt | styling_direction | creative_summary",
+  "session_id": "string | null",
+  "capture_ids": ["string"]
+}
+```
+
+Rules:
+- provide exactly one of `session_id` or `capture_ids`
+- `capture_ids` must be non-empty when used
+
+Response `200`:
+
+```json
+{
+  "kind": "creative_summary",
+  "text": "Short render-ready copy.",
+  "fallback_used": false,
+  "source": {
+    "session_id": "session-1",
+    "capture_ids": ["capture-1", "capture-2"]
+  }
+}
+```
+
+Response `404`:
+
+```json
+{"detail": "Session not found"}
+```
+
+or
+
+```json
+{"detail": "Session has no captures to summarize"}
+```
+
+Response `422`:
+
+```json
+{"detail": "Provide exactly one of session_id or capture_ids"}
+```
+
 ### `POST /api/sessions/start`
 
 Request: none
@@ -149,6 +199,41 @@ Response `404`:
 ```json
 {"detail": "Session not found"}
 ```
+
+### `GET /api/sessions/{id}/reflection`
+
+Request: path param `id: string`
+
+Response `200`:
+
+```json
+{
+  "session_id": "session-1",
+  "reflection": "Two to three concise sentences.",
+  "fallback_used": false,
+  "capture_count": 2
+}
+```
+
+Response `404`:
+
+```json
+{"detail": "Session not found"}
+```
+
+or
+
+```json
+{"detail": "Session has no captures to summarize"}
+```
+
+Response `503`:
+
+```json
+{"detail": "Session reflection is unavailable until captures.session_id is migrated"}
+```
+
+Returned when the `captures.session_id` column has not yet been migrated. The session detail endpoint (`GET /api/sessions/{id}`) degrades gracefully in this case, but the reflection endpoint requires the column to compute a meaningful summary.
 
 ### `GET /api/health`
 

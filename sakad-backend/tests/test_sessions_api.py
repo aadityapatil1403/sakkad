@@ -192,3 +192,127 @@ def test_get_session_degrades_to_empty_captures_when_session_id_column_is_missin
         "session": {"id": "session-legacy"},
         "captures": [],
     }
+
+
+def test_get_session_reflection_returns_render_ready_text(monkeypatch) -> None:
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-4"}],
+        captures_data=[{
+            "id": "capture-4",
+            "session_id": "session-4",
+            "image_url": "https://example.com/reflection.jpg",
+            "created_at": "2026-04-17T12:30:00Z",
+            "taxonomy_matches": {"Utility": 0.82},
+            "tags": {"palette": ["#123456"]},
+            "layer1_tags": ["structured"],
+            "layer2_tags": ["workwear-jacket"],
+            "reference_matches": [{"title": "Field jacket", "score": 0.74}],
+            "reference_explanation": "Workwear cues match the reference.",
+        }],
+    )
+    monkeypatch.setattr(
+        "routes.sessions.generate_short_text",
+        lambda **_kwargs: "The session leans into structured utility dressing. The references keep it grounded in practical outerwear.",
+    )
+
+    response = client.get("/api/sessions/session-4/reflection")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "session_id": "session-4",
+        "reflection": "The session leans into structured utility dressing. The references keep it grounded in practical outerwear.",
+        "fallback_used": False,
+        "capture_count": 1,
+    }
+
+
+def test_get_session_reflection_returns_fallback_when_gemini_fails(monkeypatch) -> None:
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-5"}],
+        captures_data=[{
+            "id": "capture-5",
+            "session_id": "session-5",
+            "image_url": "https://example.com/reflection.jpg",
+            "created_at": "2026-04-17T12:30:00Z",
+            "taxonomy_matches": {"Minimal": 0.91},
+            "tags": {"palette": ["#f5f5f5"]},
+            "layer1_tags": ["clean"],
+            "layer2_tags": ["tailored-coat"],
+            "reference_matches": [{"title": "Quiet luxury coat", "score": 0.74}],
+            "reference_explanation": "Clean tailoring drives the match.",
+        }],
+    )
+    monkeypatch.setattr("routes.sessions.generate_short_text", lambda **_kwargs: None)
+
+    response = client.get("/api/sessions/session-5/reflection")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["session_id"] == "session-5"
+    assert payload["fallback_used"] is True
+    assert payload["capture_count"] == 1
+    assert "Minimal" in payload["reflection"]
+
+
+def test_get_session_reflection_returns_404_when_session_has_no_captures(monkeypatch) -> None:
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-6"}],
+        captures_data=[],
+    )
+
+    response = client.get("/api/sessions/session-6/reflection")
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Session has no captures to summarize"}
+
+
+def test_get_session_reflection_returns_fallback_when_gemini_returns_empty_string(monkeypatch) -> None:
+    # Arrange: gemini_service normalizes empty strings to None; mock returns None
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-7"}],
+        captures_data=[{
+            "id": "capture-7",
+            "session_id": "session-7",
+            "image_url": "https://example.com/empty-text.jpg",
+            "created_at": "2026-04-21T08:00:00Z",
+            "taxonomy_matches": {"Workwear": 0.85},
+            "tags": {"palette": ["#8B4513"]},
+            "layer1_tags": ["rugged"],
+            "layer2_tags": ["denim-jacket"],
+            "reference_matches": [{"title": "Carhartt WIP", "score": 0.80}],
+            "reference_explanation": "Workwear heritage cues align.",
+        }],
+    )
+    # generate_short_text returns None (as it does for empty responses)
+    monkeypatch.setattr("routes.sessions.generate_short_text", lambda **_kwargs: None)
+
+    # Act
+    response = client.get("/api/sessions/session-7/reflection")
+
+    # Assert: fallback text is used when generate_short_text returns None
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["session_id"] == "session-7"
+    assert payload["fallback_used"] is True
+    assert payload["capture_count"] == 1
+    assert "Workwear" in payload["reflection"]
+
+
+def test_get_session_reflection_returns_503_for_legacy_schema(monkeypatch) -> None:
+    client = _client_with_supabase(
+        monkeypatch,
+        sessions_data=[{"id": "session-legacy"}],
+        captures_data=[],
+        captures_error=RuntimeError("column session_id does not exist"),
+    )
+
+    response = client.get("/api/sessions/session-legacy/reflection")
+
+    assert response.status_code == 503
+    assert response.json() == {
+        "detail": "Session reflection is unavailable until captures.session_id is migrated",
+    }

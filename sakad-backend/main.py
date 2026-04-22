@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.capture import router as capture_router
+from routes.generate import router as generate_router
 from routes.gallery import router as gallery_router
 from routes.health import router as health_router
 from routes.sessions import router as sessions_router
@@ -16,6 +17,7 @@ app.add_middleware(
 )
 
 app.include_router(capture_router)
+app.include_router(generate_router)
 app.include_router(gallery_router)
 app.include_router(health_router)
 app.include_router(sessions_router)

@@ -1,5 +1,10 @@
 from fastapi import APIRouter, HTTPException
 
+from services.gemini_service import generate_short_text
+from services.generation_service import (
+    build_generation_context,
+    build_session_reflection_fallback,
+)
 from services.read_contract import normalize_capture_read
 from services.supabase_client import supabase
 
@@ -19,6 +24,11 @@ def _missing_session_id_column(exc: Exception) -> bool:
 
 
 def _get_session_captures(session_id: str) -> list[dict]:
+    captures, _legacy_schema = _get_session_captures_with_legacy_flag(session_id)
+    return captures
+
+
+def _get_session_captures_with_legacy_flag(session_id: str) -> tuple[list[dict], bool]:
     try:
         response = (
             supabase.table(CAPTURES_TABLE)
@@ -29,10 +39,10 @@ def _get_session_captures(session_id: str) -> list[dict]:
         )
     except Exception as exc:
         if _missing_session_id_column(exc):
-            return []
+            return [], True
         raise
     rows = response.data or []
-    return [normalize_capture_read(row) for row in rows]
+    return [normalize_capture_read(row) for row in rows], False
 
 
 @router.post("/api/sessions/start")
@@ -83,4 +93,38 @@ async def get_session(session_id: str):
     return {
         "session": session_response.data[0],
         "captures": _get_session_captures(session_id),
+    }
+
+
+@router.get("/api/sessions/{session_id}/reflection")
+async def get_session_reflection(session_id: str) -> dict:
+    session_response = (
+        supabase.table(SESSIONS_TABLE)
+        .select("*")
+        .eq("id", session_id)
+        .execute()
+    )
+    if not session_response.data:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    captures, legacy_schema = _get_session_captures_with_legacy_flag(session_id)
+    if legacy_schema:
+        raise HTTPException(
+            status_code=503,
+            detail="Session reflection is unavailable until captures.session_id is migrated",
+        )
+    if not captures:
+        raise HTTPException(status_code=404, detail="Session has no captures to summarize")
+
+    reflection = generate_short_text(
+        task="session_reflection",
+        context=build_generation_context(captures),
+        fallback_instructions="Write 2-3 concise sentences that summarize the session for a design review.",
+    )
+
+    return {
+        "session_id": session_id,
+        "reflection": reflection or build_session_reflection_fallback(captures),
+        "fallback_used": reflection is None,
+        "capture_count": len(captures),
     }

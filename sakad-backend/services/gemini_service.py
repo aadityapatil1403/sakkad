@@ -10,11 +10,12 @@ from google.genai import types
 from pydantic import BaseModel, ValidationError
 
 from config import settings
-from models.gemini import Layer1TagsResponse, Layer2TagsResponse
+from models.gemini import Layer1TagsResponse, Layer2TagsResponse, ShortTextResponse
 
 logger = logging.getLogger(__name__)
 
 _TIMEOUT_MS = 60_000
+_TEXT_TIMEOUT_MS = 8_000
 _RAW_RESPONSE_LOG_LIMIT = 800
 _UNICODE_HYPHENS_RE = re.compile(r"[‐‑‒–—−]")
 _HYPHEN_SPACING_RE = re.compile(r"\s*-\s*")
@@ -50,6 +51,23 @@ Return ONLY a valid JSON object with this shape:
 {{"tags": ["wide-leg", "moto-collar", "leather-jacket", "oversized-denim",
            "burgundy-loafer", "white-sock", "cropped-torso",
            "zip-closure", "ribbed-knit", "straight-hem"]}}
+"""
+
+_TEXT_PROMPT_TEMPLATE = """\
+You are helping narrate a fashion research session.
+Task: {task}
+
+Context:
+{context}
+
+Requirements:
+- Return one short paragraph only
+- Keep it concise, readable, and demo-friendly
+- Do not use markdown or bullets
+- Follow this guidance: {fallback_instructions}
+
+Return ONLY a valid JSON object with this shape:
+{{"text": "Short render-ready copy."}}
 """
 
 _TagsResponseT = TypeVar("_TagsResponseT", bound=BaseModel)
@@ -192,6 +210,14 @@ def _get_client() -> genai.Client:
     )
 
 
+@functools.lru_cache(maxsize=1)
+def _get_text_client() -> genai.Client:
+    return genai.Client(
+        api_key=settings.GEMINI_API_KEY,
+        http_options=types.HttpOptions(timeout=_TEXT_TIMEOUT_MS),
+    )
+
+
 def _is_capacity_error(exc: Exception) -> bool:
     if not isinstance(exc, errors.ServerError):
         return False
@@ -323,3 +349,74 @@ def get_layer2_tags_with_model(
 def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
     """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
     return get_layer2_tags_with_model(image_bytes, layer1, mime_type=mime_type)[0]
+
+
+def generate_short_text(
+    *,
+    task: str,
+    context: str,
+    fallback_instructions: str,
+) -> str | None:
+    if not settings.GEMINI_API_KEY:
+        return None
+
+    prompt = _TEXT_PROMPT_TEMPLATE.format(
+        task=task,
+        context=context,
+        fallback_instructions=fallback_instructions,
+    )
+
+    models = _get_gemini_models()
+    for index, model_name in enumerate(models):
+        has_fallback = index < len(models) - 1
+        try:
+            response = _get_text_client().models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=ShortTextResponse,
+                ),
+            )
+        except Exception as exc:
+            if _is_capacity_error(exc) and has_fallback:
+                logger.warning(
+                    "[gemini_service] text: model %s unavailable (503), trying fallback",
+                    model_name,
+                )
+                continue
+            if has_fallback:
+                logger.warning(
+                    "[gemini_service] text: model %s failed, trying fallback: %s",
+                    model_name,
+                    exc,
+                )
+                continue
+            logger.warning("[gemini_service] text generation failed: %s", exc)
+            return None
+
+        raw_response = response.text
+        if not raw_response:
+            _log_failure(
+                layer="text",
+                reason="empty response text",
+                raw_response=raw_response,
+                details={"task": task, "model": model_name},
+            )
+            return None
+
+        try:
+            parsed = ShortTextResponse.model_validate_json(raw_response)
+        except ValidationError as exc:
+            _log_failure(
+                layer="text",
+                reason="schema parsing failed",
+                raw_response=raw_response,
+                details=exc.errors(),
+            )
+            return None
+
+        text = parsed.text.strip()
+        return text or None
+
+    return None

@@ -276,6 +276,37 @@ class TestLayer1Validation:
         assert self._run_layer1(tags) == tags
 
 
+class TestGenerateShortText:
+    def test_returns_text_on_valid_json_response(self) -> None:
+        payload = json.dumps({"text": "A short creative summary."})
+
+        with patch("services.gemini_service._get_text_client", return_value=_make_mock_client(payload)):
+            import services.gemini_service as gs
+
+            result = gs.generate_short_text(
+                task="creative_summary",
+                context="Top labels: Minimal",
+                fallback_instructions="Keep it short.",
+            )
+
+        assert result == "A short creative summary."
+
+    def test_returns_none_on_api_exception(self) -> None:
+        with patch(
+            "services.gemini_service._get_text_client",
+            return_value=_make_mock_client(side_effect=RuntimeError("API down")),
+        ):
+            import services.gemini_service as gs
+
+            result = gs.generate_short_text(
+                task="creative_summary",
+                context="Top labels: Minimal",
+                fallback_instructions="Keep it short.",
+            )
+
+        assert result is None
+
+
 class TestClientTimeout:
     def test_get_client_passes_timeout_via_http_options(self) -> None:
         """_get_client must set a finite timeout so Gemini calls don't hang forever."""

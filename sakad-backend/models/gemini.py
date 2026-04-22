@@ -7,3 +7,7 @@ class Layer1TagsResponse(BaseModel):
 
 class Layer2TagsResponse(BaseModel):
     tags: list[str] = Field(min_length=10, max_length=10)
+
+
+class ShortTextResponse(BaseModel):
+    text: str = Field(min_length=1, max_length=400)

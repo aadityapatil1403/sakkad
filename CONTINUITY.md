@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Added dependency-aware health reporting (`ok` / `degraded` / `error`), Railway runbook, smoke demo flow script, and Procfile for deployment/demo reliability; pytest green after each change, 105 tests passing (2026-04-21)
-- Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly; 99 tests passing (2026-04-21)
-- Replaced TestClient with live HTTP calls in `seed_demo_captures.py`; added `check_server_running()` preflight; zero ML imports in seed script (2026-04-21)
+- Merged `feature/generation-and-reflection`: `POST /api/generate`, `GET /api/sessions/{id}/reflection`, API_CONTRACT.md, 117 tests passing (2026-04-22)
+- Added dependency-aware health reporting (`ok` / `degraded` / `error`), Railway runbook, smoke demo flow script, and Procfile for deployment/demo reliability (2026-04-21)
+- Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly (2026-04-21)
 
 ### Now
 
@@ -32,47 +32,29 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 - [ ] Run live demo seed (`python scripts/seed_demo_captures.py`) once `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` are set
 - [ ] Replace 24 placeholder images in `sakad-backend/eval/demo_dataset_manifest.json` with royalty-free images
 - [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
+- [x] Improve partner narrative surfaces: `POST /api/generate`, `GET /api/sessions/{id}/reflection`
 
 **Exit criteria:** Partner can consume documented session/capture reads, live seed documents actual taxonomy/reference outcomes, clustering works on seeded demo data.
 
 ### Next
 
-- Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, `POST /api/generate` (Gemini), share live URL with partner
-- Week 4: Deploy to Railway, Supabase Realtime on captures table, `GET /api/sessions/{id}/reflection`
+- Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, share live URL with partner
+- Week 4: Deploy to Railway, Supabase Realtime on captures table, improve health/readiness endpoints
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
 
 ---
 
 ## Workflow
 
-| Field     | Value                                     |
-| --------- | ----------------------------------------- |
-| Command   | /new-feature deployment-health-reliability |
-| Phase     | 6 — Verify                                |
-| Next step | Resolve missing `ruff`/`mypy` environment |
+| Field     | Value |
+| --------- | ----- |
+| Command   | none  |
+| Phase     | —     |
+| Next step | —     |
 
 ### Checklist
 
-- [x] Worktree created
-- [x] Project state read
-- [x] Plugins verified
-- [x] PRD created
-- [x] Research done
-- [x] Design guidance loaded (if UI)
-- [x] Brainstorming complete
-- [x] Plan written
-- [x] Plan review loop (1 iterations) — PASS
-- [x] TDD execution complete
-- [x] Code review loop (1 iterations) — PASS
-- [x] Simplified
-- [ ] Verified (tests/lint/types)
-- [ ] E2E use cases tested (if user-facing)
-- [ ] Learnings documented (if any)
-- [x] State files updated
-- [ ] Committed and pushed
-- [ ] PR created
-- [ ] PR reviews addressed
-- [ ] Branch finished
+(no active workflow)
 
 ---
 
@@ -84,7 +66,7 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Blockers
 
-- `ruff` and `mypy` are not installed in the current shell environment
+- `ruff` and `mypy` are not installed in the current shell environment; `python -m pytest` passes, but the full verify gate cannot complete until those tools are available
 - Live smoke validation still depends on a running backend plus configured Supabase credentials
 
 ---
