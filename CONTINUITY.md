@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
+- Added dependency-aware health reporting (`ok` / `degraded` / `error`), Railway runbook, smoke demo flow script, and Procfile for deployment/demo reliability; pytest green after each change, 105 tests passing (2026-04-21)
 - Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly; 99 tests passing (2026-04-21)
 - Replaced TestClient with live HTTP calls in `seed_demo_captures.py`; added `check_server_running()` preflight; zero ML imports in seed script (2026-04-21)
-- Restored softmax scoring in `_score_all()`; fixed specs-bucket creation; 95 tests passing (2026-04-21)
 
 ### Now
 
@@ -32,7 +32,6 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 - [ ] Run live demo seed (`python scripts/seed_demo_captures.py`) once `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` are set
 - [ ] Replace 24 placeholder images in `sakad-backend/eval/demo_dataset_manifest.json` with royalty-free images
 - [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
-- [ ] Improve `/api/health` for demo readiness
 
 **Exit criteria:** Partner can consume documented session/capture reads, live seed documents actual taxonomy/reference outcomes, clustering works on seeded demo data.
 
@@ -46,29 +45,29 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value |
-| --------- | ----- |
-| Command   | none  |
-| Phase     | —     |
-| Next step | —     |
+| Field     | Value                                     |
+| --------- | ----------------------------------------- |
+| Command   | /new-feature deployment-health-reliability |
+| Phase     | 6 — Verify                                |
+| Next step | Resolve missing `ruff`/`mypy` environment |
 
 ### Checklist
 
-- [ ] Worktree created
+- [x] Worktree created
 - [x] Project state read
-- [ ] Plugins verified
-- [ ] PRD created
+- [x] Plugins verified
+- [x] PRD created
 - [x] Research done
 - [x] Design guidance loaded (if UI)
 - [x] Brainstorming complete
 - [x] Plan written
-- [x] Plan review loop (1 iterations) — iterate until no P0/P1/P2
+- [x] Plan review loop (1 iterations) — PASS
 - [x] TDD execution complete
-- [x] Code review loop (1 iterations) — iterate until no P0/P1/P2
+- [x] Code review loop (1 iterations) — PASS
 - [x] Simplified
 - [ ] Verified (tests/lint/types)
 - [ ] E2E use cases tested (if user-facing)
-- [x] Learnings documented (if any)
+- [ ] Learnings documented (if any)
 - [x] State files updated
 - [ ] Committed and pushed
 - [ ] PR created
@@ -86,6 +85,7 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 ## Blockers
 
 - `ruff` and `mypy` are not installed in the current shell environment
+- Live smoke validation still depends on a running backend plus configured Supabase credentials
 
 ---
 

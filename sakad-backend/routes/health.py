@@ -1,51 +1,35 @@
-from fastapi import APIRouter, HTTPException
-from services.supabase_client import supabase
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+
+from services.health_service import get_demo_health_report
 
 router = APIRouter()
-
-CAPTURES_BUCKET = "captures"
-CAPTURES_TABLE = "captures"
 
 
 @router.get("/api/health")
 async def health():
-    return {"status": "ok"}
+    report = get_demo_health_report()
+    status_code = 503 if report["status"] == "error" else 200
+    return JSONResponse(content=report, status_code=status_code)
 
 
 @router.get("/api/health/supabase")
 async def supabase_health():
-    checks = {
-        "database": {"ok": False, "table": CAPTURES_TABLE},
-        "storage": {"ok": False, "bucket": CAPTURES_BUCKET},
+    report = get_demo_health_report()
+    supabase_checks = {
+        "database": report["checks"]["database"],
+        "storage": report["checks"]["storage"],
     }
-
-    errors: list[str] = []
-
-    try:
-        response = supabase.table(CAPTURES_TABLE).select("id").limit(1).execute()
-        checks["database"]["ok"] = response.data is not None
-    except Exception as exc:
-        errors.append(f"database check failed: {exc}")
-
-    try:
-        supabase.storage.from_(CAPTURES_BUCKET).list(path="", options={"limit": 1})
-        checks["storage"]["ok"] = True
-    except Exception as exc:
-        errors.append(f"storage check failed: {exc}")
-
-    overall_ok = all(check["ok"] for check in checks.values())
-
-    if not overall_ok:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "status": "error",
-                "checks": checks,
-                "errors": errors,
-            },
-        )
-
-    return {
-        "status": "ok",
-        "checks": checks,
+    supabase_errors = [
+        check["detail"]
+        for check in supabase_checks.values()
+        if not check["ok"]
+    ]
+    supabase_status = "error" if supabase_errors else "ok"
+    supabase_report = {
+        "status": supabase_status,
+        "checks": supabase_checks,
+        "errors": supabase_errors,
     }
+    status_code = 503 if supabase_status == "error" else 200
+    return JSONResponse(content=supabase_report, status_code=status_code)
