@@ -50,6 +50,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run classifier ablations on the evaluation image set.")
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--output-json", type=Path, default=None)
+    parser.add_argument(
+        "--domains",
+        nargs="+",
+        default=[FASHION_DOMAIN],
+        help="Taxonomy domains to include during evaluation.",
+    )
     return parser.parse_args()
 
 
@@ -73,6 +79,13 @@ def load_taxonomy() -> list[dict[str, Any]]:
             "embedding": np.array(embedding, dtype=np.float32),
         })
     return parsed
+
+
+def filter_taxonomy_domains(
+    taxonomy: list[dict[str, Any]],
+    domains: set[str],
+) -> list[dict[str, Any]]:
+    return [row for row in taxonomy if row["domain"] in domains]
 
 
 def normalize_vector(vector: np.ndarray) -> np.ndarray:
@@ -178,7 +191,13 @@ def _missing_text_result(*, image_name: str, data: dict[str, Any], config: Confi
 def main() -> None:
     args = parse_args()
     manifest = load_manifest(args.manifest)
-    taxonomy_fashion = [row for row in load_taxonomy() if row["domain"] == FASHION_DOMAIN]
+    selected_domains = set(args.domains)
+    taxonomy = filter_taxonomy_domains(load_taxonomy(), selected_domains)
+    if not taxonomy:
+        raise RuntimeError(
+            "No taxonomy rows matched the requested domains. "
+            f"Requested domains: {sorted(selected_domains)}"
+        )
 
     per_image_data: dict[str, dict[str, Any]] = {}
     for entry in manifest:
@@ -204,7 +223,7 @@ def main() -> None:
             "text_embeddings": text_embeddings,
         }
 
-    report: dict[str, Any] = {"configs": []}
+    report: dict[str, Any] = {"domains": sorted(selected_domains), "configs": []}
     for config in CONFIGS:
         print(f"Scoring config {config.name}...", flush=True)
         image_results = []
@@ -220,7 +239,7 @@ def main() -> None:
                 image_results.append(_missing_text_result(image_name=image_name, data=data, config=config))
                 continue
             predictions = classify(
-                taxonomy=taxonomy_fashion,
+                taxonomy=taxonomy,
                 image_embedding=data["image_embedding"],
                 text_embedding=text_embedding,
                 image_weight=config.image_weight,
