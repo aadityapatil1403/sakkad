@@ -33,3 +33,6 @@ env/
 .cache/
 huggingface/
 .worktrees/
+
+# Eval runtime output (cached results, not source)
+sakad-backend/eval/demo_dataset_last_run.json

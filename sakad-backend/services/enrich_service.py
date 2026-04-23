@@ -4,8 +4,19 @@ from services.clip_service import classify, get_image_embedding
 from services.color_service import extract_palette
 from services.gemini_service import get_layer1_tags_with_model, get_layer2_tags_with_model
 from services.retrieval_service import get_reference_matches
+from services.supabase_client import supabase
 
 logger = logging.getLogger(__name__)
+
+
+def _is_abstract_visual(top_label: str) -> bool:
+    try:
+        result = supabase.table("taxonomy").select("domain").eq("label", top_label).execute()
+        rows = result.data or []
+        return bool(rows) and rows[0].get("domain") == "abstract_visual"
+    except Exception as exc:
+        logger.warning("[enrich_capture] domain lookup failed for %r: %s", top_label, exc)
+        return False
 
 
 def generate_reference_explanation(
@@ -19,13 +30,19 @@ def generate_reference_explanation(
 
     top_taxonomy = next(iter(taxonomy_matches))
     top_reference = reference_matches[0]
-    reference_name = top_reference.get("title") or top_reference.get("designer") or "the top reference"
+    top_score = top_reference.get("score") or 0.0
     cue_source = layer2_tags or layer1_tags or []
     cues = ", ".join(cue_source[:3])
 
-    explanation = f"This image reads closest to {top_taxonomy} and aligns with {reference_name}."
-    if cues:
-        explanation += f" Key visual cues include {cues}."
+    if top_score >= 0.15:
+        reference_name = top_reference.get("title") or top_reference.get("designer") or "the top reference"
+        explanation = f"This image reads closest to {top_taxonomy} and aligns with {reference_name}."
+        if cues:
+            explanation += f" Key visual cues include {cues}."
+    else:
+        explanation = f"This image reads closest to {top_taxonomy}."
+        if cues:
+            explanation += f" Key visual cues include {cues}."
     return explanation
 
 
@@ -35,6 +52,12 @@ def enrich_capture(
     mime_type: str = "image/jpeg",
 ) -> dict:
     image_embedding = get_image_embedding(image_bytes)
+    taxonomy_matches = classify(image_embedding)
+    reference_matches = get_reference_matches(image_embedding)
+    palette = extract_palette(image_bytes)
+
+    top_label = next(iter(taxonomy_matches), None)
+    is_abstract = _is_abstract_visual(top_label) if top_label else False
 
     try:
         layer1_tags, layer1_model = get_layer1_tags_with_model(image_bytes, mime_type=mime_type)
@@ -49,6 +72,7 @@ def enrich_capture(
                 image_bytes,
                 layer1_tags,
                 mime_type=mime_type,
+                is_abstract=is_abstract,
             )
         except Exception as exc:
             logger.warning("[enrich_capture] gemini layer2 failed: %s", exc)
@@ -56,10 +80,6 @@ def enrich_capture(
     else:
         layer2_tags, layer2_model = [], None
     layer2_tags = layer2_tags or []
-
-    taxonomy_matches = classify(image_embedding)
-    reference_matches = get_reference_matches(image_embedding)
-    palette = extract_palette(image_bytes)
 
     try:
         reference_explanation = generate_reference_explanation(

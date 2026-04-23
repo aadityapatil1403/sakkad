@@ -11,3 +11,7 @@ class Layer2TagsResponse(BaseModel):
 
 class ShortTextResponse(BaseModel):
     text: str = Field(min_length=1, max_length=400)
+
+
+class ReflectionTextResponse(BaseModel):
+    text: str = Field(min_length=1, max_length=1200)

@@ -2,6 +2,12 @@ import ast
 import io
 import os
 import threading
+import warnings
+
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+warnings.filterwarnings("ignore", category=DeprecationWarning, module=r".*importlib.*")
+warnings.filterwarnings("ignore", message=r".*SwigPy.*")
+warnings.filterwarnings("ignore", message=r".*swigvarlink.*")
 
 from PIL import Image
 import torch

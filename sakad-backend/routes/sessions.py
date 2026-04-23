@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from services.gemini_service import generate_short_text
+from services.gemini_service import generate_session_reflection
 from services.generation_service import (
     build_generation_context,
     build_session_reflection_fallback,
@@ -116,10 +116,8 @@ async def get_session_reflection(session_id: str) -> dict:
     if not captures:
         raise HTTPException(status_code=404, detail="Session has no captures to summarize")
 
-    reflection = generate_short_text(
-        task="session_reflection",
+    reflection = generate_session_reflection(
         context=build_generation_context(captures),
-        fallback_instructions="Write 2-3 concise sentences that summarize the session for a design review.",
     )
 
     return {

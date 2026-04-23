@@ -21,9 +21,11 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Merged `feature/generation-and-reflection`: `POST /api/generate`, `GET /api/sessions/{id}/reflection`, API_CONTRACT.md, 117 tests passing (2026-04-22)
-- Added dependency-aware health reporting (`ok` / `degraded` / `error`), Railway runbook, smoke demo flow script, and Procfile for deployment/demo reliability (2026-04-21)
-- Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly (2026-04-21)
+- Suppressed HuggingFace/SwigPy DeprecationWarnings in `clip_service.py` for clean demo terminal output; `TOKENIZERS_PARALLELISM=false` set; targeted filters only, not blanket suppress; 130 tests green (2026-04-23)
+- Added `ReflectionTextResponse` model with `max_length=1200` so reflection output is not truncated; `ShortTextResponse` stays at 400 for other endpoints (2026-04-22)
+- Replaced session reflection prompt with designer-aware creative director framing: `generate_session_reflection()` identifies visual threads, names specific designers, explains connecting quality, ends with aesthetic instinct sentence (2026-04-22)
+- Added 20 abstract-visual reference corpus entries (54→74 total) bridging leaf/concrete/rust/bark captures to designers via SigLIP; abstract-visual layer2 prompt wired (2026-04-22)
+- Fixed `reference_explanation` low-score branch and `gemini-2.5-flash` 8s→12s timeout (2026-04-22)
 
 ### Now
 

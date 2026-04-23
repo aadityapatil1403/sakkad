@@ -54,6 +54,15 @@ class TestGenerateReferenceExplanation:
 
 
 class TestEnrichCapture:
+    def _base_patches(self, *, is_abstract: bool = False) -> list:
+        return [
+            patch("services.enrich_service.get_image_embedding", return_value=[1.0, 0.0, 0.0]),
+            patch("services.enrich_service.classify", return_value={"Gorpcore": 0.91}),
+            patch("services.enrich_service.extract_palette", return_value=["#000000"]),
+            patch("services.enrich_service.get_reference_matches", return_value=[]),
+            patch("services.enrich_service._is_abstract_visual", return_value=is_abstract),
+        ]
+
     def test_enrich_capture_returns_required_keys(self) -> None:
         from services.enrich_service import enrich_capture
 
@@ -77,6 +86,7 @@ class TestEnrichCapture:
                 "services.enrich_service.generate_reference_explanation",
                 return_value="Reads closest to Gorpcore.",
             ),
+            patch("services.enrich_service._is_abstract_visual", return_value=False),
         ):
             result = enrich_capture(b"fake_image_bytes", session_id=None)
 
@@ -110,6 +120,7 @@ class TestEnrichCapture:
             patch("services.enrich_service.extract_palette", return_value=["#000000"]),
             patch("services.enrich_service.get_reference_matches", return_value=[]),
             patch("services.enrich_service.generate_reference_explanation", return_value=None),
+            patch("services.enrich_service._is_abstract_visual", return_value=False),
         ):
             result = enrich_capture(b"fake_image_bytes", session_id=None)
 
@@ -128,6 +139,7 @@ class TestEnrichCapture:
             patch("services.enrich_service.extract_palette", return_value=["#000000"]),
             patch("services.enrich_service.get_reference_matches", return_value=[]),
             patch("services.enrich_service.generate_reference_explanation", return_value=None),
+            patch("services.enrich_service._is_abstract_visual", return_value=False),
         ):
             result = enrich_capture(b"fake_image_bytes", session_id="session-1")
 
@@ -148,7 +160,57 @@ class TestEnrichCapture:
             patch("services.enrich_service.extract_palette", return_value=["#000000"]),
             patch("services.enrich_service.get_reference_matches", return_value=[]),
             patch("services.enrich_service.generate_reference_explanation", return_value=None),
+            patch("services.enrich_service._is_abstract_visual", return_value=False),
         ):
             result = enrich_capture(b"fake_image_bytes", session_id="session-1")
 
         assert result["session_id"] == "session-1"
+
+    def test_enrich_capture_uses_abstract_prompt_for_abstract_visual_domain(self) -> None:
+        from unittest.mock import call
+        from services.enrich_service import enrich_capture
+
+        with (
+            patch("services.enrich_service.get_image_embedding", return_value=[1.0, 0.0, 0.0]),
+            patch("services.enrich_service.classify", return_value={"Botanical Organic": 0.88}),
+            patch("services.enrich_service.extract_palette", return_value=["#aabbcc"]),
+            patch("services.enrich_service.get_reference_matches", return_value=[]),
+            patch("services.enrich_service._is_abstract_visual", return_value=True),
+            patch(
+                "services.enrich_service.get_layer1_tags_with_model",
+                return_value=(["green"], "gemini-2.5-flash"),
+            ),
+            patch(
+                "services.enrich_service.get_layer2_tags_with_model",
+                return_value=(["moss-green"], "gemini-2.5-flash"),
+            ) as mock_layer2,
+            patch("services.enrich_service.generate_reference_explanation", return_value=None),
+        ):
+            enrich_capture(b"fake_image_bytes", session_id=None)
+
+        _, kwargs = mock_layer2.call_args
+        assert kwargs.get("is_abstract") is True
+
+    def test_enrich_capture_uses_garment_prompt_for_non_abstract_domain(self) -> None:
+        from services.enrich_service import enrich_capture
+
+        with (
+            patch("services.enrich_service.get_image_embedding", return_value=[1.0, 0.0, 0.0]),
+            patch("services.enrich_service.classify", return_value={"Gorpcore": 0.91}),
+            patch("services.enrich_service.extract_palette", return_value=["#000000"]),
+            patch("services.enrich_service.get_reference_matches", return_value=[]),
+            patch("services.enrich_service._is_abstract_visual", return_value=False),
+            patch(
+                "services.enrich_service.get_layer1_tags_with_model",
+                return_value=(["black"], "gemini-2.5-flash"),
+            ),
+            patch(
+                "services.enrich_service.get_layer2_tags_with_model",
+                return_value=(["wide-leg"], "gemini-2.5-flash"),
+            ) as mock_layer2,
+            patch("services.enrich_service.generate_reference_explanation", return_value=None),
+        ):
+            enrich_capture(b"fake_image_bytes", session_id=None)
+
+        _, kwargs = mock_layer2.call_args
+        assert kwargs.get("is_abstract") is False

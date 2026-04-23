@@ -10,12 +10,12 @@ from google.genai import types
 from pydantic import BaseModel, ValidationError
 
 from config import settings
-from models.gemini import Layer1TagsResponse, Layer2TagsResponse, ShortTextResponse
+from models.gemini import Layer1TagsResponse, Layer2TagsResponse, ReflectionTextResponse, ShortTextResponse
 
 logger = logging.getLogger(__name__)
 
 _TIMEOUT_MS = 60_000
-_TEXT_TIMEOUT_MS = 8_000
+_TEXT_TIMEOUT_MS = 12_000
 _RAW_RESPONSE_LOG_LIMIT = 800
 _UNICODE_HYPHENS_RE = re.compile(r"[‐‑‒–—−]")
 _HYPHEN_SPACING_RE = re.compile(r"\s*-\s*")
@@ -51,6 +51,51 @@ Return ONLY a valid JSON object with this shape:
 {{"tags": ["wide-leg", "moto-collar", "leather-jacket", "oversized-denim",
            "burgundy-loafer", "white-sock", "cropped-torso",
            "zip-closure", "ribbed-knit", "straight-hem"]}}
+"""
+
+_LAYER2_ABSTRACT_PROMPT = """\
+You are a fashion creative director. Given this image of a real-world texture, object,
+or environment, generate exactly 10 hyphenated descriptors (e.g. cracked-leather,
+rust-dyed, bark-brown) that describe the surface quality, material feel, color tone,
+and structural character of what you see — as if translating it into fashion material
+language. No garment names, no body parts, no outfit pieces.
+Rules:
+- Exactly two words per descriptor, hyphenated
+- Lowercase
+Return ONLY a valid JSON object with this shape:
+{{"tags": ["cracked-leather", "rust-dyed", "bark-brown", "woven-grid",
+           "matte-slate", "sand-worn", "moss-green", "coarse-grain",
+           "mineral-wash", "soft-lichen"]}}
+"""
+
+_REFLECTION_SYSTEM_CONTEXT = (
+    "You are a fashion creative director and cultural theorist with deep knowledge "
+    "of designer archives, aesthetic movements, and visual theory. Your role is to "
+    "reveal WHY someone is drawn to what they capture — connecting their visual "
+    "instincts to specific designers, cultural movements, and material philosophies."
+)
+
+_REFLECTION_PROMPT_TEMPLATE = """\
+{system_context}
+
+A designer has just completed a capture session. Here is what they photographed:
+
+{context}
+
+Write 3-4 sentences that:
+1. Identify 2-3 dominant visual threads running across these captures
+2. Name specific designers or houses whose work shares this visual DNA \
+(e.g. Iris van Herpen, Rick Owens, Jil Sander, Issey Miyake, Martin Margiela, \
+Yohji Yamamoto, Craig Green, Helmut Lang, Alexander McQueen, Comme des Garçons)
+3. Explain the specific quality that connects these captures to those designers \
+(material transformation, structural tension, organic geometry, industrial decay, etc.)
+4. End with one sentence about what this pattern reveals about the person's aesthetic instinct
+
+Tone: like a knowledgeable mentor speaking directly to the person — conversational, \
+insightful, not a product description. Do NOT use lists or bullet points.
+
+Return ONLY a valid JSON object with this shape:
+{{"text": "Your 3-4 sentence reflection here."}}
 """
 
 _TEXT_PROMPT_TEMPLATE = """\
@@ -331,10 +376,14 @@ def get_layer2_tags_with_model(
     image_bytes: bytes,
     layer1: list[str],
     mime_type: str = "image/jpeg",
+    is_abstract: bool = False,
 ) -> tuple[list[str], str | None]:
     if not settings.GEMINI_API_KEY:
         return [], None
-    prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=", ".join(layer1))
+    if is_abstract:
+        prompt = _LAYER2_ABSTRACT_PROMPT
+    else:
+        prompt = _LAYER2_PROMPT_TEMPLATE.format(layer1_joined=", ".join(layer1))
     return _call_gemini_tags(
         prompt=prompt,
         image_bytes=image_bytes,
@@ -346,9 +395,11 @@ def get_layer2_tags_with_model(
     )
 
 
-def get_layer2_tags(image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg") -> list[str]:
+def get_layer2_tags(
+    image_bytes: bytes, layer1: list[str], mime_type: str = "image/jpeg", is_abstract: bool = False
+) -> list[str]:
     """Return 10 hyphenated two-word descriptors for the image, or [] on failure."""
-    return get_layer2_tags_with_model(image_bytes, layer1, mime_type=mime_type)[0]
+    return get_layer2_tags_with_model(image_bytes, layer1, mime_type=mime_type, is_abstract=is_abstract)[0]
 
 
 def generate_short_text(
@@ -410,6 +461,71 @@ def generate_short_text(
         except ValidationError as exc:
             _log_failure(
                 layer="text",
+                reason="schema parsing failed",
+                raw_response=raw_response,
+                details=exc.errors(),
+            )
+            return None
+
+        text = parsed.text.strip()
+        return text or None
+
+    return None
+
+
+def generate_session_reflection(context: str) -> str | None:
+    if not settings.GEMINI_API_KEY:
+        return None
+
+    prompt = _REFLECTION_PROMPT_TEMPLATE.format(
+        system_context=_REFLECTION_SYSTEM_CONTEXT,
+        context=context,
+    )
+
+    models = _get_gemini_models()
+    for index, model_name in enumerate(models):
+        has_fallback = index < len(models) - 1
+        try:
+            response = _get_text_client().models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=ReflectionTextResponse,
+                ),
+            )
+        except Exception as exc:
+            if _is_capacity_error(exc) and has_fallback:
+                logger.warning(
+                    "[gemini_service] reflection: model %s unavailable (503), trying fallback",
+                    model_name,
+                )
+                continue
+            if has_fallback:
+                logger.warning(
+                    "[gemini_service] reflection: model %s failed, trying fallback: %s",
+                    model_name,
+                    exc,
+                )
+                continue
+            logger.warning("[gemini_service] reflection generation failed: %s", exc)
+            return None
+
+        raw_response = response.text
+        if not raw_response:
+            _log_failure(
+                layer="reflection",
+                reason="empty response text",
+                raw_response=raw_response,
+                details={"model": model_name},
+            )
+            return None
+
+        try:
+            parsed = ReflectionTextResponse.model_validate_json(raw_response)
+        except ValidationError as exc:
+            _log_failure(
+                layer="reflection",
                 reason="schema parsing failed",
                 raw_response=raw_response,
                 details=exc.errors(),

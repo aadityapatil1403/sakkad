@@ -212,7 +212,7 @@ def test_get_session_reflection_returns_render_ready_text(monkeypatch) -> None:
         }],
     )
     monkeypatch.setattr(
-        "routes.sessions.generate_short_text",
+        "routes.sessions.generate_session_reflection",
         lambda **_kwargs: "The session leans into structured utility dressing. The references keep it grounded in practical outerwear.",
     )
 
@@ -244,7 +244,7 @@ def test_get_session_reflection_returns_fallback_when_gemini_fails(monkeypatch) 
             "reference_explanation": "Clean tailoring drives the match.",
         }],
     )
-    monkeypatch.setattr("routes.sessions.generate_short_text", lambda **_kwargs: None)
+    monkeypatch.setattr("routes.sessions.generate_session_reflection", lambda **_kwargs: None)
 
     response = client.get("/api/sessions/session-5/reflection")
 
@@ -287,13 +287,13 @@ def test_get_session_reflection_returns_fallback_when_gemini_returns_empty_strin
             "reference_explanation": "Workwear heritage cues align.",
         }],
     )
-    # generate_short_text returns None (as it does for empty responses)
-    monkeypatch.setattr("routes.sessions.generate_short_text", lambda **_kwargs: None)
+    # generate_session_reflection returns None (as it does for empty responses)
+    monkeypatch.setattr("routes.sessions.generate_session_reflection", lambda **_kwargs: None)
 
     # Act
     response = client.get("/api/sessions/session-7/reflection")
 
-    # Assert: fallback text is used when generate_short_text returns None
+    # Assert: fallback text is used when generate_session_reflection returns None
     assert response.status_code == 200
     payload = response.json()
     assert payload["session_id"] == "session-7"

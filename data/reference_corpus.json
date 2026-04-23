@@ -1132,5 +1132,345 @@
       "reference_type": "runway_collection",
       "notes": "Technical cocoon and transformed outerwear."
     }
+  },
+  {
+    "id": "ff3ac819-f3cc-45c7-82cc-5c21fbefce87",
+    "designer": "Iris van Herpen",
+    "brand": "Iris van Herpen",
+    "collection_or_era": "Crystallization, AW 2010",
+    "title": "Cellular geometry in frozen growth",
+    "description": "Intricate lattice of branching filaments, each fork radiating outward like ice crystal dendrites or biological cell walls caught mid-division. Translucent white membranes stretch between rigid skeletal spurs. The surface reads as both mineral and organic — the texture of frost on glass, coral skeleton, or a cross-section of bone seen under magnification.",
+    "taxonomy_tags": [
+      "Cellular Pattern",
+      "Botanical Organic",
+      "Exposed Structure"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "8f1a8c9a-e060-4fd2-a4cc-71b96e470afc",
+    "designer": "Iris van Herpen",
+    "brand": "Iris van Herpen",
+    "collection_or_era": "Biopiracy, SS 2014",
+    "title": "Biological membrane in motion",
+    "description": "Undulating sheets of semi-transparent material that mimic the surface tension of water, the veined underside of a leaf, or the thin skin of a soap bubble. Layered strata of color shift from pale amber to deep green as light passes through. The texture evokes preserved botanical specimens, insect wing venation, or resin-embedded organic matter.",
+    "taxonomy_tags": [
+      "Veined Leaf",
+      "Fluid Bloom",
+      "Luminous Gradient"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "7ef1c5b1-8edd-46cc-bcbe-db851925db25",
+    "designer": "Issey Miyake",
+    "brand": "Pleats Please Issey Miyake",
+    "collection_or_era": "Pleats Please, ongoing since 1993",
+    "title": "Light through pleated leaf geometry",
+    "description": "Accordion folds of fine polyester catch light like the parallel ribs of a palm frond or the corrugated underside of a fern. Each pleat casts a thin shadow into its neighbor, producing a rhythm of tone and shade identical to natural leaf venation seen from below against sky. The surface shimmers between matte and gloss as the angle shifts.",
+    "taxonomy_tags": [
+      "Veined Leaf",
+      "Botanical Organic",
+      "Luminous Gradient"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "minimalism_tailoring"
+    }
+  },
+  {
+    "id": "a9e0cd39-e7fb-461c-8913-b3f8701b0ab7",
+    "designer": "Issey Miyake",
+    "brand": "A-POC / Reality Lab",
+    "collection_or_era": "A-POC Making, 1999-2001",
+    "title": "Woven tubular structure as natural form",
+    "description": "Single continuous threads interlaced into hollow cylindrical forms whose cross-sections resemble the porous interior of bamboo or the cellular mesh of a dried gourd. The woven grid reads like a magnified view of plant cell walls or the geometric lattice of a wasp nest. Warm neutral tones — straw, ecru, pale reed — match dried grass and raw fiber materials.",
+    "taxonomy_tags": [
+      "Woven Surface",
+      "Raw Fiber",
+      "Exposed Structure"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "52fb1f23-8044-40a4-a6ce-327f1b8b41d9",
+    "designer": "Rick Owens",
+    "brand": "Rick Owens",
+    "collection_or_era": "Mastodon, AW 2010",
+    "title": "Poured concrete draped over void",
+    "description": "Dense grey matter — the exact tone and surface grain of raw poured concrete — hanging in heavy asymmetric masses. The texture reads as aggregate-flecked mineral: pocked, slightly rough, absorbing rather than reflecting light. Shadows pool in recesses the way water collects in cracks of a brutalist wall. Nothing reflects; everything absorbs.",
+    "taxonomy_tags": [
+      "Concrete Brutalism",
+      "Monochrome Field",
+      "Dusty Contrast"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "a11c43d8-45d5-4893-bdea-0f84e04f1f32",
+    "designer": "Rick Owens",
+    "brand": "Rick Owens",
+    "collection_or_era": "Limo, SS 2014",
+    "title": "Industrial mineral surface and raw edge",
+    "description": "Surfaces that carry the visual weight of cut stone, slag, or industrial mineral — chalky whites bleeding into charcoal, edges raw and unfinished as freshly broken concrete. Matte throughout, light flattened to near-zero gloss. The palette is quarry dust and ash; the texture is coarse aggregate and dried mortar. Structural and prehistoric.",
+    "taxonomy_tags": [
+      "Concrete Brutalism",
+      "Eroded Edge",
+      "Layered Grain"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "13d11acc-af4c-4c42-b345-d1008c664e2e",
+    "designer": "Jil Sander",
+    "brand": "Jil Sander",
+    "collection_or_era": "AW 2011 under Raf Simons",
+    "title": "Architectural silence in matte concrete tone",
+    "description": "Pale grey and warm stone tones stretched into clean planar surfaces — the visual silence of an unadorned concrete wall, light raking across a smooth render finish to reveal the faintest texture beneath. No ornament, no interruption. The surface is the statement: restrained, mineral, architectural. Like the interior of a Tadao Ando building caught in morning light.",
+    "taxonomy_tags": [
+      "Concrete Brutalism",
+      "Monochrome Field",
+      "Hardline Framework"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "minimalism_tailoring"
+    }
+  },
+  {
+    "id": "85e071a1-020c-458b-90a0-6a7ddd213f9c",
+    "designer": "Yohji Yamamoto",
+    "brand": "Yohji Yamamoto",
+    "collection_or_era": "AW 1983, Paris debut",
+    "title": "Dark organic drape and eroded edge",
+    "description": "Deep matte black with edges that appear torn, dissolved, or worn away by prolonged exposure — the visual logic of bark eaten by lichen, eroded stone, or fabric left to weather on a fence. The surface absorbs light completely; detail reads only as shadow within shadow. Silhouettes are massive and irregular, like storm-bent trees or collapsed architecture.",
+    "taxonomy_tags": [
+      "Eroded Edge",
+      "Monochrome Field",
+      "Botanical Organic"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "271557c5-be8f-45a7-aa6e-6fac9d33f838",
+    "designer": "Yohji Yamamoto",
+    "brand": "Y's",
+    "collection_or_era": "SS 1997",
+    "title": "Shadow void and layered grain",
+    "description": "Successive layers of dark material whose stacked edges read as geological strata — the cross-section of shale, layered bark, or compressed peat. Each layer is slightly different in tone from near-black to dark charcoal, creating depth through accumulation rather than color. Voids between layers become as significant as the material itself.",
+    "taxonomy_tags": [
+      "Layered Grain",
+      "Monochrome Field",
+      "Eroded Edge"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "476bb3a0-5624-4d6d-9fa6-d2c8a734951c",
+    "designer": "Martin Margiela",
+    "brand": "Maison Martin Margiela",
+    "collection_or_era": "Artisanal, SS 2000",
+    "title": "Oxidized surface and patinated finish",
+    "description": "Surfaces that read like aged copper sheeting, rusted iron plate, or silver tarnished to near-black — the brown-green patina of oxidized metal, each region shifting in tone as the underlying material corrodes unevenly. Texture is pocked and layered, with lifted edges where material has begun to separate. Beauty lives in the evidence of time acting on matter.",
+    "taxonomy_tags": [
+      "Oxidized Metal",
+      "Patinated Finish",
+      "Eroded Edge"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "0c7640bf-cb6a-4928-8495-fb0d54a4a3cb",
+    "designer": "Martin Margiela",
+    "brand": "Maison Martin Margiela",
+    "collection_or_era": "Artisanal, AW 2004",
+    "title": "Decay as deliberate material language",
+    "description": "Raw edges intentionally frayed until the weave dissolves into individual threads; surfaces bleached and re-stained to produce the uneven pale-to-amber color of aged linen or dried grass. The visual logic is identical to weathered sailcloth, dried botanical specimens pressed in a book, or found fabric left outdoors through seasons. Decay is the design intention.",
+    "taxonomy_tags": [
+      "Frayed Composite",
+      "Raw Fiber",
+      "Patinated Finish"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "38ca516f-dbd7-43e9-bf5a-8942c657018d",
+    "designer": "Rei Kawakubo",
+    "brand": "Comme des Garcons",
+    "collection_or_era": "Broken Bride, SS 2005",
+    "title": "Cellular asymmetry and botanical rupture",
+    "description": "Irregular protrusions of gathered fabric that read as tumors, seed pods, or cellular masses caught in abnormal growth — the visual logic of a burl on a tree trunk, a gall on an oak leaf, or a coral polyp colony seen in cross-section. Each node is different in scale and placement, the asymmetry governed by organic rather than geometric logic.",
+    "taxonomy_tags": [
+      "Cellular Pattern",
+      "Botanical Organic",
+      "Fluid Bloom"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "b6511876-8fbc-40f4-be91-4588bf97b2af",
+    "designer": "Rei Kawakubo",
+    "brand": "Comme des Garcons",
+    "collection_or_era": "Not Making Clothing, AW 2014",
+    "title": "Organic mass as structural rupture",
+    "description": "Forms that appear to have grown rather than been constructed — dense accumulations of material that pile and compress like lichen on stone, moss on bark, or mineral deposits forming over decades. Surface color ranges from deep forest green to black-brown, the palette of decomposing organic matter in a rainforest floor. Structure is found, not designed.",
+    "taxonomy_tags": [
+      "Botanical Organic",
+      "Layered Grain",
+      "Frayed Composite"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "d6649811-b0d7-4076-98a3-b10048da044f",
+    "designer": "Helmut Lang",
+    "brand": "Helmut Lang",
+    "collection_or_era": "AW 1998",
+    "title": "Urban surface tension and raw utility",
+    "description": "The visual grammar of industrial infrastructure: cable-tie closures, seam tape, bonded edges that read like adhesive joins on ductwork or zip-tie fasteners on scaffolding. Palette is wet pavement grey, oxidized zinc, and raw cotton — the tones of a construction site at dawn. Surfaces are either perfectly smooth or deliberately unfinished, never decorated.",
+    "taxonomy_tags": [
+      "Raw Utility",
+      "Wet Pavement",
+      "Hardline Framework"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "minimalism_tailoring"
+    }
+  },
+  {
+    "id": "dd9fd13c-04b9-4efd-8ad5-d154f1109253",
+    "designer": "Alexander McQueen",
+    "brand": "Alexander McQueen",
+    "collection_or_era": "Plato's Atlantis, SS 2010",
+    "title": "Nature as pattern violence — scale and reptile",
+    "description": "Digitally printed surfaces that reproduce the micro-geometry of reptile scales, snakeskin diamond lattice, and deep-sea organism texture at extreme magnification. The pattern reads as both threatening and beautiful — the skin of a predator, the surface of a venomous creature. Colors are iridescent and shifting: teal-green, acid yellow, deep violet, as found on tropical beetles or poison dart frogs.",
+    "taxonomy_tags": [
+      "Cellular Pattern",
+      "Botanical Organic",
+      "Luminous Gradient"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "adec994d-4adf-4020-994f-5d09a581e6d0",
+    "designer": "Alexander McQueen",
+    "brand": "Alexander McQueen",
+    "collection_or_era": "The Horn of Plenty, AW 2009",
+    "title": "Thorn and bone as structural surface",
+    "description": "Surfaces textured with raised points, sharp irregular protrusions, and angular facets that read as thorn clusters, dried seed husks, or the interlocked surface of a pine cone. Color is the off-white and pale grey of bleached bone, dried seed, or sun-whitened driftwood. The tactile impression is of danger — an object you cannot hold without being held by it.",
+    "taxonomy_tags": [
+      "Exposed Structure",
+      "Raw Fiber",
+      "Eroded Edge"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "983c0101-a234-45c8-839b-a64f787c4e39",
+    "designer": "Craig Green",
+    "brand": "Craig Green",
+    "collection_or_era": "SS 2015",
+    "title": "Woven geometric form as natural structure",
+    "description": "Thin strips of material lashed together at nodes, the resulting grid reading identically to wicker weave, bamboo scaffolding, or the cross-hatch of a woven reed mat. The structure is modular and repetitive — each unit identical, the whole emerging as an organic form. Palette is undyed natural: straw, sand, pale wood, raw cotton.",
+    "taxonomy_tags": [
+      "Woven Surface",
+      "Exposed Structure",
+      "Raw Utility"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "workwear_utility"
+    }
+  },
+  {
+    "id": "82c7d2d9-7d36-4287-a6e7-982bf1ba6147",
+    "designer": "Craig Green",
+    "brand": "Craig Green",
+    "collection_or_era": "AW 2017",
+    "title": "Utilitarian organic — rope, knot, and bound fiber",
+    "description": "Lengths of cord, rope, and woven band bound tightly around forms in a manner indistinguishable from tied bundles of dried grass, lashed bamboo poles, or the knotted rigging of a fishing vessel. The texture is fibrous, slightly rough, the surface catching light along each individual strand. Earthy tones: sisal brown, raw hemp, salt-bleached rope.",
+    "taxonomy_tags": [
+      "Raw Fiber",
+      "Woven Surface",
+      "Raw Utility"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "workwear_utility"
+    }
+  },
+  {
+    "id": "6c13503a-df02-40bf-b99b-cc6d0f899bdf",
+    "designer": "Issey Miyake",
+    "brand": "Issey Miyake",
+    "collection_or_era": "Flying Saucer, SS 1994",
+    "title": "Compressed natural geometry — light through form",
+    "description": "Disc-shaped volumes whose pleated surface reads like the cross-section of a nautilus shell, the concentric rings of a tree trunk cut transversely, or the radial geometry of a sunflower head. Light catches each fold differently, producing a moving gradient from pale gold at the crown to deep amber in the recesses. The form is botanical and mathematical simultaneously.",
+    "taxonomy_tags": [
+      "Botanical Organic",
+      "Luminous Gradient",
+      "Cellular Pattern"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "70061d94-7fd4-47aa-9aec-ab1ddb42df9a",
+    "designer": "Martin Margiela",
+    "brand": "Maison Martin Margiela",
+    "collection_or_era": "Replica line, 2000s",
+    "title": "Weathered signage and institutional surface",
+    "description": "Surfaces that carry the visual memory of repeated use and exposure — faded stencil lettering, worn rubber stamp marks, the ghost of a label half-removed. Tone is the pale institutional beige of aged cotton muslin, the grey-white of chalked blackboard, the muted buff of archival paper. The surface reads as document, as artifact, as material that has lived.",
+    "taxonomy_tags": [
+      "Weathered Signage",
+      "Patinated Finish",
+      "Muted Wash"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "avant_garde"
+    }
   }
 ]
