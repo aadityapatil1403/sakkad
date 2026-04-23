@@ -18,7 +18,10 @@ def test_canonical_taxonomy_is_fashion_only() -> None:
     taxonomy = load_taxonomy()
 
     assert taxonomy
-    assert {entry["domain"] for entry in taxonomy} == {"fashion_streetwear"}
+    domains = {entry["domain"] for entry in taxonomy}
+
+    assert domains == {"fashion_streetwear", "abstract_visual"}
+    assert sum(1 for entry in taxonomy if entry["domain"] == "abstract_visual") == 25
 
 
 def test_manifest_labels_exist_in_canonical_taxonomy() -> None:

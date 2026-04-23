@@ -37,17 +37,20 @@ def load_entries() -> list[dict]:
     return json.loads(TAXONOMY_PATH.read_text())
 
 
-def _get_seed_domain(entries: list[dict]) -> str:
+def get_seed_domains(entries: list[dict]) -> set[str]:
     domains = {entry["domain"] for entry in entries}
-    if len(domains) != 1:
-        raise ValueError(
-            "data/taxonomy.json must contain exactly one domain for deterministic seeding."
-        )
-    return next(iter(domains))
+    if not domains:
+        raise ValueError("data/taxonomy.json must contain at least one taxonomy entry.")
+    return domains
 
 
-def fetch_existing_rows(domain: str) -> dict[str, dict]:
-    response = supabase.table("taxonomy").select("id, label").eq("domain", domain).execute()
+def fetch_existing_rows(domains: set[str]) -> dict[str, dict]:
+    response = (
+        supabase.table("taxonomy")
+        .select("id, label")
+        .in_("domain", sorted(domains))
+        .execute()
+    )
     rows = response.data or []
     return {
         row["label"]: row
@@ -60,12 +63,18 @@ def delete_stale_rows(
     existing_rows: dict[str, dict],
     canonical_labels: set[str],
     *,
-    domain: str,
+    domains: set[str],
 ) -> int:
     stale_labels = sorted(set(existing_rows) - canonical_labels)
     for label in stale_labels:
         print(f"Deleting stale taxonomy row: {label}", flush=True)
-        supabase.table("taxonomy").delete().eq("domain", domain).eq("label", label).execute()
+        (
+            supabase.table("taxonomy")
+            .delete()
+            .in_("domain", sorted(domains))
+            .eq("label", label)
+            .execute()
+        )
     return len(stale_labels)
 
 
@@ -88,11 +97,11 @@ def build_row(entry: dict, existing_id: str | None) -> dict:
 def main() -> None:
     args = parse_args()
     entries = load_entries()
-    seed_domain = _get_seed_domain(entries)
+    seed_domains = get_seed_domains(entries)
     total = len(entries)
     success_count = 0
 
-    existing_rows = fetch_existing_rows(seed_domain)
+    existing_rows = fetch_existing_rows(seed_domains)
     canonical_labels = {entry["label"] for entry in entries}
     deleted_count = 0
 
@@ -110,7 +119,7 @@ def main() -> None:
             print(f"  WARNING: upsert returned no data for '{label}'", flush=True)
 
     if not args.keep_stale:
-        deleted_count = delete_stale_rows(existing_rows, canonical_labels, domain=seed_domain)
+        deleted_count = delete_stale_rows(existing_rows, canonical_labels, domains=seed_domains)
 
     print(
         f"\nDone. {success_count}/{total} rows successfully upserted."

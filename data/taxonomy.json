@@ -614,5 +614,280 @@
       "Sean John",
       "Dapper Dan"
     ]
+  },
+  {
+    "id": "botanical-organic",
+    "label": "Botanical Organic",
+    "domain": "abstract_visual",
+    "description": "a photo showing Botanical Organic visual language, branching veins, petal-like folds, damp matte surfaces, rootlike linework, and layered greens, bark browns, and mineral creams building a living texture map. Soft translucency, irregular symmetry, and growth-driven edges suggest garments shaped by botanical structures, biomorphic pleating, and natural-dye softness.",
+    "visual_references": [
+      "Iris van Herpen",
+      "Dries Van Noten",
+      "Issey Miyake"
+    ]
+  },
+  {
+    "id": "fluid-bloom",
+    "label": "Fluid Bloom",
+    "domain": "abstract_visual",
+    "description": "a photo showing Fluid Bloom visual language, rippling petal curves, liquid gradients, glossy highlights, and unfurling shapes in blush, coral, orchid, and misty pearl. Edges appear softened as if opening underwater, with layered translucency and drifting motion cues that translate into a fashion mood of sculpted drape, blooming volume, and body-wrapped floral futurism.",
+    "visual_references": [
+      "Iris van Herpen",
+      "Comme des Garcons",
+      "Dries Van Noten"
+    ]
+  },
+  {
+    "id": "cellular-pattern",
+    "label": "Cellular Pattern",
+    "domain": "abstract_visual",
+    "description": "a photo showing Cellular Pattern visual language, clustered cells, membrane outlines, porous repetition, and rounded geometry packed across soft-focus surfaces. Milky neutrals, olive undertones, translucent amber, and dark nodal accents create a microscopic rhythm that reads as perforated textiles, engineered mesh, and fashion built from organic modular structures.",
+    "visual_references": [
+      "Iris van Herpen",
+      "Issey Miyake",
+      "Comme des Garcons"
+    ]
+  },
+  {
+    "id": "raw-fiber",
+    "label": "Raw Fiber",
+    "domain": "abstract_visual",
+    "description": "a photo showing Raw Fiber visual language, loose strands, dry vegetal texture, broken edges, straw-brown neutrals, and tactile weave fragments catching uneven light. The image should emphasize fuzz, fray, and handmade density so the visual reads like untreated yarn, bast cloth, or rough spun material translated into artisanal layering and earthy fabrication.",
+    "visual_references": [
+      "Yohji Yamamoto",
+      "Dries Van Noten",
+      "Issey Miyake"
+    ]
+  },
+  {
+    "id": "veined-leaf",
+    "label": "Veined Leaf",
+    "domain": "abstract_visual",
+    "description": "a photo showing Veined Leaf visual language, fine branching lines, semi-translucent surfaces, softened green-to-ochre shifts, and delicate rib structures radiating from a central spine. Crisp yet fragile geometry, backlit texture, and subtle organic asymmetry should evoke pleated panels, filament overlays, and fashion that feels botanical, skeletal, and precise.",
+    "visual_references": [
+      "Issey Miyake",
+      "Iris van Herpen",
+      "Comme des Garcons"
+    ]
+  },
+  {
+    "id": "concrete-brutalism",
+    "label": "Concrete Brutalism",
+    "domain": "abstract_visual",
+    "description": "a photo showing Concrete Brutalism visual language, poured cement texture, monolithic blocks, cold flat planes, chipped corners, and shadow-heavy geometry in ash, stone, and dust grey. Weight, blunt edges, and weather-stained surfaces should dominate the frame so the mood connects to severe tailoring, oversized structure, and hard architectural fashion silhouettes.",
+    "visual_references": [
+      "Rick Owens",
+      "Helmut Lang",
+      "Craig Green"
+    ]
+  },
+  {
+    "id": "oxidized-metal",
+    "label": "Oxidized Metal",
+    "domain": "abstract_visual",
+    "description": "a photo showing Oxidized Metal visual language, corroded steel, blue-green patina, rust blooms, scratched reflectivity, and hard industrial edges under harsh directional light. The scene should foreground surface reaction, mineral staining, and metallic wear so the image maps to coated fabrics, hardware-heavy styling, and distressed utilitarian fashion with a mechanical bite.",
+    "visual_references": [
+      "1017 ALYX 9SM",
+      "Raf Simons",
+      "Rick Owens"
+    ]
+  },
+  {
+    "id": "raw-utility",
+    "label": "Raw Utility",
+    "domain": "abstract_visual",
+    "description": "a photo showing Raw Utility visual language, unfinished construction materials, exposed fasteners, scuffed matte surfaces, webbing-like lines, and worksite neutrals of khaki, charcoal, and cement. Direct function, abrasion, and visible assembly cues should read first, linking the environment to tactical layering, modular garments, and severe field-ready fashion pragmatism.",
+    "visual_references": [
+      "Craig Green",
+      "1017 ALYX 9SM",
+      "Helmut Lang"
+    ]
+  },
+  {
+    "id": "exposed-structure",
+    "label": "Exposed Structure",
+    "domain": "abstract_visual",
+    "description": "a photo showing Exposed Structure visual language, visible beams, braces, seams, framework joints, and linear load-bearing geometry with crisp shadows and open negative space. Steel, concrete, blackened metal, and raw timber should feel diagrammatic and unresolved, suggesting garments that reveal construction, harness systems, and architectural scaffolding around the body.",
+    "visual_references": [
+      "Craig Green",
+      "Raf Simons",
+      "Helmut Lang"
+    ]
+  },
+  {
+    "id": "hardline-framework",
+    "label": "Hardline Framework",
+    "domain": "abstract_visual",
+    "description": "a photo showing Hardline Framework visual language, rigid grids, sharp corners, engineered repetition, and severe black-grey contrast across structural planes and industrial joints. The composition should privilege straight lines, compression, and tension, creating a visual mood that translates into strapped silhouettes, disciplined paneling, and stark modernist fashion armor.",
+    "visual_references": [
+      "Rick Owens",
+      "1017 ALYX 9SM",
+      "Craig Green"
+    ]
+  },
+  {
+    "id": "woven-surface",
+    "label": "Woven Surface",
+    "domain": "abstract_visual",
+    "description": "a photo showing Woven Surface visual language, interlaced bands, basketlike grids, hand-built texture, and soft shadowing across tactile material depth. Neutral leather browns, oat, stone, and muted olive should reveal repetition, compression, and subtle gloss so the image connects to intrecciato craft, woven fabrication, and quietly luxurious surface-driven dressing.",
+    "visual_references": [
+      "Bottega Veneta",
+      "Lemaire",
+      "Loewe"
+    ]
+  },
+  {
+    "id": "patinated-finish",
+    "label": "Patinated Finish",
+    "domain": "abstract_visual",
+    "description": "a photo showing Patinated Finish visual language, softly aged surfaces, tonal discoloration, rubbed edges, waxed luster, and time-worn depth across leather, plaster, or metal-like materials. Olive-brown, smoke, tobacco, and parchment tones should blend with subtle sheen and handling marks, evoking refined garments whose luxury comes from wear, finish, and quiet material maturity.",
+    "visual_references": [
+      "Loewe",
+      "Jil Sander",
+      "Studio Nicholson"
+    ]
+  },
+  {
+    "id": "eroded-edge",
+    "label": "Eroded Edge",
+    "domain": "abstract_visual",
+    "description": "a photo showing Eroded Edge visual language, crumbling margins, chipped contours, rubbed corners, and granular decay where clean form breaks into powder, fuzz, or abrasion. The image should emphasize tactile loss, weather exposure, and material softness at the perimeter, suggesting garments with distressed hems, broken finishes, and intentionally worn sculptural restraint.",
+    "visual_references": [
+      "Lemaire",
+      "Loewe",
+      "Jil Sander"
+    ]
+  },
+  {
+    "id": "layered-grain",
+    "label": "Layered Grain",
+    "domain": "abstract_visual",
+    "description": "a photo showing Layered Grain visual language, stratified texture, sediment-like bands, compressed fibers, and subtle tonal buildup across matte natural surfaces. Browns, greige, flax, and warm stone should read through stacked material depth rather than loud contrast, tying the visual to laminated textiles, refined layering, and understated fashion with crafted density.",
+    "visual_references": [
+      "Studio Nicholson",
+      "Lemaire",
+      "Bottega Veneta"
+    ]
+  },
+  {
+    "id": "frayed-composite",
+    "label": "Frayed Composite",
+    "domain": "abstract_visual",
+    "description": "a photo showing Frayed Composite visual language, bonded layers splitting apart, thread exposure, rough lamination, and mixed material fragments in beige, charcoal, and chalky neutrals. The frame should prioritize torn joins, fibrous edges, and construction stress so the image maps to hybrid fabrication, unfinished seams, and textural fashion built from assembled remnants.",
+    "visual_references": [
+      "Loewe",
+      "Bottega Veneta",
+      "Jil Sander"
+    ]
+  },
+  {
+    "id": "earth-palette",
+    "label": "Earth Palette",
+    "domain": "abstract_visual",
+    "description": "a photo showing Earth Palette visual language, clay browns, moss green, sand, umber, stone, and soft mineral variation spread across matte surfaces with low glare and natural depth. The emphasis should be on tonal harmony, dust, and grounded warmth rather than prints, creating a calm image that aligns with restrained luxury layering, brushed textiles, and quiet tailoring.",
+    "visual_references": [
+      "Loro Piana",
+      "The Row",
+      "Auralee"
+    ]
+  },
+  {
+    "id": "monochrome-field",
+    "label": "Monochrome Field",
+    "domain": "abstract_visual",
+    "description": "a photo showing Monochrome Field visual language, one dominant hue stretched across broad surfaces with only slight tonal steps, soft edges, and controlled texture. The scene should feel purified and spacious, whether in chalk white, graphite, camel, or black, so the visual reads as minimal fabric study, uniform dressing, and precise fashion reduced to silhouette and finish.",
+    "visual_references": [
+      "Jil Sander",
+      "The Row",
+      "Phoebe Philo"
+    ]
+  },
+  {
+    "id": "luminous-gradient",
+    "label": "Luminous Gradient",
+    "domain": "abstract_visual",
+    "description": "a photo showing Luminous Gradient visual language, diffused light transitions, glowing color fade, misty edges, and atmospheric blending from one hue into another without hard interruption. Pearl, amber, smoke, blue, or blush should shift softly across the frame, translating into fluid fabric movement, polished finish, and a fashion mood of elevated softness and controlled radiance.",
+    "visual_references": [
+      "Phoebe Philo",
+      "Auralee",
+      "The Row"
+    ]
+  },
+  {
+    "id": "muted-wash",
+    "label": "Muted Wash",
+    "domain": "abstract_visual",
+    "description": "a photo showing Muted Wash visual language, diluted pigment, cloudy tonal spread, brushed haze, and low-saturation color sitting softly on matte surfaces. Dusty rose, faded blue, greige, sage, and chalk should feel gently absorbed rather than sharply printed, giving the image a calm washed finish that suggests overdyed fabric, softened tailoring, and understated contemporary dressing.",
+    "visual_references": [
+      "Auralee",
+      "Jil Sander",
+      "Phoebe Philo"
+    ]
+  },
+  {
+    "id": "dusty-contrast",
+    "label": "Dusty Contrast",
+    "domain": "abstract_visual",
+    "description": "a photo showing Dusty Contrast visual language, muted dark-light separation, chalky shadow, softened highlights, and powdered tonal friction instead of crisp graphic opposition. Dry black, bone, taupe, and clay should create a subdued push-pull across worn textures, mapping the scene to spare layered styling, brushed surfaces, and fashion that feels quiet but deliberately graphic.",
+    "visual_references": [
+      "The Row",
+      "Jil Sander",
+      "Loro Piana"
+    ]
+  },
+  {
+    "id": "neon-lit-night",
+    "label": "Neon Lit Night",
+    "domain": "abstract_visual",
+    "description": "a photo showing Neon Lit Night visual language, electric signage glow, deep shadow, reflective black surfaces, and saturated magenta, cyan, acid green, or amber cutting through darkness. The image should foreground urban moisture, night haze, and synthetic light spill so it connects to clubwear, technical street styling, and nocturnal fashion with cinematic intensity.",
+    "visual_references": [
+      "Prada",
+      "Undercover",
+      "Balenciaga"
+    ]
+  },
+  {
+    "id": "wet-pavement",
+    "label": "Wet Pavement",
+    "domain": "abstract_visual",
+    "description": "a photo showing Wet Pavement visual language, rain-darkened asphalt, oily reflections, gritty aggregate, headlight streaks, and pooled surface shine under urban night lighting. The scene should capture slick texture, cold grey-blue tone, and street residue so the mood translates into coated outerwear, utilitarian layering, and city fashion sharpened by weather and motion.",
+    "visual_references": [
+      "Stone Island",
+      "Diesel",
+      "Prada"
+    ]
+  },
+  {
+    "id": "geometric-tile",
+    "label": "Geometric Tile",
+    "domain": "abstract_visual",
+    "description": "a photo showing Geometric Tile visual language, repeating hard-edged modules, grout lines, polished or matte ceramic surfaces, and strict pattern rhythm across floors or walls. Contrast, symmetry, and surface repetition should dominate the frame, linking the visual to printed coordinates, modular paneling, and fashion styling that feels urban, graphic, and architecturally composed.",
+    "visual_references": [
+      "Prada",
+      "Balenciaga",
+      "Undercover"
+    ]
+  },
+  {
+    "id": "weathered-signage",
+    "label": "Weathered Signage",
+    "domain": "abstract_visual",
+    "description": "a photo showing Weathered Signage visual language, peeling paint, faded lettering, rust halos, adhesive residue, and sun-bleached commercial color on battered urban surfaces. The image should feel layered with time, grit, and public wear, mapping directly to distressed graphics, washed denim, and street fashion that pulls energy from decayed city communication.",
+    "visual_references": [
+      "Diesel",
+      "Undercover",
+      "Balenciaga"
+    ]
+  },
+  {
+    "id": "transit-glow",
+    "label": "Transit Glow",
+    "domain": "abstract_visual",
+    "description": "a photo showing Transit Glow visual language, fluorescent station light, brushed metal, tinted glass, reflected ads, and directional color streaks moving across urban infrastructure. Cool white, yellow, red, and digital blue should skim over utilitarian surfaces, creating a mood that translates into commuter-tech layering, sleek nylon, and fast metropolitan fashion energy.",
+    "visual_references": [
+      "Prada",
+      "Stone Island",
+      "Diesel"
+    ]
   }
 ]
