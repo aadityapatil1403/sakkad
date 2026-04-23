@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
+- Added 25 `abstract_visual` taxonomy labels, updated mixed-domain taxonomy seeding, and live-seeded Supabase successfully to 56 `fashion_streetwear` + 25 `abstract_visual` rows (2026-04-22)
 - Merged `feature/generation-and-reflection`: `POST /api/generate`, `GET /api/sessions/{id}/reflection`, API_CONTRACT.md, 117 tests passing (2026-04-22)
 - Added dependency-aware health reporting (`ok` / `degraded` / `error`), Railway runbook, smoke demo flow script, and Procfile for deployment/demo reliability (2026-04-21)
-- Fixed JSONB ordering bug: `_normalize_taxonomy_matches` now sorts by score descending; `extract_top_taxonomy` uses `max()` not `next(iter())`; western.jpg seed now reports Cowboy Core correctly (2026-04-21)
 
 ### Now
 
@@ -48,13 +48,32 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 | Field     | Value |
 | --------- | ----- |
-| Command   | none  |
-| Phase     | —     |
-| Next step | —     |
+| Command   | /new-feature abstract-visual-taxonomy |
+| Phase     | 6 — Verify |
+| Next step | Install `ruff` and `mypy`, then rerun full verify gate |
 
 ### Checklist
 
-(no active workflow)
+- [x] Worktree created
+- [x] Project state read
+- [x] Plugins verified
+- [x] PRD created
+- [x] Research done
+- [ ] Design guidance loaded (if UI)
+- [x] Brainstorming complete
+- [x] Plan written
+- [x] Plan review loop (1 iterations) — iterate until no P0/P1/P2
+- [x] TDD execution complete
+- [x] Code review loop (1 iterations) — PASS
+- [x] Simplified
+- [ ] Verified (tests/lint/types) — pytest passed; `ruff` missing so `mypy` could not run
+- [x] E2E use cases tested (if user-facing)
+- [x] Learnings documented (if any)
+- [x] State files updated
+- [ ] Committed and pushed
+- [ ] PR created
+- [ ] PR reviews addressed
+- [ ] Branch finished
 
 ---
 
@@ -66,7 +85,7 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Blockers
 
-- `ruff` and `mypy` are not installed in the current shell environment; `python -m pytest` passes, but the full verify gate cannot complete until those tools are available
+- `ruff` and `mypy` are not installed in the current shell environment; `python -m pytest` passes and the live taxonomy seed succeeded, but the full verify gate cannot complete until those tools are available
 - Live smoke validation still depends on a running backend plus configured Supabase credentials
 
 ---

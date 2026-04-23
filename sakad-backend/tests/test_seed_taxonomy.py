@@ -51,12 +51,10 @@ def _load_module() -> ModuleType:
                 sys.modules[name] = original
 
 
-def test_delete_stale_rows_removes_only_missing_labels() -> None:
+def test_delete_stale_rows_removes_only_missing_labels_in_represented_domains() -> None:
     with _load_module() as seed_taxonomy:
         delete_query = MagicMock()
-        delete_query.eq.return_value.eq.return_value.execute.return_value = SimpleNamespace(
-            data=[{"ok": True}]
-        )
+        delete_query.in_.return_value.eq.return_value.execute.return_value = SimpleNamespace(data=[{"ok": True}])
 
         table = MagicMock()
         table.delete.return_value = delete_query
@@ -73,33 +71,39 @@ def test_delete_stale_rows_removes_only_missing_labels() -> None:
         deleted_count = seed_taxonomy.delete_stale_rows(
             existing,
             {"Western Americana", "Vaporwave"},
-            domain="fashion_streetwear",
+            domains={"fashion_streetwear", "abstract_visual"},
         )
 
         assert deleted_count == 1
         seed_taxonomy.supabase.table.assert_called_with("taxonomy")
-        delete_query.eq.assert_any_call("domain", "fashion_streetwear")
-        delete_query.eq.return_value.eq.assert_called_once_with("label", "Memphis Design")
+        delete_query.in_.assert_called_once_with("domain", ["abstract_visual", "fashion_streetwear"])
+        delete_query.in_.return_value.eq.assert_called_once_with("label", "Memphis Design")
 
 
-def test_fetch_existing_rows_filters_by_domain() -> None:
+def test_fetch_existing_rows_filters_by_represented_domains() -> None:
     with _load_module() as seed_taxonomy:
         execute_query = MagicMock()
         execute_query.execute.return_value = SimpleNamespace(
-            data=[{"id": "1", "label": "Western Americana"}]
+            data=[
+                {"id": "1", "label": "Western Americana"},
+                {"id": "2", "label": "Wet Pavement"},
+            ]
         )
         select_query = MagicMock()
-        select_query.eq.return_value = execute_query
+        select_query.in_.return_value = execute_query
 
         seed_taxonomy.supabase = MagicMock()
         seed_taxonomy.supabase.table.return_value.select.return_value = select_query
 
-        rows = seed_taxonomy.fetch_existing_rows("fashion_streetwear")
+        rows = seed_taxonomy.fetch_existing_rows({"fashion_streetwear", "abstract_visual"})
 
-        assert rows == {"Western Americana": {"id": "1", "label": "Western Americana"}}
+        assert rows == {
+            "Western Americana": {"id": "1", "label": "Western Americana"},
+            "Wet Pavement": {"id": "2", "label": "Wet Pavement"},
+        }
         seed_taxonomy.supabase.table.assert_called_once_with("taxonomy")
         seed_taxonomy.supabase.table.return_value.select.assert_called_once_with("id, label")
-        select_query.eq.assert_called_once_with("domain", "fashion_streetwear")
+        select_query.in_.assert_called_once_with("domain", ["abstract_visual", "fashion_streetwear"])
 
 
 def test_build_row_preserves_existing_id_and_references() -> None:
@@ -153,27 +157,25 @@ def test_parse_args_can_keep_stale_rows_when_requested() -> None:
     assert args.keep_stale is True
 
 
-def test_get_seed_domain_rejects_mixed_domain_seed_files() -> None:
+def test_get_seed_domains_returns_all_represented_domains() -> None:
     with _load_module() as seed_taxonomy:
-        try:
-            seed_taxonomy._get_seed_domain(
-                [
-                    {"label": "A", "domain": "fashion_streetwear"},
-                    {"label": "B", "domain": "art_reference"},
-                ]
-            )
-        except ValueError as exc:
-            assert "exactly one domain" in str(exc)
-        else:
-            raise AssertionError("Expected mixed domains to be rejected")
+        domains = seed_taxonomy.get_seed_domains(
+            [
+                {"label": "A", "domain": "fashion_streetwear"},
+                {"label": "B", "domain": "abstract_visual"},
+                {"label": "C", "domain": "fashion_streetwear"},
+            ]
+        )
+
+        assert domains == {"fashion_streetwear", "abstract_visual"}
 
 
-def test_main_deletes_stale_rows_only_after_successful_upserts() -> None:
+def test_main_fetches_and_deletes_with_all_represented_domains() -> None:
     with _load_module() as seed_taxonomy:
         seed_taxonomy.load_entries = MagicMock(
             return_value=[
                 {"label": "A", "domain": "fashion_streetwear", "description": "desc A"},
-                {"label": "B", "domain": "fashion_streetwear", "description": "desc B"},
+                {"label": "B", "domain": "abstract_visual", "description": "desc B"},
             ]
         )
         seed_taxonomy.fetch_existing_rows = MagicMock(
@@ -195,8 +197,11 @@ def test_main_deletes_stale_rows_only_after_successful_upserts() -> None:
         seed_taxonomy.main()
 
         assert table.upsert.call_count == 2
+        seed_taxonomy.fetch_existing_rows.assert_called_once_with(
+            {"fashion_streetwear", "abstract_visual"}
+        )
         seed_taxonomy.delete_stale_rows.assert_called_once_with(
             {"A": {"id": "1"}, "legacy": {"id": "2"}},
             {"A", "B"},
-            domain="fashion_streetwear",
+            domains={"fashion_streetwear", "abstract_visual"},
         )
