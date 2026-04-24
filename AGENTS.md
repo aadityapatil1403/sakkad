@@ -42,16 +42,18 @@ This project uses a structured workflow harness. The harness consists of:
 
 **Before doing anything, pick the right workflow:**
 
-| Scenario                                                 | Workflow              | Command file                             |
-| -------------------------------------------------------- | --------------------- | ---------------------------------------- |
-| New feature or capability                                | Full feature workflow | `.claude/commands/new-feature.md`        |
-| Bug fix                                                  | Bug fix workflow      | `.claude/commands/fix-bug.md`            |
-| Trivial change (< 3 files, no logic change, obvious fix) | Quick fix             | `.claude/commands/quick-fix.md`          |
-| Code review / second opinion                             | Codex review mode     | `.claude/commands/codex.md`              |
-| PR review comments to address                            | PR comments workflow  | `.claude/commands/review-pr-comments.md` |
-| Merging and cleaning up after PR approval                | Finish branch         | `.claude/commands/finish-branch.md`      |
+| Scenario                                              | Workflow              | Worktree? | Command file                             |
+| ----------------------------------------------------- | --------------------- | --------- | ---------------------------------------- |
+| New feature touching 4+ files or multiple sessions    | Full feature workflow | **Yes**   | `.claude/commands/new-feature.md`        |
+| New feature touching 1–3 files, self-contained        | Full feature workflow | No        | `.claude/commands/new-feature.md`        |
+| Complex bug fix (multi-file, unclear root cause)      | Bug fix workflow      | **Yes**   | `.claude/commands/fix-bug.md`            |
+| Simple bug fix (1–3 files, obvious cause)             | Bug fix workflow      | No        | `.claude/commands/fix-bug.md`            |
+| Trivial change (1 file, no logic change, obvious fix) | Quick fix             | No        | `.claude/commands/quick-fix.md`          |
+| Code review / second opinion                          | Codex review mode     | No        | `.claude/commands/codex.md`              |
+| PR review comments to address                         | PR comments workflow  | No        | `.claude/commands/review-pr-comments.md` |
+| Merging and cleaning up after PR approval             | Finish branch         | No        | `.claude/commands/finish-branch.md`      |
 
-**When in doubt, use the full workflow. Never use quick-fix for anything touching business logic, tests, or APIs.**
+**When in doubt about worktree: if the task touches 1–3 files and fits in one session, skip the worktree. Never use quick-fix for anything touching business logic, tests, or APIs.**
 
 ---
 
@@ -246,13 +248,54 @@ Add a changelog entry when 3+ files change on a branch. Format:
 
 ## Branch and Worktree Rules
 
-- **Never work directly on `main`** — always on a feature or fix branch
-- New features → create a worktree: `git worktree add .worktrees/<name> -b feat/<name>`
-- Bug fixes → create a worktree: `git worktree add .worktrees/<name> -b fix/<name>`
-- Quick fixes → branch only, no worktree needed
-- **When inside a worktree:** all paths are relative to the worktree root, not `.worktrees/<name>/`
-- Symlink `.env` files into worktrees — never copy them
-- Worktree cleanup happens in `/finish-branch` — do not manually delete worktrees mid-workflow
+**Never work directly on `main`.** Always on a feature or fix branch. Check before starting:
+
+```bash
+git branch --show-current   # must NOT be "main"
+```
+
+### When to create a worktree (isolated branch + separate directory)
+
+Create a worktree when:
+
+- The task touches **4+ files** or spans multiple modules
+- The task will take **multiple sessions** to complete
+- The work must stay isolated from other in-progress changes (e.g. two features being built in parallel)
+- The task involves **schema migrations**, **new routes**, or **new services**
+
+```bash
+git worktree add .worktrees/<name> -b feat/<name>   # feature
+git worktree add .worktrees/<name> -b fix/<name>    # complex bug fix
+```
+
+### When to use a branch only (no worktree)
+
+Create a branch but work in the main repo directory when:
+
+- The task touches **1–3 files** and is self-contained
+- The fix is clearly scoped (one function, one endpoint, one config value)
+- No parallel work is in progress on another branch
+
+```bash
+git checkout -b feat/<name>   # or fix/<name>
+```
+
+### When quick-fix applies (main repo, no branch, direct commit)
+
+Only for changes that are:
+
+- **Trivially obvious** — a typo, a constant value, a comment, a log message
+- **1 file only**
+- **Zero logic change** — no conditionals, no new imports, no schema changes
+
+If you are uncertain whether something qualifies as a quick-fix, it does not. Use a branch.
+
+### Worktree mechanics
+
+- **When inside a worktree:** all paths are relative to the worktree root — `sakad-backend/` not `.worktrees/<name>/sakad-backend/`
+- Symlink `.env` files into worktrees — never copy them: `ln -s ../../.env .env`
+- Do not manually delete worktrees mid-workflow — cleanup happens in the finish-branch step
+- After merging, remove the worktree: `git worktree remove .worktrees/<name>` then `git branch -d feat/<name>`
 
 ---
 
