@@ -21,13 +21,18 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Suppressed HuggingFace/SwigPy DeprecationWarnings in `clip_service.py` for clean demo terminal output; `TOKENIZERS_PARALLELISM=false` set; targeted filters only, not blanket suppress; 130 tests green (2026-04-23)
-- Added `ReflectionTextResponse` model with `max_length=1200` so reflection output is not truncated; `ShortTextResponse` stays at 400 for other endpoints (2026-04-22)
-- Replaced session reflection prompt with designer-aware creative director framing: `generate_session_reflection()` identifies visual threads, names specific designers, explains connecting quality, ends with aesthetic instinct sentence (2026-04-22)
-- Added 20 abstract-visual reference corpus entries (54→74 total) bridging leaf/concrete/rust/bark captures to designers via SigLIP; abstract-visual layer2 prompt wired (2026-04-22)
-- Fixed `reference_explanation` low-score branch and `gemini-2.5-flash` 8s→12s timeout (2026-04-22)
+- Built `web/sakkad-showcase/` — full React/Vite showcase UI with upload, pipeline reveal, three-column result (taxonomy/references/reflection), gallery strip, Explore Relationships modal, Sketch Stage placeholder; 18 tests passing, clean build (2026-04-24)
+- Created backend showcase UI planning artifacts: PRD, design spec, TDD implementation plan (2026-04-24)
 
 ### Now
+
+**Backend Showcase UI**
+
+- [x] Plan a polished Apple-adjacent fashion UI for backend upload/classification demo
+- [x] Recommend standalone `web/sakkad-showcase/` React/Vite app
+- [x] User approved matching the partner app's relationship-to-sketch flow
+- [x] TDD implementation complete — 18 tests, clean build
+- [ ] Commit and merge to main
 
 **Week 3 — Demo-readiness and Partner Contract**
 
@@ -40,6 +45,7 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Next
 
+- Implement backend showcase UI with TDD, starting with the typed API client and single-image upload flow
 - Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, share live URL with partner
 - Week 4: Deploy to Railway, Supabase Realtime on captures table, improve health/readiness endpoints
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
@@ -48,15 +54,34 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value |
-| --------- | ----- |
-| Command   | none  |
-| Phase     | —     |
-| Next step | —     |
+| Field     | Value                                |
+| --------- | ------------------------------------ |
+| Command   | /new-feature backend-showcase-ui     |
+| Phase     | 4 — Execute                          |
+| Next step | Scaffold TDD React/Vite showcase app |
 
 ### Checklist
 
-(no active workflow)
+- [x] Worktree created
+- [x] Project state read
+- [x] Plugins verified (Codex manual equivalent)
+- [x] PRD created
+- [x] Research done
+- [x] Design guidance loaded (if UI)
+- [x] Brainstorming complete
+- [x] Plan written
+- [x] Plan review loop (1 iteration) — PASS
+- [x] TDD execution complete
+- [x] Code review loop (1 iteration) — PASS
+- [x] Simplified
+- [x] Verified (tests/lint/types)
+- [ ] E2E use cases tested (if user-facing)
+- [ ] Learnings documented (if any)
+- [x] State files updated
+- [ ] Committed and pushed
+- [ ] PR created
+- [ ] PR reviews addressed
+- [ ] Branch finished
 
 ---
 
