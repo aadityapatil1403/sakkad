@@ -36,3 +36,9 @@ huggingface/
 
 # Eval runtime output (cached results, not source)
 sakad-backend/eval/demo_dataset_last_run.json
+
+# Playwright MCP session artifacts
+.playwright-mcp/
+
+# Temp session files
+chatcontext.md
