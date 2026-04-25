@@ -21,17 +21,18 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI live on main; 136 tests passing (2026-04-25)
-- Added `BRAND_CONTEXT.md` — Set Pieces brand identity, products, sustainability thesis, and how Sakkad serves it; saved to persistent memory (2026-04-25)
-- Image gen timeout raised 60s→120s via dedicated `_get_image_client()`; GalleryStrip badges, SketchStage animated loader + × close; 136 tests passing (2026-04-24)
+- Soccer taxonomy: 6 new labels (Retro Kit Culture, Football Casual, Soccer Heritage, Sport Hybrid, Training Ground, Kit Collector) + 20 brand corpus entries (KidSuper, Corteiz, Willy Chavarria, 424, Palace, Wales Bonner, Martine Rose) seeded; jersey1 now scores Retro Kit Culture 82%, jersey2 Kit Collector 95%, jersey3 Soccer Heritage 57% (2026-04-25)
+- `start.sh` fixed — frontend path now points to `web/sakkad-showcase` (not deleted worktree); 87 taxonomy labels confirmed on startup (2026-04-25)
+- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI; 136 tests passing (2026-04-25)
 
 ### Now
 
 **Week 3 — Demo-readiness and Partner Contract**
 
-- [ ] Add soccer/jersey taxonomy labels (worktree: `feat/soccer-taxonomy`)
-- [ ] Run live demo seed (`python scripts/seed_demo_captures.py`) once `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` are set
+- [ ] Merge `feat/soccer-taxonomy` → main (user testing UI first)
+- [ ] Run live demo seed (`python scripts/seed_demo_captures.py`)
 - [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
+- [x] Soccer taxonomy + brand corpus seeded and validated
 - [x] Ship sketch generation: `POST /api/generate/image` + wired `SketchStage`
 - [x] Improve partner narrative surfaces: `POST /api/generate`, `GET /api/sessions/{id}/reflection`
 

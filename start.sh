@@ -6,7 +6,7 @@ set -e
 
 REPO="$(cd "$(dirname "$0")" && pwd)"
 BACKEND="$REPO/sakad-backend"
-FRONTEND="$REPO/.worktrees/backend-showcase-ui/web/sakkad-showcase"
+FRONTEND="$REPO/web/sakkad-showcase"
 
 # ── colours ──────────────────────────────────────────────────────────────────
 GREEN='\033[0;32m'
