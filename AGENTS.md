@@ -72,6 +72,90 @@ The command files are the authoritative source. This file tells you _when_ and _
 
 ---
 
+## Partner Frontend Context
+
+The partner web app lives at `/Users/aaditya/Desktop/Sakkad/Project-Sakkad-main/web/sakkad-app/`.
+
+**Read these two files before doing any frontend or integration work:**
+
+- `BACKEND_CONTEXT.md` (this repo, root) — what the backend produces, all endpoints, data shapes, what the frontend can consume
+- `/Users/aaditya/Desktop/Sakkad/Project-Sakkad-main/PARTNER_CONTEXT.md` — the partner's complete data contract: Capture/Session shapes, all Supabase calls, realtime subscriptions, field name requirements, and what's mock vs real
+
+**Partner stack:** React 19 + Vite + Tailwind v4 + Framer Motion + Supabase Realtime. No backend API calls today — reads directly from Supabase. Aesthetic: Teenage Engineering / Braun, orange `#FF5A00` accent.
+
+**Integration points your code must respect:**
+
+- `taxonomy_matches` must always be `Record<string, number>` — never an array
+- Storage bucket is `captures` (backend) / `specs-bucket` (Lens) — do not assume one canonical name without checking
+- Supabase Realtime channels are `captures-realtime` and `sessions-realtime` — do not create conflicting channel names
+- `session_id` can be null on captures from the unsorted Lens path
+
+---
+
+## UI Design → What You Do Instead
+
+Claude uses a `frontend-design` skill for UI work. You replicate it manually:
+
+### Before writing any UI code
+
+**Commit to a clear aesthetic direction first.** Do not start generic. Answer these questions in a design note before coding:
+
+1. **Tone** — pick one extreme and own it. Options: brutally minimal, editorial/archive, organic/material, industrial/utilitarian, maximalist, luxury/refined. Sakkad's backend is fashion-archive + material philosophy — the UI should feel like a designer's research tool, not a consumer app.
+2. **Typography** — choose fonts that are distinctive and characterful. Never use Inter, Roboto, Arial, or Space Grotesk. Pick a display font that feels editorial or archival (e.g. a condensed grotesque, a serif with character, a mono with texture). Pair it with a refined body font.
+3. **Color** — commit to a dominant palette with sharp accents. The backend's aesthetic is dark, material, fashion-archive. Consider: near-black backgrounds, raw paper tones, mineral greys, one strong accent (the partner uses `#FF5A00` orange — either align or deliberately contrast).
+4. **One unforgettable thing** — decide what someone will remember about this UI. A specific animation, a texture, a layout pattern, a typographic moment. Name it before you build it.
+
+Write a 4–6 line design note to `docs/superpowers/specs/YYYY-MM-DD-<ui-feature>-design.md` before writing any component code.
+
+### Implementation rules
+
+- **Motion:** Use Framer Motion (already in the partner's stack). Prioritize one well-orchestrated moment (page load stagger, capture-reveal animation) over scattered micro-interactions.
+- **Typography:** Set font via CSS custom properties or Tailwind config. Import from Google Fonts or use system fonts only if they are genuinely distinctive.
+- **Color:** Use CSS variables or Tailwind theme tokens — never hardcode hex values inline across multiple components.
+- **Backgrounds:** Create atmosphere. Grain overlay, noise texture, gradient mesh, or raw paper texture beats a solid color every time.
+- **Layout:** Use asymmetry, overlap, and generous negative space. Grid-breaking elements are intentional. Avoid centered-everything layouts.
+- **No generic AI aesthetics:** No purple gradients on white. No rounded-everything card grids. No glassmorphism without purpose. No "clean and modern" as a goal — that's not a direction, it's the absence of one.
+
+### Component quality bar
+
+Every component must:
+
+- Work correctly (no placeholder data, no TODO comments left in)
+- Be typed (TypeScript interfaces for all props)
+- Handle loading and empty states explicitly
+- Use the shared design tokens (colors, fonts, spacing) — no one-off inline styles
+
+### Checking your work
+
+After building a UI component or page:
+
+1. Read every file you wrote
+2. Check: does it look like it was designed for a fashion archive research tool, or does it look like a generic dashboard?
+3. Check: is the typography choice distinctive and intentional?
+4. Check: is there at least one motion or layout moment that is memorable?
+5. Fix anything that would make a designer cringe
+
+---
+
+## Pattern Check Before Responding
+
+Before writing any code or answering any non-trivial question, pause and ask:
+
+> "Does this task match a known workflow pattern?"
+
+| If the task is...                     | Use this pattern                          |
+| ------------------------------------- | ----------------------------------------- |
+| New feature or non-trivial addition   | Design → Plan → TDD Execution             |
+| Bug or unexpected behavior            | Systematic Debugging                      |
+| UI or frontend work                   | UI Design rules                           |
+| Code to ship                          | Quality Gates (all 3)                     |
+| Something done before in this project | Check `docs/solutions/` first             |
+| Unclear or ambiguous                  | Ask one clarifying question, then proceed |
+
+You do not need to name the pattern out loud. Just apply it. The goal is to avoid jumping straight to implementation when a more structured approach would produce better results.
+
+---
+
 ## Skills → What You Do Instead
 
 Claude uses a `Skill` tool to invoke structured workflows. You replicate the same behavior manually:

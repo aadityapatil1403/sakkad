@@ -15,8 +15,11 @@ from models.gemini import Layer1TagsResponse, Layer2TagsResponse, ReflectionText
 logger = logging.getLogger(__name__)
 
 _TIMEOUT_MS = 60_000
+_IMAGE_TIMEOUT_MS = 120_000
 _TEXT_TIMEOUT_MS = 12_000
 _RAW_RESPONSE_LOG_LIMIT = 800
+import base64
+
 _UNICODE_HYPHENS_RE = re.compile(r"[‐‑‒–—−]")
 _HYPHEN_SPACING_RE = re.compile(r"\s*-\s*")
 
@@ -260,6 +263,14 @@ def _get_text_client() -> genai.Client:
     return genai.Client(
         api_key=settings.GEMINI_API_KEY,
         http_options=types.HttpOptions(timeout=_TEXT_TIMEOUT_MS),
+    )
+
+
+@functools.lru_cache(maxsize=1)
+def _get_image_client() -> genai.Client:
+    return genai.Client(
+        api_key=settings.GEMINI_API_KEY,
+        http_options=types.HttpOptions(timeout=_IMAGE_TIMEOUT_MS),
     )
 
 
@@ -535,4 +546,68 @@ def generate_session_reflection(context: str) -> str | None:
         text = parsed.text.strip()
         return text or None
 
+    return None
+
+
+_SKETCH_SYSTEM_PROMPT = """\
+You are a fashion illustration AI. Generate a hand-drawn fashion design sketch with these \
+non-negotiable constraints:
+- Single figure on pure white background
+- Hand-drawn line art aesthetic: variable stroke weight, gestural marks, pencil/ink feel
+- NO photorealism — this must look like a designer's sketchbook, not a photograph
+- Show the full garment construction: seams, drape, proportion, silhouette
+- Selective detail: face and hands loosely indicated, garments precisely rendered
+- Reference designers: Issey Miyake, Margiela, Jil Sander, Helmut Lang, Yohji Yamamoto
+- Monochrome or limited palette — black line on white, with optional single accent wash
+- Portrait orientation, centered figure, generous white space around edges
+"""
+
+_SKETCH_PROMPT_TEMPLATE = """\
+Fashion design sketch brief: {statement}
+
+Style influences from captured imagery (SigLIP taxonomy scores):
+{taxonomy_lines}
+
+Draw the garment(s) described in the brief. Express the style influences through \
+silhouette choice, fabric suggestion, and construction details — not decoration. \
+Keep the sketch architectural and precise.\
+"""
+
+
+def generate_fashion_sketch(
+    *,
+    statement: str,
+    taxonomy_labels: list[tuple[str, float]],
+) -> str | None:
+    """Return a base64-encoded PNG of a fashion sketch, or None on failure."""
+    if not settings.GEMINI_API_KEY:
+        return None
+
+    taxonomy_lines = "\n".join(
+        f"- {label}: {score:.2f}" for label, score in taxonomy_labels[:6]
+    ) or "- No taxonomy data available"
+
+    prompt = _SKETCH_PROMPT_TEMPLATE.format(
+        statement=statement,
+        taxonomy_lines=taxonomy_lines,
+    )
+
+    client = _get_image_client()
+    try:
+        response = client.models.generate_content(
+            model=settings.GEMINI_IMAGE_MODEL,
+            contents=[_SKETCH_SYSTEM_PROMPT, prompt],
+            config=types.GenerateContentConfig(
+                response_modalities=["TEXT", "IMAGE"],
+            ),
+        )
+    except Exception as exc:
+        logger.warning("[gemini_service] sketch generation failed: %s", exc)
+        return None
+
+    for part in response.parts:
+        if part.inline_data is not None:
+            return base64.b64encode(part.inline_data.data).decode("utf-8")
+
+    logger.warning("[gemini_service] sketch: no image part in response")
     return None

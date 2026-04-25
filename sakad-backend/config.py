@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
     GEMINI_FALLBACK_MODELS: str = ""
+    GEMINI_IMAGE_MODEL: str = "gemini-3.1-flash-image-preview"
 
     model_config = SettingsConfigDict(
         env_file=".env",

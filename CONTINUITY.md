@@ -21,31 +21,24 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Built `web/sakkad-showcase/` — full React/Vite showcase UI with upload, pipeline reveal, three-column result (taxonomy/references/reflection), gallery strip, Explore Relationships modal, Sketch Stage placeholder; 18 tests passing, clean build (2026-04-24)
-- Created backend showcase UI planning artifacts: PRD, design spec, TDD implementation plan (2026-04-24)
+- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI live on main; 136 tests passing (2026-04-25)
+- Added `BRAND_CONTEXT.md` — Set Pieces brand identity, products, sustainability thesis, and how Sakkad serves it; saved to persistent memory (2026-04-25)
+- Image gen timeout raised 60s→120s via dedicated `_get_image_client()`; GalleryStrip badges, SketchStage animated loader + × close; 136 tests passing (2026-04-24)
 
 ### Now
 
-**Backend Showcase UI**
-
-- [x] Plan a polished Apple-adjacent fashion UI for backend upload/classification demo
-- [x] Recommend standalone `web/sakkad-showcase/` React/Vite app
-- [x] User approved matching the partner app's relationship-to-sketch flow
-- [x] TDD implementation complete — 18 tests, clean build
-- [ ] Commit and merge to main
-
 **Week 3 — Demo-readiness and Partner Contract**
 
+- [ ] Add soccer/jersey taxonomy labels (worktree: `feat/soccer-taxonomy`)
 - [ ] Run live demo seed (`python scripts/seed_demo_captures.py`) once `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` are set
-- [ ] Replace 24 placeholder images in `sakad-backend/eval/demo_dataset_manifest.json` with royalty-free images
 - [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
+- [x] Ship sketch generation: `POST /api/generate/image` + wired `SketchStage`
 - [x] Improve partner narrative surfaces: `POST /api/generate`, `GET /api/sessions/{id}/reflection`
 
 **Exit criteria:** Partner can consume documented session/capture reads, live seed documents actual taxonomy/reference outcomes, clustering works on seeded demo data.
 
 ### Next
 
-- Implement backend showcase UI with TDD, starting with the typed API client and single-image upload flow
 - Week 3: `POST /api/clusters/run` (HDBSCAN), `GET /api/clusters`, share live URL with partner
 - Week 4: Deploy to Railway, Supabase Realtime on captures table, improve health/readiness endpoints
 - Week 5: Seed 40+ demo captures, optimize `POST /api/capture` to <3s, full health endpoint, backup demo video
@@ -54,34 +47,15 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value                                |
-| --------- | ------------------------------------ |
-| Command   | /new-feature backend-showcase-ui     |
-| Phase     | 4 — Execute                          |
-| Next step | Scaffold TDD React/Vite showcase app |
+| Field     | Value |
+| --------- | ----- |
+| Command   | none  |
+| Phase     | —     |
+| Next step | —     |
 
 ### Checklist
 
-- [x] Worktree created
-- [x] Project state read
-- [x] Plugins verified (Codex manual equivalent)
-- [x] PRD created
-- [x] Research done
-- [x] Design guidance loaded (if UI)
-- [x] Brainstorming complete
-- [x] Plan written
-- [x] Plan review loop (1 iteration) — PASS
-- [x] TDD execution complete
-- [x] Code review loop (1 iteration) — PASS
-- [x] Simplified
-- [x] Verified (tests/lint/types)
-- [ ] E2E use cases tested (if user-facing)
-- [ ] Learnings documented (if any)
-- [x] State files updated
-- [ ] Committed and pushed
-- [ ] PR created
-- [ ] PR reviews addressed
-- [ ] Branch finished
+(no active workflow)
 
 ---
 

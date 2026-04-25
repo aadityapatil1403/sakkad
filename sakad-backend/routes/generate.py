@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from fastapi import APIRouter, HTTPException
 
-from services.gemini_service import generate_short_text
+from services.gemini_service import generate_fashion_sketch, generate_short_text
 from services.generation_service import (
     build_generation_context,
     build_generation_fallback,
@@ -90,4 +90,51 @@ async def generate(payload: GenerateRequest) -> dict:
             "session_id": session_id,
             "capture_ids": [capture.get("id") for capture in captures if capture.get("id") is not None],
         },
+    }
+
+
+class GenerateImageRequest(BaseModel):
+    statement: str
+    capture_ids: list[str]
+
+
+def _top_taxonomy_labels(captures: list[dict], limit: int = 6) -> list[tuple[str, float]]:
+    scores: dict[str, float] = {}
+    for capture in captures:
+        taxonomy_matches = capture.get("taxonomy_matches")
+        if not isinstance(taxonomy_matches, dict):
+            continue
+        for label, score in taxonomy_matches.items():
+            if isinstance(label, str) and isinstance(score, int | float):
+                scores[label] = max(scores.get(label, 0.0), float(score))
+    return sorted(scores.items(), key=lambda item: item[1], reverse=True)[:limit]
+
+
+@router.post("/api/generate/image")
+async def generate_image(payload: GenerateImageRequest) -> dict:
+    if not payload.statement.strip():
+        raise HTTPException(status_code=422, detail="statement must not be empty")
+    if not payload.capture_ids:
+        raise HTTPException(status_code=422, detail="capture_ids must not be empty")
+
+    captures = _get_captures(payload.capture_ids)
+    if not captures:
+        raise HTTPException(status_code=404, detail="Captures not found")
+
+    taxonomy_labels = _top_taxonomy_labels(captures)
+    image_b64 = generate_fashion_sketch(
+        statement=payload.statement,
+        taxonomy_labels=taxonomy_labels,
+    )
+
+    if image_b64 is None:
+        raise HTTPException(status_code=503, detail="Sketch generation unavailable")
+
+    return {
+        "image_b64": image_b64,
+        "mime_type": "image/png",
+        "statement": payload.statement,
+        "taxonomy_influences": [
+            {"label": label, "score": round(score, 3)} for label, score in taxonomy_labels
+        ],
     }
