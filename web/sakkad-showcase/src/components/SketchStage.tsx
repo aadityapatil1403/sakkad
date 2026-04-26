@@ -1,9 +1,39 @@
+import { useState } from "react";
+import { generateImage } from "../lib/api";
+import type { GenerateImageResponse } from "../lib/types";
+
 interface Props {
   statement: string;
+  captureIds: string[];
   onClose: () => void;
 }
 
-export function SketchStage({ statement, onClose }: Props) {
+type State =
+  | { phase: "idle" }
+  | { phase: "loading" }
+  | { phase: "done"; result: GenerateImageResponse }
+  | { phase: "error"; message: string };
+
+export function SketchStage({
+  statement,
+  captureIds,
+  onClose,
+}: Props): JSX.Element {
+  const [state, setState] = useState<State>({ phase: "idle" });
+
+  async function handleGenerate(): Promise<void> {
+    setState({ phase: "loading" });
+    try {
+      const result = await generateImage(statement, captureIds);
+      setState({ phase: "done", result });
+    } catch {
+      setState({
+        phase: "error",
+        message: "Sketch generation failed. Please try again.",
+      });
+    }
+  }
+
   return (
     <div
       style={{
@@ -23,6 +53,8 @@ export function SketchStage({ statement, onClose }: Props) {
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-md)",
           maxWidth: 600,
+          maxHeight: "90vh",
+          overflowY: "auto",
           width: "100%",
           padding: 40,
         }}
@@ -56,52 +88,81 @@ export function SketchStage({ statement, onClose }: Props) {
           {statement}
         </blockquote>
 
-        <div
-          style={{
-            border: "1px dashed var(--color-border)",
-            borderRadius: "var(--radius-sm)",
-            padding: "32px 24px",
-            textAlign: "center",
-            marginBottom: 24,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 28,
-              fontWeight: 300,
-              color: "var(--color-text-dim)",
-              letterSpacing: "0.15em",
-              marginBottom: 12,
-            }}
-          >
-            GENERATING SKETCH…
+        {state.phase === "idle" && (
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <button
+              onClick={() => void handleGenerate()}
+              style={{ padding: "12px 32px", fontSize: 14 }}
+            >
+              Generate Sketch →
+            </button>
           </div>
+        )}
+
+        {state.phase === "loading" && (
           <div
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--color-text-dim)",
-              lineHeight: 1.7,
+              border: "1px dashed var(--color-border)",
+              borderRadius: "var(--radius-sm)",
+              padding: "32px 24px",
+              textAlign: "center",
+              marginBottom: 24,
             }}
           >
-            Image generation requires a backend-proxied endpoint.
-            <br />
-            No Gemini key is exposed to the browser.
-            <br />
-            This stage will be enabled once{" "}
-            <code
+            <div
               style={{
-                fontFamily: "var(--font-mono)",
-                color: "var(--color-accent)",
-                fontSize: 11,
+                fontFamily: "var(--font-display)",
+                fontSize: 28,
+                fontWeight: 300,
+                color: "var(--color-text-dim)",
+                letterSpacing: "0.15em",
+                marginBottom: 12,
               }}
             >
-              POST /api/generate/image
-            </code>{" "}
-            is built.
+              GENERATING SKETCH…
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: "var(--color-text-dim)",
+                lineHeight: 1.7,
+              }}
+            >
+              This may take up to 30 seconds.
+            </div>
           </div>
-        </div>
+        )}
+
+        {state.phase === "done" && (
+          <div style={{ marginBottom: 24 }}>
+            <img
+              src={`data:${state.result.mime_type};base64,${state.result.image_b64}`}
+              alt="Generated fashion sketch"
+              style={{ width: "100%", borderRadius: "var(--radius-sm)" }}
+            />
+          </div>
+        )}
+
+        {state.phase === "error" && (
+          <div
+            style={{
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-sm)",
+              padding: "24px",
+              textAlign: "center",
+              marginBottom: 24,
+              color: "var(--color-text-dim)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
+            }}
+          >
+            {state.message}
+            <div style={{ marginTop: 16 }}>
+              <button onClick={() => void handleGenerate()}>Retry →</button>
+            </div>
+          </div>
+        )}
 
         <button onClick={onClose}>← Back to relationships</button>
       </div>

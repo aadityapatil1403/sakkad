@@ -52,6 +52,13 @@ export interface ApiError {
   status: number;
 }
 
+export interface GenerateImageResponse {
+  image_b64: string;
+  mime_type: string;
+  statement: string;
+  taxonomy_influences: Array<{ label: string; score: number }>;
+}
+
 // Abstract visual taxonomy labels — used to detect is_abstract path for layer2 display
 export const ABSTRACT_VISUAL_LABELS = new Set([
   "Botanical Organic",

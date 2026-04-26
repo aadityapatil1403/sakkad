@@ -4,6 +4,10 @@ All notable changes to Sakkad will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **2026-04-25** — `sakad-backend/routes/generate.py`, `sakad-backend/services/gemini_service.py`, `sakad-backend/tests/test_generate_image_api.py`, `sakad-backend/tests/test_gemini_service.py`, `web/sakkad-showcase/src/components/SketchStage.tsx`, `web/sakkad-showcase/src/lib/api.ts`, `web/sakkad-showcase/src/lib/types.ts`, `web/sakkad-showcase/src/test/api.test.ts`, `BACKEND_CONTEXT.md`, `API_CONTRACT.md`: Codex P1/P2 review fixes — (1) SketchStage image generation now triggered by button click, not useEffect, eliminating React StrictMode double-fire; (2) `generate_image` route uses `run_in_threadpool` to avoid blocking the FastAPI event loop during Gemini calls; (3) retry logic uses `_is_retryable_error` (server 5xx, rate-limit 429, network) instead of catching all exceptions; (4) partial capture ID mismatch returns 404; (5) `mime_type` is passed from Gemini response rather than hardcoded; (6) `generateImage()` API wrapper + `GenerateImageResponse` type added with 4 new tests; (7) `BACKEND_CONTEXT.md` and `API_CONTRACT.md` document `POST /api/generate/image`; 137 backend + 22 frontend tests passing
+
 ### Added
 
 - **2026-04-24** — `sakad-backend/services/gemini_service.py`: Image generation timeout raised from 60s to 120s via dedicated `_get_image_client()`; fixes frequent timeout failures on `gemini-3.1-flash-image-preview` (preview model has higher latency variance)

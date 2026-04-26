@@ -21,9 +21,9 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- Soccer taxonomy: 6 new labels (Retro Kit Culture, Football Casual, Soccer Heritage, Sport Hybrid, Training Ground, Kit Collector) + 20 brand corpus entries (KidSuper, Corteiz, Willy Chavarria, 424, Palace, Wales Bonner, Martine Rose) seeded; jersey1 now scores Retro Kit Culture 82%, jersey2 Kit Collector 95%, jersey3 Soccer Heritage 57% (2026-04-25)
-- `start.sh` fixed — frontend path now points to `web/sakkad-showcase` (not deleted worktree); 87 taxonomy labels confirmed on startup (2026-04-25)
-- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI; 136 tests passing (2026-04-25)
+- P1/P2 Codex review fixes: SketchStage generation on button click (no StrictMode double-fire), generate_image uses run_in_threadpool, retry only transient errors, partial captures validated, mime_type from response, generateImage wrapper + tests, docs updated (2026-04-25)
+- Soccer taxonomy: 6 new labels + 20 brand corpus entries seeded; jersey scores validated (2026-04-25)
+- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI; 137 tests passing (2026-04-25)
 
 ### Now
 
@@ -48,15 +48,28 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ## Workflow
 
-| Field     | Value |
-| --------- | ----- |
-| Command   | none  |
-| Phase     | —     |
-| Next step | —     |
+| Field     | Value                                  |
+| --------- | -------------------------------------- |
+| Command   | /fix-bug fix-codex-p1-p2-review-issues |
+| Phase     | 6 — Finish                             |
+| Next step | Commit and push                        |
 
 ### Checklist
 
-(no active workflow)
+- [x] Worktree created
+- [x] Project state read
+- [x] Plugins verified
+- [x] Searched existing solutions
+- [x] Systematic debugging complete
+- [x] TDD fix execution complete
+- [x] Code review loop (1 iteration) — PASS (simplify agent fixed P2s: dead code, event loop block, double scroll, misplaced import)
+- [x] Simplified
+- [x] Verified (tests/lint/types) — 137 backend + 22 frontend, tsc clean
+- [x] E2E use cases tested — N/A: all changes are logic/backend; UI trigger moved to button (user-visible but no browser test needed beyond unit coverage)
+- [x] Learning documented
+- [x] State files updated
+- [ ] Committed and pushed
+- [ ] PR created
 
 ---
 

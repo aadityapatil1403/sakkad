@@ -220,6 +220,7 @@ export function App() {
       {sketchStatement && (
         <SketchStage
           statement={sketchStatement}
+          captureIds={selectedCaptures.map((c) => c.id)}
           onClose={() => setSketchStatement(null)}
         />
       )}

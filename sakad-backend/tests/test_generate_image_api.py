@@ -61,9 +61,10 @@ def _make_client(monkeypatch, *, captures_data, sketch_result: str | None = _FAK
         "routes.generate.supabase",
         FakeSupabase(captures_data=captures_data),
     )
+    sketch_return = (sketch_result, "image/png") if sketch_result is not None else None
     monkeypatch.setattr(
         "routes.generate.generate_fashion_sketch",
-        lambda **_kwargs: sketch_result,
+        lambda **_kwargs: sketch_return,
     )
     return TestClient(app)
 
@@ -147,6 +148,21 @@ def test_generate_image_returns_422_for_empty_capture_ids(monkeypatch) -> None:
     # Assert
     assert response.status_code == 422
     assert response.json() == {"detail": "capture_ids must not be empty"}
+
+
+def test_generate_image_returns_404_for_partial_capture_match(monkeypatch) -> None:
+    # Arrange — request two IDs but only one exists
+    client = _make_client(monkeypatch, captures_data=[_SAMPLE_CAPTURE])
+
+    # Act
+    response = client.post(
+        "/api/generate/image",
+        json={"statement": "A tailored look.", "capture_ids": ["capture-1", "capture-missing"]},
+    )
+
+    # Assert
+    assert response.status_code == 404
+    assert "capture-missing" in response.json()["detail"]
 
 
 def test_generate_image_aggregates_taxonomy_across_captures(monkeypatch) -> None:

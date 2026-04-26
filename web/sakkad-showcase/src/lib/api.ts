@@ -1,6 +1,7 @@
 import type {
   BackendCapture,
   GenerateResponse,
+  GenerateImageResponse,
   HealthResponse,
   ApiError,
 } from "./types";
@@ -60,5 +61,16 @@ export async function generateCopy(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ kind, ...source }),
+  });
+}
+
+export async function generateImage(
+  statement: string,
+  captureIds: string[],
+): Promise<GenerateImageResponse> {
+  return apiFetch<GenerateImageResponse>(`${getBaseUrl()}/api/generate/image`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ statement, capture_ids: captureIds }),
   });
 }

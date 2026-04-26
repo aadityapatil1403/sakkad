@@ -1,3 +1,4 @@
+import base64
 import functools
 import logging
 import re
@@ -18,7 +19,6 @@ _TIMEOUT_MS = 60_000
 _IMAGE_TIMEOUT_MS = 120_000
 _TEXT_TIMEOUT_MS = 12_000
 _RAW_RESPONSE_LOG_LIMIT = 800
-import base64
 
 _UNICODE_HYPHENS_RE = re.compile(r"[‐‑‒–—−]")
 _HYPHEN_SPACING_RE = re.compile(r"\s*-\s*")
@@ -274,11 +274,18 @@ def _get_image_client() -> genai.Client:
     )
 
 
-def _is_capacity_error(exc: Exception) -> bool:
-    if not isinstance(exc, errors.ServerError):
-        return False
-
-    return getattr(exc, "status_code", None) == 503
+def _is_retryable_error(exc: Exception) -> bool:
+    """Return True for transient server/rate/network errors worth retrying on a fallback model."""
+    if isinstance(exc, errors.ServerError):
+        code = getattr(exc, "code", None)
+        # 503 = capacity, 500 = transient server error — both worth trying a fallback model
+        return code in (500, 503)
+    # ClientError covers 4xx — auth failures, invalid model names are non-transient
+    if isinstance(exc, errors.ClientError):
+        code = getattr(exc, "code", None)
+        return code == 429  # rate limit is the only retryable 4xx
+    # Network-level errors (timeout, disconnect) are transient
+    return isinstance(exc, (ConnectionError, TimeoutError))
 
 
 def _call_gemini_tags(
@@ -336,20 +343,9 @@ def _call_gemini_tags(
             return validated_tags, model_name
         except Exception as exc:
             has_fallback = index < len(models) - 1
-            if _is_capacity_error(exc):
+            if _is_retryable_error(exc) and has_fallback:
                 logger.warning(
-                    "[gemini_service] %s: model %s unavailable (503), %s",
-                    layer,
-                    model_name,
-                    "trying fallback" if has_fallback else "no fallback available",
-                )
-                if has_fallback:
-                    continue
-                return [], None
-
-            if has_fallback:
-                logger.warning(
-                    "[gemini_service] %s: model %s failed, trying fallback: %s",
+                    "[gemini_service] %s: model %s transient error, trying fallback: %s",
                     layer,
                     model_name,
                     exc,
@@ -441,15 +437,9 @@ def generate_short_text(
                 ),
             )
         except Exception as exc:
-            if _is_capacity_error(exc) and has_fallback:
+            if _is_retryable_error(exc) and has_fallback:
                 logger.warning(
-                    "[gemini_service] text: model %s unavailable (503), trying fallback",
-                    model_name,
-                )
-                continue
-            if has_fallback:
-                logger.warning(
-                    "[gemini_service] text: model %s failed, trying fallback: %s",
+                    "[gemini_service] text: model %s transient error, trying fallback: %s",
                     model_name,
                     exc,
                 )
@@ -506,15 +496,9 @@ def generate_session_reflection(context: str) -> str | None:
                 ),
             )
         except Exception as exc:
-            if _is_capacity_error(exc) and has_fallback:
+            if _is_retryable_error(exc) and has_fallback:
                 logger.warning(
-                    "[gemini_service] reflection: model %s unavailable (503), trying fallback",
-                    model_name,
-                )
-                continue
-            if has_fallback:
-                logger.warning(
-                    "[gemini_service] reflection: model %s failed, trying fallback: %s",
+                    "[gemini_service] reflection: model %s transient error, trying fallback: %s",
                     model_name,
                     exc,
                 )
@@ -578,8 +562,8 @@ def generate_fashion_sketch(
     *,
     statement: str,
     taxonomy_labels: list[tuple[str, float]],
-) -> str | None:
-    """Return a base64-encoded PNG of a fashion sketch, or None on failure."""
+) -> tuple[str, str] | None:
+    """Return (base64_image, mime_type) for a fashion sketch, or None on failure."""
     if not settings.GEMINI_API_KEY:
         return None
 
@@ -607,7 +591,9 @@ def generate_fashion_sketch(
 
     for part in response.parts:
         if part.inline_data is not None:
-            return base64.b64encode(part.inline_data.data).decode("utf-8")
+            mime_type = part.inline_data.mime_type or "image/png"
+            image_b64 = base64.b64encode(part.inline_data.data).decode("utf-8")
+            return image_b64, mime_type
 
     logger.warning("[gemini_service] sketch: no image part in response")
     return None

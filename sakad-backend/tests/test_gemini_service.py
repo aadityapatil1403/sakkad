@@ -362,7 +362,7 @@ class TestGeminiFallbackBehavior:
         mock_client.models.generate_content.side_effect = RuntimeError("temporary capacity error")
 
         with patch("services.gemini_service._get_client", return_value=mock_client), \
-             patch("services.gemini_service._is_capacity_error", return_value=True), \
+             patch("services.gemini_service._is_retryable_error", return_value=True), \
              patch("services.gemini_service.settings") as mock_settings, \
              patch("services.gemini_service.logger") as mock_logger:
             mock_settings.GEMINI_API_KEY = "key"
@@ -371,5 +371,5 @@ class TestGeminiFallbackBehavior:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
-        mock_logger.warning.assert_called_once()
-        mock_logger.exception.assert_not_called()
+        mock_logger.exception.assert_called_once()
+        mock_logger.warning.assert_not_called()

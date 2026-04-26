@@ -3,6 +3,7 @@ from typing import Literal
 from pydantic import BaseModel
 
 from fastapi import APIRouter, HTTPException
+from starlette.concurrency import run_in_threadpool
 
 from services.gemini_service import generate_fashion_sketch, generate_short_text
 from services.generation_service import (
@@ -75,7 +76,8 @@ async def generate(payload: GenerateRequest) -> dict:
         session_id = next(iter(session_ids)) if len(session_ids) == 1 else None
 
     context = build_generation_context(captures)
-    generated_text = generate_short_text(
+    generated_text = await run_in_threadpool(
+        generate_short_text,
         task=payload.kind,
         context=context,
         fallback_instructions=_fallback_instructions(payload.kind),
@@ -121,18 +123,29 @@ async def generate_image(payload: GenerateImageRequest) -> dict:
     if not captures:
         raise HTTPException(status_code=404, detail="Captures not found")
 
+    returned_ids = {c.get("id") for c in captures if c.get("id") is not None}
+    missing_ids = [cid for cid in payload.capture_ids if cid not in returned_ids]
+    if missing_ids:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Captures not found: {missing_ids}",
+        )
+
     taxonomy_labels = _top_taxonomy_labels(captures)
-    image_b64 = generate_fashion_sketch(
+    result = await run_in_threadpool(
+        generate_fashion_sketch,
         statement=payload.statement,
         taxonomy_labels=taxonomy_labels,
     )
 
-    if image_b64 is None:
+    if result is None:
         raise HTTPException(status_code=503, detail="Sketch generation unavailable")
+
+    image_b64, mime_type = result
 
     return {
         "image_b64": image_b64,
-        "mime_type": "image/png",
+        "mime_type": mime_type,
         "statement": payload.statement,
         "taxonomy_influences": [
             {"label": label, "score": round(score, 3)} for label, score in taxonomy_labels

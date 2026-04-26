@@ -172,6 +172,40 @@ Returns:
 }
 ```
 
+### Generate fashion sketch image
+
+Generates a hand-drawn sketch image via Gemini image generation, influenced by the taxonomy scores of the selected captures.
+
+```
+POST /api/generate/image
+Content-Type: application/json
+
+{
+  "statement": "Austere material philosophy with layered volume",
+  "capture_ids": ["string", ...]   // all IDs must exist
+}
+```
+
+Returns:
+
+```json
+{
+  "image_b64": "<base64-encoded image data>",
+  "mime_type": "image/png",
+  "statement": "Austere material philosophy with layered volume",
+  "taxonomy_influences": [
+    { "label": "Quiet Luxury", "score": 0.87 },
+    { "label": "Gorpcore", "score": 0.34 }
+  ]
+}
+```
+
+Render with: `data:${mime_type};base64,${image_b64}` — always use `mime_type` from the response, not a hardcoded format.
+
+Errors: `422` if statement is empty or capture_ids is empty; `404` if any capture_id is not found; `503` if Gemini image generation is unavailable.
+
+Note: This endpoint calls Gemini's image generation model. Generation takes 10–30 seconds. Do not fire it in a React `useEffect` — trigger only from explicit user action.
+
 ### Health check
 
 ```
