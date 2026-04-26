@@ -46,6 +46,12 @@ class FakeSupabase:
         raise AssertionError(f"Unexpected table: {name}")
 
 
+_SESSION_1 = "10000000-0000-0000-0000-000000000001"
+_SESSION_2 = "10000000-0000-0000-0000-000000000002"
+_CAPTURE_1 = "20000000-0000-0000-0000-000000000001"
+_CAPTURE_2 = "20000000-0000-0000-0000-000000000002"
+
+
 def _client_with_dependencies(
     monkeypatch,
     *,
@@ -71,10 +77,10 @@ def _client_with_dependencies(
 def test_generate_returns_render_ready_text_for_session(monkeypatch) -> None:
     client = _client_with_dependencies(
         monkeypatch,
-        sessions_data=[{"id": "session-1"}],
+        sessions_data=[{"id": "10000000-0000-0000-0000-000000000001"}],
         captures_data=[{
-            "id": "capture-1",
-            "session_id": "session-1",
+            "id": "20000000-0000-0000-0000-000000000001",
+            "session_id": "10000000-0000-0000-0000-000000000001",
             "image_url": "https://example.com/look.jpg",
             "taxonomy_matches": {"Gorpcore": 0.91, "Utility": 0.77},
             "layer1_tags": ["technical", "muted"],
@@ -87,7 +93,7 @@ def test_generate_returns_render_ready_text_for_session(monkeypatch) -> None:
 
     response = client.post(
         "/api/generate",
-        json={"kind": "styling_direction", "session_id": "session-1"},
+        json={"kind": "styling_direction", "session_id": "10000000-0000-0000-0000-000000000001"},
     )
 
     assert response.status_code == 200
@@ -95,17 +101,17 @@ def test_generate_returns_render_ready_text_for_session(monkeypatch) -> None:
         "kind": "styling_direction",
         "text": "Use technical layers and grounded neutrals for a city-outdoor silhouette.",
         "fallback_used": False,
-        "source": {"session_id": "session-1", "capture_ids": ["capture-1"]},
+        "source": {"session_id": "10000000-0000-0000-0000-000000000001", "capture_ids": ["20000000-0000-0000-0000-000000000001"]},
     }
 
 
 def test_generate_returns_fallback_text_when_gemini_fails(monkeypatch) -> None:
     client = _client_with_dependencies(
         monkeypatch,
-        sessions_data=[{"id": "session-1"}],
+        sessions_data=[{"id": "10000000-0000-0000-0000-000000000001"}],
         captures_data=[{
-            "id": "capture-1",
-            "session_id": "session-1",
+            "id": "20000000-0000-0000-0000-000000000001",
+            "session_id": "10000000-0000-0000-0000-000000000001",
             "image_url": "https://example.com/look.jpg",
             "taxonomy_matches": {"Minimal": 0.83},
             "layer1_tags": ["clean"],
@@ -118,14 +124,14 @@ def test_generate_returns_fallback_text_when_gemini_fails(monkeypatch) -> None:
 
     response = client.post(
         "/api/generate",
-        json={"kind": "creative_summary", "session_id": "session-1"},
+        json={"kind": "creative_summary", "session_id": "10000000-0000-0000-0000-000000000001"},
     )
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["kind"] == "creative_summary"
     assert payload["fallback_used"] is True
-    assert payload["source"] == {"session_id": "session-1", "capture_ids": ["capture-1"]}
+    assert payload["source"] == {"session_id": "10000000-0000-0000-0000-000000000001", "capture_ids": ["20000000-0000-0000-0000-000000000001"]}
     assert "Minimal" in payload["text"]
 
 
@@ -138,7 +144,7 @@ def test_generate_returns_404_for_missing_session(monkeypatch) -> None:
 
     response = client.post(
         "/api/generate",
-        json={"kind": "inspiration_prompt", "session_id": "missing-session"},
+        json={"kind": "inspiration_prompt", "session_id": "10000000-0000-0000-0000-999999999999"},
     )
 
     assert response.status_code == 404
@@ -148,13 +154,13 @@ def test_generate_returns_404_for_missing_session(monkeypatch) -> None:
 def test_generate_returns_404_for_empty_session(monkeypatch) -> None:
     client = _client_with_dependencies(
         monkeypatch,
-        sessions_data=[{"id": "session-1"}],
+        sessions_data=[{"id": "10000000-0000-0000-0000-000000000001"}],
         captures_data=[],
     )
 
     response = client.post(
         "/api/generate",
-        json={"kind": "inspiration_prompt", "session_id": "session-1"},
+        json={"kind": "inspiration_prompt", "session_id": "10000000-0000-0000-0000-000000000001"},
     )
 
     assert response.status_code == 404
@@ -167,8 +173,8 @@ def test_generate_with_capture_ids_returns_generated_text(monkeypatch) -> None:
         monkeypatch,
         sessions_data=[],
         captures_data=[{
-            "id": "capture-10",
-            "session_id": "session-10",
+            "id": "20000000-0000-0000-0000-000000000010",
+            "session_id": "10000000-0000-0000-0000-000000000010",
             "image_url": "https://example.com/cap10.jpg",
             "taxonomy_matches": {"Techwear": 0.88},
             "layer1_tags": ["urban"],
@@ -182,7 +188,7 @@ def test_generate_with_capture_ids_returns_generated_text(monkeypatch) -> None:
     # Act
     response = client.post(
         "/api/generate",
-        json={"kind": "styling_direction", "capture_ids": ["capture-10"]},
+        json={"kind": "styling_direction", "capture_ids": ["20000000-0000-0000-0000-000000000010"]},
     )
 
     # Assert
@@ -191,8 +197,8 @@ def test_generate_with_capture_ids_returns_generated_text(monkeypatch) -> None:
     assert payload["kind"] == "styling_direction"
     assert payload["text"] == "Lean into utility details with a clean silhouette."
     assert payload["fallback_used"] is False
-    assert payload["source"]["capture_ids"] == ["capture-10"]
-    assert payload["source"]["session_id"] == "session-10"
+    assert payload["source"]["capture_ids"] == ["20000000-0000-0000-0000-000000000010"]
+    assert payload["source"]["session_id"] == "10000000-0000-0000-0000-000000000010"
 
 
 def test_generate_with_capture_ids_returns_fallback_when_gemini_fails(monkeypatch) -> None:
@@ -201,8 +207,8 @@ def test_generate_with_capture_ids_returns_fallback_when_gemini_fails(monkeypatc
         monkeypatch,
         sessions_data=[],
         captures_data=[{
-            "id": "capture-11",
-            "session_id": "session-11",
+            "id": "20000000-0000-0000-0000-000000000011",
+            "session_id": "10000000-0000-0000-0000-000000000011",
             "image_url": "https://example.com/cap11.jpg",
             "taxonomy_matches": {"Gorpcore": 0.79},
             "layer1_tags": ["technical"],
@@ -216,7 +222,7 @@ def test_generate_with_capture_ids_returns_fallback_when_gemini_fails(monkeypatc
     # Act
     response = client.post(
         "/api/generate",
-        json={"kind": "inspiration_prompt", "capture_ids": ["capture-11"]},
+        json={"kind": "inspiration_prompt", "capture_ids": ["20000000-0000-0000-0000-000000000011"]},
     )
 
     # Assert
@@ -225,7 +231,7 @@ def test_generate_with_capture_ids_returns_fallback_when_gemini_fails(monkeypatc
     assert payload["kind"] == "inspiration_prompt"
     assert payload["fallback_used"] is True
     assert "Gorpcore" in payload["text"]
-    assert payload["source"]["capture_ids"] == ["capture-11"]
+    assert payload["source"]["capture_ids"] == ["20000000-0000-0000-0000-000000000011"]
 
 
 def test_generate_with_capture_ids_returns_404_when_captures_not_found(monkeypatch) -> None:
@@ -239,7 +245,7 @@ def test_generate_with_capture_ids_returns_404_when_captures_not_found(monkeypat
     # Act
     response = client.post(
         "/api/generate",
-        json={"kind": "creative_summary", "capture_ids": ["nonexistent-capture"]},
+        json={"kind": "creative_summary", "capture_ids": ["00000000-0000-0000-0000-999999999999"]},
     )
 
     # Assert
@@ -258,7 +264,7 @@ def test_generate_returns_422_for_unsupported_kind(monkeypatch) -> None:
     # Act
     response = client.post(
         "/api/generate",
-        json={"kind": "invalid_kind", "session_id": "session-1"},
+        json={"kind": "invalid_kind", "session_id": "10000000-0000-0000-0000-000000000001"},
     )
 
     # Assert: Literal type enforcement returns 422
@@ -276,7 +282,7 @@ def test_generate_returns_422_when_both_session_id_and_capture_ids_provided(monk
     # Act
     response = client.post(
         "/api/generate",
-        json={"kind": "creative_summary", "session_id": "session-1", "capture_ids": ["capture-1"]},
+        json={"kind": "creative_summary", "session_id": "10000000-0000-0000-0000-000000000001", "capture_ids": ["20000000-0000-0000-0000-000000000001"]},
     )
 
     # Assert

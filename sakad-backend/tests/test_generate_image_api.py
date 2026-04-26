@@ -38,9 +38,14 @@ class FakeSupabase:
         raise AssertionError(f"Unexpected table: {name}")
 
 
+_CAPTURE_ID = "00000000-0000-0000-0000-000000000001"
+_CAPTURE_ID_2 = "00000000-0000-0000-0000-000000000002"
+_CAPTURE_ID_MISSING = "00000000-0000-0000-0000-000000000099"
+_SESSION_ID = "00000000-0000-0000-0000-000000000010"
+
 _SAMPLE_CAPTURE = {
-    "id": "capture-1",
-    "session_id": "session-1",
+    "id": _CAPTURE_ID,
+    "session_id": _SESSION_ID,
     "image_url": "https://example.com/img.jpg",
     "taxonomy_matches": {"Quiet Luxury": 0.88, "Tailoring": 0.74},
     "layer1_tags": ["monochrome", "structured"],
@@ -76,7 +81,7 @@ def test_generate_image_returns_base64_on_success(monkeypatch) -> None:
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "A tailored silhouette in muted tones.", "capture_ids": ["capture-1"]},
+        json={"statement": "A tailored silhouette in muted tones.", "capture_ids": [_CAPTURE_ID]},
     )
 
     # Assert
@@ -97,7 +102,7 @@ def test_generate_image_returns_503_when_sketch_fails(monkeypatch) -> None:
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "A layered look.", "capture_ids": ["capture-1"]},
+        json={"statement": "A layered look.", "capture_ids": [_CAPTURE_ID]},
     )
 
     # Assert
@@ -112,12 +117,27 @@ def test_generate_image_returns_404_when_captures_not_found(monkeypatch) -> None
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "Minimal drape.", "capture_ids": ["nonexistent"]},
+        json={"statement": "Minimal drape.", "capture_ids": [_CAPTURE_ID_MISSING]},
     )
 
     # Assert
     assert response.status_code == 404
     assert response.json() == {"detail": "Captures not found"}
+
+
+def test_generate_image_returns_422_for_non_uuid_capture_id(monkeypatch) -> None:
+    # Arrange
+    client = _make_client(monkeypatch, captures_data=[_SAMPLE_CAPTURE])
+
+    # Act
+    response = client.post(
+        "/api/generate/image",
+        json={"statement": "A tailored look.", "capture_ids": ["not-a-uuid"]},
+    )
+
+    # Assert
+    assert response.status_code == 422
+    assert "not-a-uuid" in response.json()["detail"]
 
 
 def test_generate_image_returns_422_for_empty_statement(monkeypatch) -> None:
@@ -127,7 +147,7 @@ def test_generate_image_returns_422_for_empty_statement(monkeypatch) -> None:
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "   ", "capture_ids": ["capture-1"]},
+        json={"statement": "   ", "capture_ids": [_CAPTURE_ID]},
     )
 
     # Assert
@@ -157,26 +177,26 @@ def test_generate_image_returns_404_for_partial_capture_match(monkeypatch) -> No
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "A tailored look.", "capture_ids": ["capture-1", "capture-missing"]},
+        json={"statement": "A tailored look.", "capture_ids": [_CAPTURE_ID, _CAPTURE_ID_MISSING]},
     )
 
     # Assert
     assert response.status_code == 404
-    assert "capture-missing" in response.json()["detail"]
+    assert _CAPTURE_ID_MISSING in response.json()["detail"]
 
 
 def test_generate_image_aggregates_taxonomy_across_captures(monkeypatch) -> None:
     # Arrange — two captures, overlapping taxonomy; max score should win
     captures = [
-        {**_SAMPLE_CAPTURE, "id": "c1", "taxonomy_matches": {"Gorpcore": 0.90, "Techwear": 0.60}},
-        {**_SAMPLE_CAPTURE, "id": "c2", "taxonomy_matches": {"Gorpcore": 0.70, "Minimal": 0.80}},
+        {**_SAMPLE_CAPTURE, "id": _CAPTURE_ID, "taxonomy_matches": {"Gorpcore": 0.90, "Techwear": 0.60}},
+        {**_SAMPLE_CAPTURE, "id": _CAPTURE_ID_2, "taxonomy_matches": {"Gorpcore": 0.70, "Minimal": 0.80}},
     ]
     client = _make_client(monkeypatch, captures_data=captures)
 
     # Act
     response = client.post(
         "/api/generate/image",
-        json={"statement": "Functional layers.", "capture_ids": ["c1", "c2"]},
+        json={"statement": "Functional layers.", "capture_ids": [_CAPTURE_ID, _CAPTURE_ID_2]},
     )
 
     # Assert
