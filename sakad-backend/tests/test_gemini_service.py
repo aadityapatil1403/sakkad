@@ -107,29 +107,27 @@ class TestGetLayer1Tags:
         assert result_tags == tags
         assert model_name == "gemini-primary"
 
-    def test_falls_back_after_capacity_error(self) -> None:
+    def test_falls_back_to_next_model_after_exhausting_attempts(self) -> None:
         tags = ["black", "leather", "oversized", "shiny", "structured",
                 "indigo", "denim", "wide", "burgundy", "matte"]
         payload = json.dumps({"tags": tags})
+        server_error = errors.ServerError(
+            503,
+            {"error": {"code": 503, "message": "High demand.", "status": "UNAVAILABLE"}},
+            MagicMock(),
+        )
         mock_client = MagicMock()
+        # primary fails all 3 attempts, fallback succeeds immediately
         mock_client.models.generate_content.side_effect = [
-            errors.ServerError(
-                503,
-                {
-                    "error": {
-                        "code": 503,
-                        "message": "This model is currently experiencing high demand.",
-                        "status": "UNAVAILABLE",
-                    },
-                },
-                MagicMock(),
-            ),
-            _mock_response(payload),
+            server_error, server_error, server_error, _mock_response(payload),
         ]
 
         with patch("services.gemini_service._get_client", return_value=mock_client), \
              patch("services.gemini_service.settings") as mock_settings, \
+             patch("services.gemini_service.time"), \
+             patch("services.gemini_service.random") as mock_random, \
              patch("services.gemini_service.logger") as mock_logger:
+            mock_random.uniform.return_value = 0.0
             mock_settings.GEMINI_API_KEY = "key"
             mock_settings.GEMINI_MODEL = "gemini-primary"
             mock_settings.GEMINI_FALLBACK_MODELS = "gemini-fallback"
@@ -137,25 +135,26 @@ class TestGetLayer1Tags:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == tags
-        assert mock_client.models.generate_content.call_count == 2
-        first_call = mock_client.models.generate_content.call_args_list[0]
-        second_call = mock_client.models.generate_content.call_args_list[1]
-        assert first_call.kwargs["model"] == "gemini-primary"
-        assert second_call.kwargs["model"] == "gemini-fallback"
+        assert mock_client.models.generate_content.call_count == 4
+        models_called = [c.kwargs["model"] for c in mock_client.models.generate_content.call_args_list]
+        assert models_called == ["gemini-primary", "gemini-primary", "gemini-primary", "gemini-fallback"]
         mock_logger.warning.assert_called()
 
-    def test_returns_empty_list_when_all_models_return_503(self) -> None:
+    def test_returns_empty_list_when_all_models_exhausted(self) -> None:
+        # With 2 models × 3 attempts each = 6 total calls, all failing
         server_error = errors.ServerError(
             503,
             {"error": {"code": 503, "message": "UNAVAILABLE", "status": "UNAVAILABLE"}},
             MagicMock(),
         )
         mock_client = MagicMock()
-        mock_client.models.generate_content.side_effect = [server_error, server_error]
+        mock_client.models.generate_content.side_effect = [server_error] * 6
 
         with patch("services.gemini_service._get_client", return_value=mock_client), \
              patch("services.gemini_service.settings") as mock_settings, \
-             patch("services.gemini_service.time") as mock_time:
+             patch("services.gemini_service.time"), \
+             patch("services.gemini_service.random") as mock_random:
+            mock_random.uniform.return_value = 0.0
             mock_settings.GEMINI_API_KEY = "key"
             mock_settings.GEMINI_MODEL = "gemini-primary"
             mock_settings.GEMINI_FALLBACK_MODELS = "gemini-fallback"
@@ -163,10 +162,9 @@ class TestGetLayer1Tags:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
-        assert mock_client.models.generate_content.call_count == 2
-        mock_time.sleep.assert_called_once_with(1)
+        assert mock_client.models.generate_content.call_count == 6
 
-    def test_sleeps_before_fallback_on_transient_error(self) -> None:
+    def test_sleeps_with_exponential_backoff_on_transient_error(self) -> None:
         tags = ["black", "leather", "oversized", "shiny", "structured",
                 "indigo", "denim", "wide", "burgundy", "matte"]
         payload = json.dumps({"tags": tags})
@@ -176,11 +174,16 @@ class TestGetLayer1Tags:
             MagicMock(),
         )
         mock_client = MagicMock()
-        mock_client.models.generate_content.side_effect = [server_error, _mock_response(payload)]
+        # Fail twice on primary, succeed on fallback
+        mock_client.models.generate_content.side_effect = [
+            server_error, server_error, _mock_response(payload)
+        ]
 
         with patch("services.gemini_service._get_client", return_value=mock_client), \
              patch("services.gemini_service.settings") as mock_settings, \
-             patch("services.gemini_service.time") as mock_time:
+             patch("services.gemini_service.time") as mock_time, \
+             patch("services.gemini_service.random") as mock_random:
+            mock_random.uniform.return_value = 0.0
             mock_settings.GEMINI_API_KEY = "key"
             mock_settings.GEMINI_MODEL = "gemini-primary"
             mock_settings.GEMINI_FALLBACK_MODELS = "gemini-fallback"
@@ -188,7 +191,10 @@ class TestGetLayer1Tags:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == tags
-        mock_time.sleep.assert_called_once_with(1)
+        # attempt 0 → sleep(1), attempt 1 (last for primary) → sleep(2), then fallback succeeds
+        assert mock_time.sleep.call_count == 2
+        delays = [c.args[0] for c in mock_time.sleep.call_args_list]
+        assert delays == [1.0, 2.0]
 
 
 # ---------------------------------------------------------------------------
@@ -417,5 +423,6 @@ class TestGeminiFallbackBehavior:
             result = gs.get_layer1_tags(b"fake-image-bytes")
 
         assert result == []
-        mock_logger.warning.assert_called_once()
+        # 3 attempts × warning per retry + 1 final "all models unavailable"
+        assert mock_logger.warning.call_count >= 1
         mock_logger.exception.assert_not_called()

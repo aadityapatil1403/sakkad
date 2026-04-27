@@ -1,6 +1,7 @@
 import base64
 import functools
 import logging
+import random
 import re
 import time
 from collections.abc import Callable
@@ -308,63 +309,60 @@ def _call_gemini_tags(
     client = _get_client()
     image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
     models = _get_gemini_models()
+    max_attempts = 3
 
     for index, model_name in enumerate(models):
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=[prompt, image_part],  # type: ignore[arg-type]
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    response_schema=response_model,
-                ),
-            )
-            raw_response = response.text
-            if not raw_response:
-                _log_failure(
-                    layer=layer,
-                    reason="empty response text",
-                    raw_response=raw_response,
-                    details={"model": model_name},
+        for attempt in range(max_attempts):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=[prompt, image_part],  # type: ignore[arg-type]
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=response_model,
+                    ),
                 )
-                return [], None
+                raw_response = response.text
+                if not raw_response:
+                    _log_failure(
+                        layer=layer,
+                        reason="empty response text",
+                        raw_response=raw_response,
+                        details={"model": model_name},
+                    )
+                    return [], None
 
-            tags = _parse_tag_response(
-                raw_response,
-                layer=layer,
-                response_model=response_model,
-            )
-            if tags is None:
-                return [], None
+                tags = _parse_tag_response(raw_response, layer=layer, response_model=response_model)
+                if tags is None:
+                    return [], None
 
-            validated_tags = _validate_tags(
-                tags,
-                layer=layer,
-                raw_response=raw_response,
-                normalizer=normalizer,
-                validator=validator,
-            )
-            if validated_tags is None:
-                return [], None
+                validated_tags = _validate_tags(
+                    tags, layer=layer, raw_response=raw_response,
+                    normalizer=normalizer, validator=validator,
+                )
+                if validated_tags is None:
+                    return [], None
 
-            return validated_tags, model_name
-        except Exception as exc:
-            has_fallback = index < len(models) - 1
-            if _is_retryable_error(exc) and has_fallback:
+                return validated_tags, model_name
+
+            except Exception as exc:
+                if not _is_retryable_error(exc):
+                    logger.exception("[gemini_service] %s: API error: %s", layer, exc)
+                    return [], None
+
+                is_last_attempt = attempt == max_attempts - 1
+                is_last_model = index == len(models) - 1
+
+                if is_last_attempt and is_last_model:
+                    logger.warning("[gemini_service] %s: all models unavailable: %s", layer, exc)
+                    return [], None
+
+                delay = (2 ** attempt) + random.uniform(0, 1)
                 logger.warning(
-                    "[gemini_service] %s: model %s transient error, trying fallback: %s",
-                    layer,
-                    model_name,
-                    exc,
+                    "[gemini_service] %s: model %s attempt %d/%d failed, retrying in %.1fs: %s",
+                    layer, model_name, attempt + 1, max_attempts, delay, exc,
                 )
-                time.sleep(1)
-                continue
-
-            if _is_retryable_error(exc):
-                logger.warning("[gemini_service] %s: all models unavailable: %s", layer, exc)
-            else:
-                logger.exception("[gemini_service] %s: API error: %s", layer, exc)
-            return [], None
+                time.sleep(delay)
 
     return [], None
 
