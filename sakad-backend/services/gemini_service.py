@@ -418,6 +418,68 @@ def get_layer2_tags(
     return get_layer2_tags_with_model(image_bytes, layer1, mime_type=mime_type, is_abstract=is_abstract)[0]
 
 
+_TextResponseT = TypeVar("_TextResponseT", ShortTextResponse, ReflectionTextResponse)
+
+
+def _call_gemini_text(
+    prompt: str,
+    response_model: type[_TextResponseT],
+    layer: str,
+) -> str | None:
+    """Call Gemini for a text response with exponential backoff retries across models."""
+    models = _get_gemini_models()
+    max_attempts = 3
+
+    for index, model_name in enumerate(models):
+        for attempt in range(max_attempts):
+            try:
+                response = _get_text_client().models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=response_model,
+                    ),
+                )
+            except Exception as exc:
+                if not _is_retryable_error(exc):
+                    logger.warning("[gemini_service] %s generation failed: %s", layer, exc)
+                    return None
+
+                is_last_attempt = attempt == max_attempts - 1
+                is_last_model = index == len(models) - 1
+
+                if is_last_attempt and is_last_model:
+                    logger.warning("[gemini_service] %s: all models unavailable: %s", layer, exc)
+                    return None
+
+                delay = (2 ** attempt) + random.uniform(0, 1)
+                logger.warning(
+                    "[gemini_service] %s: model %s attempt %d/%d failed, retrying in %.1fs: %s",
+                    layer, model_name, attempt + 1, max_attempts, delay, exc,
+                )
+                time.sleep(delay)
+                continue
+
+            raw_response = response.text
+            if not raw_response:
+                _log_failure(layer=layer, reason="empty response text",
+                             raw_response=raw_response, details={"model": model_name})
+                return None
+
+            try:
+                parsed = response_model.model_validate_json(raw_response)
+            except ValidationError as exc:
+                _log_failure(layer=layer, reason="schema parsing failed",
+                             raw_response=raw_response, details=exc.errors())
+                return None
+
+            text = parsed.text.strip()
+            return text or None
+
+    return None
+
+
 def generate_short_text(
     *,
     task: str,
@@ -426,120 +488,19 @@ def generate_short_text(
 ) -> str | None:
     if not settings.GEMINI_API_KEY:
         return None
-
     prompt = _TEXT_PROMPT_TEMPLATE.format(
-        task=task,
-        context=context,
-        fallback_instructions=fallback_instructions,
+        task=task, context=context, fallback_instructions=fallback_instructions,
     )
-
-    models = _get_gemini_models()
-    for index, model_name in enumerate(models):
-        has_fallback = index < len(models) - 1
-        try:
-            response = _get_text_client().models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    response_schema=ShortTextResponse,
-                ),
-            )
-        except Exception as exc:
-            if _is_retryable_error(exc) and has_fallback:
-                logger.warning(
-                    "[gemini_service] text: model %s transient error, trying fallback: %s",
-                    model_name,
-                    exc,
-                )
-                continue
-            logger.warning("[gemini_service] text generation failed: %s", exc)
-            return None
-
-        raw_response = response.text
-        if not raw_response:
-            _log_failure(
-                layer="text",
-                reason="empty response text",
-                raw_response=raw_response,
-                details={"task": task, "model": model_name},
-            )
-            return None
-
-        try:
-            parsed = ShortTextResponse.model_validate_json(raw_response)
-        except ValidationError as exc:
-            _log_failure(
-                layer="text",
-                reason="schema parsing failed",
-                raw_response=raw_response,
-                details=exc.errors(),
-            )
-            return None
-
-        text = parsed.text.strip()
-        return text or None
-
-    return None
+    return _call_gemini_text(prompt, ShortTextResponse, layer="text")
 
 
 def generate_session_reflection(context: str) -> str | None:
     if not settings.GEMINI_API_KEY:
         return None
-
     prompt = _REFLECTION_PROMPT_TEMPLATE.format(
-        system_context=_REFLECTION_SYSTEM_CONTEXT,
-        context=context,
+        system_context=_REFLECTION_SYSTEM_CONTEXT, context=context,
     )
-
-    models = _get_gemini_models()
-    for index, model_name in enumerate(models):
-        has_fallback = index < len(models) - 1
-        try:
-            response = _get_text_client().models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    response_schema=ReflectionTextResponse,
-                ),
-            )
-        except Exception as exc:
-            if _is_retryable_error(exc) and has_fallback:
-                logger.warning(
-                    "[gemini_service] reflection: model %s transient error, trying fallback: %s",
-                    model_name,
-                    exc,
-                )
-                continue
-            logger.warning("[gemini_service] reflection generation failed: %s", exc)
-            return None
-
-        raw_response = response.text
-        if not raw_response:
-            _log_failure(
-                layer="reflection",
-                reason="empty response text",
-                raw_response=raw_response,
-                details={"model": model_name},
-            )
-            return None
-
-        try:
-            parsed = ReflectionTextResponse.model_validate_json(raw_response)
-        except ValidationError as exc:
-            _log_failure(
-                layer="reflection",
-                reason="schema parsing failed",
-                raw_response=raw_response,
-                details=exc.errors(),
-            )
-            return None
-
-        text = parsed.text.strip()
-        return text or None
-
-    return None
+    return _call_gemini_text(prompt, ReflectionTextResponse, layer="reflection")
 
 
 _SKETCH_SYSTEM_PROMPT = """\
@@ -586,23 +547,36 @@ def generate_fashion_sketch(
     )
 
     client = _get_image_client()
-    try:
-        response = client.models.generate_content(
-            model=settings.GEMINI_IMAGE_MODEL,
-            contents=[_SKETCH_SYSTEM_PROMPT, prompt],
-            config=types.GenerateContentConfig(
-                response_modalities=["TEXT", "IMAGE"],
-            ),
-        )
-    except Exception as exc:
-        logger.warning("[gemini_service] sketch generation failed: %s", exc)
+    max_attempts = 3
+
+    for attempt in range(max_attempts):
+        try:
+            response = client.models.generate_content(
+                model=settings.GEMINI_IMAGE_MODEL,
+                contents=[_SKETCH_SYSTEM_PROMPT, prompt],
+                config=types.GenerateContentConfig(
+                    response_modalities=["TEXT", "IMAGE"],
+                ),
+            )
+        except Exception as exc:
+            if not _is_retryable_error(exc) or attempt == max_attempts - 1:
+                logger.warning("[gemini_service] sketch generation failed: %s", exc)
+                return None
+            delay = (2 ** attempt) + random.uniform(0, 1)
+            logger.warning(
+                "[gemini_service] sketch: attempt %d/%d failed, retrying in %.1fs: %s",
+                attempt + 1, max_attempts, delay, exc,
+            )
+            time.sleep(delay)
+            continue
+
+        for part in response.parts:
+            if part.inline_data is not None:
+                mime_type = part.inline_data.mime_type or "image/png"
+                image_b64 = base64.b64encode(part.inline_data.data).decode("utf-8")
+                return image_b64, mime_type
+
+        logger.warning("[gemini_service] sketch: no image part in response")
         return None
 
-    for part in response.parts:
-        if part.inline_data is not None:
-            mime_type = part.inline_data.mime_type or "image/png"
-            image_b64 = base64.b64encode(part.inline_data.data).decode("utf-8")
-            return image_b64, mime_type
-
-    logger.warning("[gemini_service] sketch: no image part in response")
     return None
