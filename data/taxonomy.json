@@ -138,7 +138,7 @@
     "description": "a photo of someone wearing Cottagecore, puff sleeves, prairie dresses, aprons, and soft cardigans create a pastoral silhouette in butter, sage, rose, and milk white. Cotton eyelet, linen, tiny florals, and lace trims evoke gardens, heirloom linens, and rural domestic romance.",
     "visual_references": [
       "Gunne Sax",
-      "D\u00f4en",
+      "Dôen",
       "English countryside"
     ]
   },
@@ -577,7 +577,7 @@
     "domain": "fashion_streetwear",
     "description": "a photo of someone wearing Draped Form, fabric wraps, falls, and gathers around the body in fluid arcs rather than fixed seams and rigid lines. Jersey, silk, and soft wool in stone, black, clay, and cream create sculptural movement with Grecian and modernist references.",
     "visual_references": [
-      "Madame Gr\u00e8s",
+      "Madame Grès",
       "Rick Owens",
       "Issey Miyake"
     ]
@@ -888,6 +888,78 @@
       "Prada",
       "Stone Island",
       "Diesel"
+    ]
+  },
+  {
+    "id": "retro-kit-culture",
+    "label": "Retro Kit Culture",
+    "domain": "fashion_streetwear",
+    "description": "a photo of a retro football kit or soccer jersey displaying Retro Kit Culture, featuring vintage 80s and 90s club match jerseys with synthetic polyester sheen, jersey mesh fabric panels on the sides and underarms, screen-printed sponsor logos such as Sharp, Sony MiniDisc, or JVC in bold block lettering, embroidered or woven club crests and manufacturer badges from Umbro, Kappa, or Adidas, contrast piping and color-blocked panels in royal blue, black, white, red, pink, or team-specific palettes, polo or stand collars with button or zip plackets, ribbed cuffs and ribbed collar trim, subtle jacquard stripe or shadow weave textures in the base fabric, player number prints on the back, and heritage football identity worn as collectible fashion rather than active sportswear.",
+    "visual_references": [
+      "Umbro 90s kits",
+      "Kappa",
+      "Palace x Adidas",
+      "KidSuper"
+    ]
+  },
+  {
+    "id": "football-casual",
+    "label": "Football Casual",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Football Casual style, the terrace-rooted fashion movement where vintage match-worn football jerseys, replica club kits, and retro sportswear are styled as everyday casual wear off-pitch. Recognizable by actual soccer jersey silhouettes with sponsor logos, club crests, and number graphics worn over jeans or joggers, paired with trainer sneakers or casual footwear. Polo collar jerseys in team color palettes — royal blue, red, white, black, green, yellow — synthetic jersey fabric with subtle sheen, Stone Island or CP Company badge-coded layering on top, and a general attitude of terrace fashion from UK and European street style. Corteiz and Martine Rose represent the contemporary edge of this aesthetic.",
+    "visual_references": [
+      "Stone Island",
+      "CP Company",
+      "Corteiz",
+      "Martine Rose"
+    ]
+  },
+  {
+    "id": "soccer-heritage",
+    "label": "Soccer Heritage",
+    "domain": "fashion_streetwear",
+    "description": "a photo of a classic soccer or football jersey showcasing Soccer Heritage, featuring national team kits and iconic club jerseys recontextualized as collector and streetwear pieces. Visual cues include national association crests such as the Three Lions badge, shield or eagle emblems embroidered on chest, manufacturer logos from Umbro, Le Coq Sportif, or Hummel, national team color palettes like sky blue and white, red and white, or navy and gold, vertical stripe jacquard textures, plain or textured single-color body with contrast collar, stand collar with white trim, short raglan sleeves, and the clean minimal aesthetic of 1990s tournament kits. Wales Bonner x Adidas references this heritage through premium reissues and elevated sportswear.",
+    "visual_references": [
+      "Wales Bonner x Adidas",
+      "Umbro heritage",
+      "England 96",
+      "Italy 94"
+    ]
+  },
+  {
+    "id": "sport-hybrid",
+    "label": "Sport Hybrid",
+    "domain": "fashion_streetwear",
+    "description": "a photo of someone wearing Sport Hybrid clothing that blends athletic kit construction with streetwear or fashion materials — jersey fabric sleeves on a denim body, track jacket silhouette in luxury fabrics, mesh side panels in a premium pullover, or performance technical fabric in a fashion-forward cut. The aesthetic mixes sportswear signals like raglan sleeves, athletic seaming, snap buttons, and mesh ventilation zones with non-athletic materials or styling. Willy Chavarria fuses oversized American athletic silhouettes with political and cultural weight. 424 merges tailored construction with athletic references. Martine Rose exaggerates football proportions into high-fashion volume.",
+    "visual_references": [
+      "Willy Chavarria",
+      "424",
+      "Martine Rose",
+      "Wales Bonner x Adidas"
+    ]
+  },
+  {
+    "id": "training-ground",
+    "label": "Training Ground",
+    "domain": "fashion_streetwear",
+    "description": "a photo showing Training Ground aesthetic — football practice kit worn as fashion. Features lightweight mesh training bibs, numbered training jerseys, moisture-wicking polyester tops in plain team colors or fluorescent training shades like neon yellow, orange, or lime green, athletic crew-neck or V-neck cuts, simple number or name prints without sponsor branding, elastic waistband shorts, and the pared-back functional look of pre-match warmup or practice session clothing worn off-pitch. KidSuper brings hand-painted and graphic-printed training tops into art-meets-football territory. Corteiz drops bolo and training-adjacent pieces with underground cultural cachet.",
+    "visual_references": [
+      "KidSuper",
+      "Corteiz",
+      "Adidas training",
+      "Nike Dri-FIT"
+    ]
+  },
+  {
+    "id": "kit-collector",
+    "label": "Kit Collector",
+    "domain": "fashion_streetwear",
+    "description": "a photo of a rare or collectable football shirt in Kit Collector fashion, emphasizing the garment as precious object: limited edition away kits, third kits in unusual colorways like hot pink, purple, or gold, anniversary edition jerseys with centenary badges and special embroidery, collaboration kits between clubs and streetwear or luxury brands, deadstock unworn replica shirts, and jerseys with culturally significant sponsor logos or defunct brand partnerships that make the shirt a historical artifact. Colors are often unexpected — bold contrast away colorways, gradient dyeing, or monochrome executions. Palace x Adidas football collaborations sit exactly here, as do KidSuper x PSG and Wales Bonner x Adidas reissues.",
+    "visual_references": [
+      "Palace x Adidas",
+      "KidSuper x PSG",
+      "Wales Bonner x Adidas",
+      "Classic Football Shirts"
     ]
   }
 ]

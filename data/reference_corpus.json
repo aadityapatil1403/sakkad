@@ -216,13 +216,7 @@
     "collection_or_era": "Archive-inspired military workwear",
     "title": "Expedition utility layers",
     "description": "Full-cut parkas, bib overalls, dense Ventile cotton, herringbone twill, and reinforced seams produce a rugged expedition silhouette with archival patterning and stoic field mood.",
-    "taxonomy_tags": [
-      "workwear",
-      "utility",
-      "military",
-      "twill",
-      "outdoor"
-    ],
+    "taxonomy_tags": ["workwear", "utility", "military", "twill", "outdoor"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility",
@@ -258,13 +252,7 @@
     "collection_or_era": "2010s folk utility era",
     "title": "Crafted utility layering",
     "description": "Kimono-influenced outerwear, mud-dyed cotton, blanket linings, carpenter trousers, and hand-finished seams build a roomy silhouette with soulful utility and artisanal wear.",
-    "taxonomy_tags": [
-      "workwear",
-      "craft",
-      "utility",
-      "indigo",
-      "heritage"
-    ],
+    "taxonomy_tags": ["workwear", "craft", "utility", "indigo", "heritage"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility",
@@ -300,13 +288,7 @@
     "collection_or_era": "Heritage outdoor workwear",
     "title": "Logger cruiser fieldwear",
     "description": "Heavy Mackinaw wool cruisers, tin cloth jackets, oversized patch pockets, and blunt outdoor construction create a broad-shouldered silhouette with logging-camp toughness.",
-    "taxonomy_tags": [
-      "workwear",
-      "fieldwear",
-      "wool",
-      "outdoor",
-      "heritage"
-    ],
+    "taxonomy_tags": ["workwear", "fieldwear", "wool", "outdoor", "heritage"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility",
@@ -342,13 +324,7 @@
     "collection_or_era": "Slow-made California menswear",
     "title": "Quiet labor tailoring",
     "description": "Relaxed jackets and pleated trousers in washed linen, wool hopsack, and dense cotton twill balance craft construction with workwear restraint for a calm, handmade mood.",
-    "taxonomy_tags": [
-      "workwear",
-      "tailoring",
-      "linen",
-      "craft",
-      "minimal"
-    ],
+    "taxonomy_tags": ["workwear", "tailoring", "linen", "craft", "minimal"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility",
@@ -363,13 +339,7 @@
     "collection_or_era": "2010s technical utility",
     "title": "Technical cargo architecture",
     "description": "Articulated cargos, bonded shells, modular pockets, and engineered pattern cutting create a technical utility silhouette with stealth construction and urban tactical mood.",
-    "taxonomy_tags": [
-      "workwear",
-      "technical",
-      "cargo",
-      "modular",
-      "utility"
-    ],
+    "taxonomy_tags": ["workwear", "technical", "cargo", "modular", "utility"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility",
@@ -384,13 +354,7 @@
     "collection_or_era": "Spring 2003 ready-to-wear",
     "title": "Poetic black biker leather",
     "description": "Lean leather jackets, narrow trousers, washed black surfaces, laced construction, and sharp boots stretch the biker silhouette into something romantic, nocturnal, and literary.",
-    "taxonomy_tags": [
-      "biker",
-      "moto_culture",
-      "leather",
-      "darkwear",
-      "rock"
-    ],
+    "taxonomy_tags": ["biker", "moto_culture", "leather", "darkwear", "rock"],
     "image_url": null,
     "metadata": {
       "bucket": "biker_moto",
@@ -447,13 +411,7 @@
     "collection_or_era": "Fall 2020 menswear",
     "title": "Slim rocker moto",
     "description": "Cropped biker jackets, razor trousers, glossy calf leather, silver zip construction, and pointed boots sharpen moto dressing into a nightclub silhouette with predatory glamour.",
-    "taxonomy_tags": [
-      "biker",
-      "rock",
-      "leather",
-      "slim",
-      "glam"
-    ],
+    "taxonomy_tags": ["biker", "rock", "leather", "slim", "glam"],
     "image_url": null,
     "metadata": {
       "bucket": "biker_moto",
@@ -468,13 +426,7 @@
     "collection_or_era": "Perfecto heritage era",
     "title": "Original perfecto hardware",
     "description": "Cropped horsehide jackets with epaulettes, waist belts, snap lapels, and dense hardware define the classic biker silhouette with armored construction and rebellious American mood.",
-    "taxonomy_tags": [
-      "biker",
-      "leather",
-      "hardware",
-      "heritage",
-      "americana"
-    ],
+    "taxonomy_tags": ["biker", "leather", "hardware", "heritage", "americana"],
     "image_url": null,
     "metadata": {
       "bucket": "biker_moto",
@@ -531,13 +483,7 @@
     "collection_or_era": "2010s leather icon era",
     "title": "Scandinavian oversized moto",
     "description": "Oversized biker jackets, thick pebbled leather, dropped shoulders, and clean silver hardware give moto dressing a slouchy silhouette with cold Scandinavian nonchalance.",
-    "taxonomy_tags": [
-      "biker",
-      "leather",
-      "oversized",
-      "minimal",
-      "streetwear"
-    ],
+    "taxonomy_tags": ["biker", "leather", "oversized", "minimal", "streetwear"],
     "image_url": null,
     "metadata": {
       "bucket": "biker_moto",
@@ -825,13 +771,7 @@
     "collection_or_era": "2010s to 2020s Paris essentials",
     "title": "Soft urban uniform",
     "description": "Curved trousers, wrap coats, compact cotton, dry wool, and understated construction create an easy silhouette with practical elegance and quiet metropolitan mood.",
-    "taxonomy_tags": [
-      "minimal",
-      "tailoring",
-      "uniform",
-      "soft",
-      "practical"
-    ],
+    "taxonomy_tags": ["minimal", "tailoring", "uniform", "soft", "practical"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring",
@@ -846,13 +786,7 @@
     "collection_or_era": "1980s soft tailoring revolution",
     "title": "Liquid deconstructed suiting",
     "description": "Unpadded jackets, fluid wool, broad trousers, and soft shoulder construction create a relaxed suit silhouette with continental ease and polished understatement.",
-    "taxonomy_tags": [
-      "tailoring",
-      "minimal",
-      "soft",
-      "wool",
-      "classic"
-    ],
+    "taxonomy_tags": ["tailoring", "minimal", "soft", "wool", "classic"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring",
@@ -867,13 +801,7 @@
     "collection_or_era": "Mid-2000s clean sensuality",
     "title": "Clean sensual minimalism",
     "description": "Column silhouettes, matte silk, compact knits, hidden closures, and severe finishings create a sleek body-skimming silhouette with cool sensuality and gallery-like calm.",
-    "taxonomy_tags": [
-      "minimal",
-      "tailoring",
-      "silk",
-      "clean_lines",
-      "sensual"
-    ],
+    "taxonomy_tags": ["minimal", "tailoring", "silk", "clean_lines", "sensual"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring",
@@ -888,13 +816,7 @@
     "collection_or_era": "Long-running British essentials",
     "title": "British restraint tailoring",
     "description": "Easy jackets, pleated trousers, crisp shirting cotton, dry wool flannel, and workmanlike construction create a modest silhouette with domestic clarity and lived-in polish.",
-    "taxonomy_tags": [
-      "minimal",
-      "tailoring",
-      "cotton",
-      "wool",
-      "classic"
-    ],
+    "taxonomy_tags": ["minimal", "tailoring", "cotton", "wool", "classic"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring",
@@ -930,13 +852,7 @@
     "collection_or_era": "Early 2000s skinny tailoring",
     "title": "Razor-slim monochrome tailoring",
     "description": "Short jackets, narrow trousers, black wool suiting, precise lapels, and compressed construction create a knife-like silhouette with youthful austerity and rock severity.",
-    "taxonomy_tags": [
-      "tailoring",
-      "minimal",
-      "slim",
-      "monochrome",
-      "menswear"
-    ],
+    "taxonomy_tags": ["tailoring", "minimal", "slim", "monochrome", "menswear"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring",
@@ -1157,11 +1073,7 @@
     "collection_or_era": "Biopiracy, SS 2014",
     "title": "Biological membrane in motion",
     "description": "Undulating sheets of semi-transparent material that mimic the surface tension of water, the veined underside of a leaf, or the thin skin of a soap bubble. Layered strata of color shift from pale amber to deep green as light passes through. The texture evokes preserved botanical specimens, insect wing venation, or resin-embedded organic matter.",
-    "taxonomy_tags": [
-      "Veined Leaf",
-      "Fluid Bloom",
-      "Luminous Gradient"
-    ],
+    "taxonomy_tags": ["Veined Leaf", "Fluid Bloom", "Luminous Gradient"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1174,11 +1086,7 @@
     "collection_or_era": "Pleats Please, ongoing since 1993",
     "title": "Light through pleated leaf geometry",
     "description": "Accordion folds of fine polyester catch light like the parallel ribs of a palm frond or the corrugated underside of a fern. Each pleat casts a thin shadow into its neighbor, producing a rhythm of tone and shade identical to natural leaf venation seen from below against sky. The surface shimmers between matte and gloss as the angle shifts.",
-    "taxonomy_tags": [
-      "Veined Leaf",
-      "Botanical Organic",
-      "Luminous Gradient"
-    ],
+    "taxonomy_tags": ["Veined Leaf", "Botanical Organic", "Luminous Gradient"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring"
@@ -1191,11 +1099,7 @@
     "collection_or_era": "A-POC Making, 1999-2001",
     "title": "Woven tubular structure as natural form",
     "description": "Single continuous threads interlaced into hollow cylindrical forms whose cross-sections resemble the porous interior of bamboo or the cellular mesh of a dried gourd. The woven grid reads like a magnified view of plant cell walls or the geometric lattice of a wasp nest. Warm neutral tones — straw, ecru, pale reed — match dried grass and raw fiber materials.",
-    "taxonomy_tags": [
-      "Woven Surface",
-      "Raw Fiber",
-      "Exposed Structure"
-    ],
+    "taxonomy_tags": ["Woven Surface", "Raw Fiber", "Exposed Structure"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1225,11 +1129,7 @@
     "collection_or_era": "Limo, SS 2014",
     "title": "Industrial mineral surface and raw edge",
     "description": "Surfaces that carry the visual weight of cut stone, slag, or industrial mineral — chalky whites bleeding into charcoal, edges raw and unfinished as freshly broken concrete. Matte throughout, light flattened to near-zero gloss. The palette is quarry dust and ash; the texture is coarse aggregate and dried mortar. Structural and prehistoric.",
-    "taxonomy_tags": [
-      "Concrete Brutalism",
-      "Eroded Edge",
-      "Layered Grain"
-    ],
+    "taxonomy_tags": ["Concrete Brutalism", "Eroded Edge", "Layered Grain"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1259,11 +1159,7 @@
     "collection_or_era": "AW 1983, Paris debut",
     "title": "Dark organic drape and eroded edge",
     "description": "Deep matte black with edges that appear torn, dissolved, or worn away by prolonged exposure — the visual logic of bark eaten by lichen, eroded stone, or fabric left to weather on a fence. The surface absorbs light completely; detail reads only as shadow within shadow. Silhouettes are massive and irregular, like storm-bent trees or collapsed architecture.",
-    "taxonomy_tags": [
-      "Eroded Edge",
-      "Monochrome Field",
-      "Botanical Organic"
-    ],
+    "taxonomy_tags": ["Eroded Edge", "Monochrome Field", "Botanical Organic"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1276,11 +1172,7 @@
     "collection_or_era": "SS 1997",
     "title": "Shadow void and layered grain",
     "description": "Successive layers of dark material whose stacked edges read as geological strata — the cross-section of shale, layered bark, or compressed peat. Each layer is slightly different in tone from near-black to dark charcoal, creating depth through accumulation rather than color. Voids between layers become as significant as the material itself.",
-    "taxonomy_tags": [
-      "Layered Grain",
-      "Monochrome Field",
-      "Eroded Edge"
-    ],
+    "taxonomy_tags": ["Layered Grain", "Monochrome Field", "Eroded Edge"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1293,11 +1185,7 @@
     "collection_or_era": "Artisanal, SS 2000",
     "title": "Oxidized surface and patinated finish",
     "description": "Surfaces that read like aged copper sheeting, rusted iron plate, or silver tarnished to near-black — the brown-green patina of oxidized metal, each region shifting in tone as the underlying material corrodes unevenly. Texture is pocked and layered, with lifted edges where material has begun to separate. Beauty lives in the evidence of time acting on matter.",
-    "taxonomy_tags": [
-      "Oxidized Metal",
-      "Patinated Finish",
-      "Eroded Edge"
-    ],
+    "taxonomy_tags": ["Oxidized Metal", "Patinated Finish", "Eroded Edge"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1310,11 +1198,7 @@
     "collection_or_era": "Artisanal, AW 2004",
     "title": "Decay as deliberate material language",
     "description": "Raw edges intentionally frayed until the weave dissolves into individual threads; surfaces bleached and re-stained to produce the uneven pale-to-amber color of aged linen or dried grass. The visual logic is identical to weathered sailcloth, dried botanical specimens pressed in a book, or found fabric left outdoors through seasons. Decay is the design intention.",
-    "taxonomy_tags": [
-      "Frayed Composite",
-      "Raw Fiber",
-      "Patinated Finish"
-    ],
+    "taxonomy_tags": ["Frayed Composite", "Raw Fiber", "Patinated Finish"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1327,11 +1211,7 @@
     "collection_or_era": "Broken Bride, SS 2005",
     "title": "Cellular asymmetry and botanical rupture",
     "description": "Irregular protrusions of gathered fabric that read as tumors, seed pods, or cellular masses caught in abnormal growth — the visual logic of a burl on a tree trunk, a gall on an oak leaf, or a coral polyp colony seen in cross-section. Each node is different in scale and placement, the asymmetry governed by organic rather than geometric logic.",
-    "taxonomy_tags": [
-      "Cellular Pattern",
-      "Botanical Organic",
-      "Fluid Bloom"
-    ],
+    "taxonomy_tags": ["Cellular Pattern", "Botanical Organic", "Fluid Bloom"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1344,11 +1224,7 @@
     "collection_or_era": "Not Making Clothing, AW 2014",
     "title": "Organic mass as structural rupture",
     "description": "Forms that appear to have grown rather than been constructed — dense accumulations of material that pile and compress like lichen on stone, moss on bark, or mineral deposits forming over decades. Surface color ranges from deep forest green to black-brown, the palette of decomposing organic matter in a rainforest floor. Structure is found, not designed.",
-    "taxonomy_tags": [
-      "Botanical Organic",
-      "Layered Grain",
-      "Frayed Composite"
-    ],
+    "taxonomy_tags": ["Botanical Organic", "Layered Grain", "Frayed Composite"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1361,11 +1237,7 @@
     "collection_or_era": "AW 1998",
     "title": "Urban surface tension and raw utility",
     "description": "The visual grammar of industrial infrastructure: cable-tie closures, seam tape, bonded edges that read like adhesive joins on ductwork or zip-tie fasteners on scaffolding. Palette is wet pavement grey, oxidized zinc, and raw cotton — the tones of a construction site at dawn. Surfaces are either perfectly smooth or deliberately unfinished, never decorated.",
-    "taxonomy_tags": [
-      "Raw Utility",
-      "Wet Pavement",
-      "Hardline Framework"
-    ],
+    "taxonomy_tags": ["Raw Utility", "Wet Pavement", "Hardline Framework"],
     "image_url": null,
     "metadata": {
       "bucket": "minimalism_tailoring"
@@ -1395,11 +1267,7 @@
     "collection_or_era": "The Horn of Plenty, AW 2009",
     "title": "Thorn and bone as structural surface",
     "description": "Surfaces textured with raised points, sharp irregular protrusions, and angular facets that read as thorn clusters, dried seed husks, or the interlocked surface of a pine cone. Color is the off-white and pale grey of bleached bone, dried seed, or sun-whitened driftwood. The tactile impression is of danger — an object you cannot hold without being held by it.",
-    "taxonomy_tags": [
-      "Exposed Structure",
-      "Raw Fiber",
-      "Eroded Edge"
-    ],
+    "taxonomy_tags": ["Exposed Structure", "Raw Fiber", "Eroded Edge"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
@@ -1412,11 +1280,7 @@
     "collection_or_era": "SS 2015",
     "title": "Woven geometric form as natural structure",
     "description": "Thin strips of material lashed together at nodes, the resulting grid reading identically to wicker weave, bamboo scaffolding, or the cross-hatch of a woven reed mat. The structure is modular and repetitive — each unit identical, the whole emerging as an organic form. Palette is undyed natural: straw, sand, pale wood, raw cotton.",
-    "taxonomy_tags": [
-      "Woven Surface",
-      "Exposed Structure",
-      "Raw Utility"
-    ],
+    "taxonomy_tags": ["Woven Surface", "Exposed Structure", "Raw Utility"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility"
@@ -1429,11 +1293,7 @@
     "collection_or_era": "AW 2017",
     "title": "Utilitarian organic — rope, knot, and bound fiber",
     "description": "Lengths of cord, rope, and woven band bound tightly around forms in a manner indistinguishable from tied bundles of dried grass, lashed bamboo poles, or the knotted rigging of a fishing vessel. The texture is fibrous, slightly rough, the surface catching light along each individual strand. Earthy tones: sisal brown, raw hemp, salt-bleached rope.",
-    "taxonomy_tags": [
-      "Raw Fiber",
-      "Woven Surface",
-      "Raw Utility"
-    ],
+    "taxonomy_tags": ["Raw Fiber", "Woven Surface", "Raw Utility"],
     "image_url": null,
     "metadata": {
       "bucket": "workwear_utility"
@@ -1463,14 +1323,319 @@
     "collection_or_era": "Replica line, 2000s",
     "title": "Weathered signage and institutional surface",
     "description": "Surfaces that carry the visual memory of repeated use and exposure — faded stencil lettering, worn rubber stamp marks, the ghost of a label half-removed. Tone is the pale institutional beige of aged cotton muslin, the grey-white of chalked blackboard, the muted buff of archival paper. The surface reads as document, as artifact, as material that has lived.",
-    "taxonomy_tags": [
-      "Weathered Signage",
-      "Patinated Finish",
-      "Muted Wash"
-    ],
+    "taxonomy_tags": ["Weathered Signage", "Patinated Finish", "Muted Wash"],
     "image_url": null,
     "metadata": {
       "bucket": "avant_garde"
+    }
+  },
+  {
+    "id": "4d414549-d059-4840-b254-0ed3d0beb214",
+    "designer": "Colm Dillane",
+    "brand": "KidSuper",
+    "collection_or_era": "SS23 — Doin It Well / PSG collaboration era",
+    "title": "Hand-painted football surrealism",
+    "description": "Oversized football jerseys and shorts with hand-painted expressionist graphics — dripping faces, cartoon figures, and brushstroke lettering across polyester mesh. Club crests replaced with surrealist art. Bright primary colors: yellow, red, cobalt blue on white or black mesh base. The silhouette is pure football but the surface is a studio canvas, blurring sport kit and wearable art.",
+    "taxonomy_tags": [
+      "Kit Collector",
+      "Retro Kit Culture",
+      "Football Casual",
+      "streetwear"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "brand_language",
+      "notes": "KidSuper signature — art-meets-football, PSG collab anchor"
+    }
+  },
+  {
+    "id": "74ff26d8-31ea-488c-8517-1e22ad75150f",
+    "designer": "Colm Dillane",
+    "brand": "KidSuper",
+    "collection_or_era": "FW24 — Paris runway show at Palais de Tokyo",
+    "title": "Stadium spectacle tailoring",
+    "description": "Football-influenced tailoring shown in stadium settings: wide-shoulder suit jackets printed with crowd photography, referee-stripe shirts, scoreboard-graphic trousers, and jersey-knit blazers in team colorways. The construction is fashion-house quality but the visual language is entirely football — dugout, terraces, floodlit pitch at night.",
+    "taxonomy_tags": ["Sport Hybrid", "Kit Collector", "Football Casual"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "runway_collection",
+      "notes": "KidSuper fashion week — football as theatrical staging"
+    }
+  },
+  {
+    "id": "8f64168c-3ba6-4cd6-bcea-b9d2e988d2a1",
+    "designer": "Colm Dillane",
+    "brand": "KidSuper x Paris Saint-Germain",
+    "collection_or_era": "2022 — PSG collab kit",
+    "title": "Artist-designed match kit",
+    "description": "Actual PSG match jersey redesigned with KidSuper hand-drawn illustration style — character drawings, comic faces, and expressive line work printed across the front of a standard polyester football jersey. Jordan Brand logo, PSG crest, and artist signature coexist on the chest. The garment is simultaneously a genuine kit and a limited-edition art object.",
+    "taxonomy_tags": ["Kit Collector", "Retro Kit Culture", "Football Casual"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "KidSuper x PSG — artist collab kit as collector object"
+    }
+  },
+  {
+    "id": "5e454bad-ecda-4c23-9b0a-b7a47a9bebfd",
+    "designer": "Clint419",
+    "brand": "Corteiz (CRTZ)",
+    "collection_or_era": "2022–2024 — underground drops era",
+    "title": "Bolo jersey underground terrace energy",
+    "description": "Heavyweight cotton bolo jerseys with CRTZ Alcatraz logo replacing the club crest, drop-shoulder cut, and password-protected limited drops. Colors run utilitarian — olive, black, stone, military green — but cut and proportion reference the football jersey directly. Worn with cargo trousers and Nikes in UK street settings. The scarcity and anti-establishment attitude is as much the product as the garment itself.",
+    "taxonomy_tags": ["Football Casual", "Training Ground", "streetwear"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "brand_language",
+      "notes": "Corteiz — UK underground terrace streetwear anchor"
+    }
+  },
+  {
+    "id": "29247679-79c2-479c-b803-e2e588dc4fa2",
+    "designer": "Clint419",
+    "brand": "Corteiz (CRTZ)",
+    "collection_or_era": "2023 — Nike Air Max 95 collab / Rule The World campaign",
+    "title": "Guerrilla football streetwear",
+    "description": "Football training tops and bib-style jerseys dropped via illegal-style guerrilla campaigns in public parks and pitches. Mesh training bibs with CRTZ logo, oversized football shirts in community-team colorways, worn over joggers and paired with Air Max sneakers. The aesthetic is raw practice-kit realism — no sponsor logos, no luxury, just the actual visual language of Sunday league football translated into street credibility.",
+    "taxonomy_tags": ["Training Ground", "Football Casual", "streetwear"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "brand_language",
+      "notes": "Corteiz — practice kit as underground cultural signal"
+    }
+  },
+  {
+    "id": "4dab82da-f345-4ec0-9cdc-e79f87354509",
+    "designer": "Clint419",
+    "brand": "Corteiz (CRTZ) x Nike",
+    "collection_or_era": "2023 — Nike collab drop",
+    "title": "Anti-brand football collab",
+    "description": "Corteiz x Nike pieces that subvert the expected collab formula — no loud branding, no luxury positioning. Football-inspired crew-neck training tops, mesh panels, and performance shorts in military and earth tones. CRTZ globe logo sits where a club crest would. Deliberately understated, deliberately hard to get. Represents the intersection of football culture and UK underground streetwear at its most authentic.",
+    "taxonomy_tags": ["Training Ground", "Football Casual", "Sport Hybrid"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Corteiz x Nike — anti-luxury collab, football-adjacent"
+    }
+  },
+  {
+    "id": "14241bee-76f7-4605-a8f8-9f9c94cd9744",
+    "designer": "Willy Chavarria",
+    "brand": "Willy Chavarria",
+    "collection_or_era": "SS24 — American Gigolo / Athletic Heritage",
+    "title": "Oversized American athletic heritage",
+    "description": "Massively oversized football jerseys and athletic tops in heavyweight cotton or mesh, worn long and loose as dresses or tunics over slim trousers. Number graphics and athletic lettering in collegiate or team-uniform style. Color palette runs deep jewel tones — burgundy, navy, forest green — and clean white with black. The silhouette is recognizably athletic but the scale is fashion-forward, carrying political and cultural weight rooted in Mexican-American working-class identity and Catholic imagery.",
+    "taxonomy_tags": ["Sport Hybrid", "Football Casual", "Soccer Heritage"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "runway_collection",
+      "notes": "Willy Chavarria — oversized athletic silhouette with political weight"
+    }
+  },
+  {
+    "id": "d262bff2-ed2b-4238-98c2-3900b9e3adcf",
+    "designer": "Willy Chavarria",
+    "brand": "Willy Chavarria",
+    "collection_or_era": "FW23 — Amor collection",
+    "title": "Jersey-as-devotional garment",
+    "description": "Football jersey silhouettes worn as statement pieces: long mesh tops with sacred heart embroidery or religious graphic prints, athletic number fonts mixed with devotional imagery. Worn with wide tailored trousers, the jersey becomes a cultural artifact rather than sportswear. Colors are deep and saturated — cardinal red, midnight navy, ivory — in mesh, heavy cotton jersey, and satin. The combination of sport construction and emotional gravity is distinctly Chavarria.",
+    "taxonomy_tags": ["Sport Hybrid", "Kit Collector", "Soccer Heritage"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "designer_signature",
+      "notes": "Willy Chavarria — athletic garment as cultural and spiritual object"
+    }
+  },
+  {
+    "id": "11c1b1ea-ef20-4cc4-b7dd-5645c1bc0a46",
+    "designer": "Guillermo Andrade",
+    "brand": "424 (Forty Percent Against Rights)",
+    "collection_or_era": "SS22 — Adidas collaboration",
+    "title": "Tailored athleticism, LA street politics",
+    "description": "Football and athletic references run through 424 Adidas collabs: three-stripe track jackets in premium heavyweight fabrics, football-adjacent mesh tops, and sport-influenced silhouettes with a political edge. The palette is muted — stone, black, white, olive — and the construction is elevated above standard sportswear. Worn loose, layered with denim or wide trousers, in a distinctly LA street register that reads educated and intentional rather than hype-driven.",
+    "taxonomy_tags": ["Sport Hybrid", "Football Casual", "streetwear"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "424 x Adidas — political streetwear meets athletic construction"
+    }
+  },
+  {
+    "id": "7c9d9568-e1fe-4308-9a4e-67dcbd9cd5f9",
+    "designer": "Guillermo Andrade",
+    "brand": "424 (Forty Percent Against Rights)",
+    "collection_or_era": "2019–2024 — core brand language",
+    "title": "Underground athletic minimalism",
+    "description": "424 pieces that absorb athletic construction into streetwear minimalism: crew-neck jerseys in heavyweight cotton, sport-cut shorts worn long, mesh panels, and athletic seaming in garments that otherwise have no team affiliation. The brand identity is anti-logo, politically conscious, LA-rooted. Colors stay neutral — black, white, grey, olive — with athletic construction as the primary visual signal rather than branding or team identity.",
+    "taxonomy_tags": ["Sport Hybrid", "Training Ground", "streetwear"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "brand_language",
+      "notes": "424 — athletic construction stripped of sport spectacle"
+    }
+  },
+  {
+    "id": "2aae62d2-85ea-4c94-9437-bc539b0630df",
+    "designer": "Lev Tanju",
+    "brand": "Palace Skateboards",
+    "collection_or_era": "2014–2024 — Adidas collab series",
+    "title": "Terrace football energy, skate irreverence",
+    "description": "Palace x Adidas football jerseys and tracksuits that merge terrace culture with skate humor: Adidas three-stripe taping, club-style crests replaced with Palace tri-ferg logo, football colorblocking in unexpected palettes like cream and brown or purple and yellow. Moisture-wicking polyester, ribbed cuffs, and polo collar construction lifted directly from 90s football kits. Worn by UK youth who grew up watching football but skated at weekends — a genuinely bicultural garment.",
+    "taxonomy_tags": ["Retro Kit Culture", "Football Casual", "Kit Collector"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Palace x Adidas — football kit language through skate culture lens"
+    }
+  },
+  {
+    "id": "44230a95-d3ff-4b5e-b170-d30a0d6ea355",
+    "designer": "Lev Tanju",
+    "brand": "Palace Skateboards x Juventus",
+    "collection_or_era": "Juventus collaboration 2019",
+    "title": "Actual club kit as fashion drop",
+    "description": "Palace x Juventus: real football club jerseys and training pieces redesigned with Palace aesthetic — Palace tri-ferg replacing the Juventus crest, Adidas branding, bianconero black and white palette with Palace-specific detailing. The shirt is simultaneously a match-worn football jersey and a collectible streetwear drop. Construction is authentic kit production — polyester mesh, club-standard collar, player-style number on back — sold through Palace stockists rather than club shops.",
+    "taxonomy_tags": ["Kit Collector", "Retro Kit Culture", "Football Casual"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Palace x Juventus — actual club kit as hype streetwear object"
+    }
+  },
+  {
+    "id": "383ae0bd-7193-44ba-beeb-4bd43325d0a4",
+    "designer": "Grace Wales Bonner",
+    "brand": "Wales Bonner x Adidas",
+    "collection_or_era": "2020–2024 — ongoing collaboration",
+    "title": "Elevated football heritage reissues",
+    "description": "Wales Bonner x Adidas rereleases and reworks iconic Adidas football and athletic archive pieces — 1970s Adidas track suits, classic Samba silhouettes, and football-adjacent jerseys — in premium fabrics like brushed cotton, velour, and crinkle nylon. The palette references vintage Adidas colorways: cream and green, navy and gold, brown and orange. Rib knit cuffs and ankles, woven Adidas logo on chest, understated construction that reads as sportswear heritage elevated into ready-to-wear.",
+    "taxonomy_tags": ["Soccer Heritage", "Sport Hybrid", "Retro Kit Culture"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Wales Bonner x Adidas — heritage sportswear recontextualized through Black diaspora lens"
+    }
+  },
+  {
+    "id": "85d0722b-24df-4ecb-aa9c-c84a6423c389",
+    "designer": "Grace Wales Bonner",
+    "brand": "Wales Bonner x Adidas",
+    "collection_or_era": "SS23 — A Spell on You collection",
+    "title": "Diasporic sportswear as cultural memory",
+    "description": "Football and athletic jersey silhouettes in hand-embroidered or woven fabrics referencing Caribbean and West African textile traditions. Adidas three-stripe detailing down the arms of garments that resemble football training tops or track jackets but are constructed in luxury materials. Colors pull from warm diasporic palettes — terracotta, saffron, deep indigo, warm cream — combined with Adidas archive sport shapes to create garments that hold dual cultural memory: athletic and ancestral.",
+    "taxonomy_tags": ["Soccer Heritage", "Sport Hybrid", "Kit Collector"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "runway_collection",
+      "notes": "Wales Bonner x Adidas — diaspora and sport as interwoven cultural identity"
+    }
+  },
+  {
+    "id": "93b0d339-4001-4e53-8b40-b3ea889f1d23",
+    "designer": "Martine Rose",
+    "brand": "Martine Rose",
+    "collection_or_era": "SS19 — Tottenham Hale market show",
+    "title": "Terrace proportions, North London aggression",
+    "description": "Martine Rose takes football casual proportions to an extreme: polo-collar jerseys scaled up to micro-dress length, worn with cycling shorts or tight trousers underneath. Stone Island and CP Company badge-coded silhouettes stretched and distorted. The color palette references actual football kit colors — sky blue, claret, red and white hoops — but in unusual fabric weights and proportions. The attitude is unambiguously terrace — male, aggressive, North London — but reframed through a queer and fashion lens.",
+    "taxonomy_tags": ["Football Casual", "Sport Hybrid", "Retro Kit Culture"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "runway_collection",
+      "notes": "Martine Rose — terrace football casual reframed through fashion proportion play"
+    }
+  },
+  {
+    "id": "b6fa4f17-d348-42c9-adae-30690cace037",
+    "designer": "Martine Rose",
+    "brand": "Martine Rose",
+    "collection_or_era": "FW23 — Nike collaboration",
+    "title": "Football casual elevated, Nike archive",
+    "description": "Martine Rose x Nike takes Nike football and athletic archive pieces and distorts scale and proportion: polo-collar football jerseys lengthened, track jackets with oversized silhouettes, football shorts worn at mid-thigh with exaggerated leg opening. Fabrics stay performance-adjacent — polyester, nylon, mesh — but are pattern-cut for fashion proportions. Colors reference classic Nike football: red and white, navy and swoosh-white, with the Nike tick as the dominant graphic element.",
+    "taxonomy_tags": ["Football Casual", "Sport Hybrid", "Retro Kit Culture"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Martine Rose x Nike — football casual proportions pushed to fashion extreme"
+    }
+  },
+  {
+    "id": "b2dea764-82c5-4dc8-a9d9-3d9f184cbf1d",
+    "designer": "Martine Rose",
+    "brand": "Martine Rose",
+    "collection_or_era": "2016–2024 — signature brand language",
+    "title": "Lads on tour, terrace dressing as fashion",
+    "description": "Martine Rose consistent brand language translates terrace fashion — the dress codes of UK football fans on match day and on tour — into high-fashion proportions. Football jerseys, Stone Island chest badges, training tops, and England-away-style color palettes recur across collections. The man in a Martine Rose look often appears to have walked straight from a 90s football terrace: polo shirt, slightly too-short shorts, trainers, badge on chest — but the fabrics, fit, and construction are unmistakably fashion-forward.",
+    "taxonomy_tags": [
+      "Football Casual",
+      "Retro Kit Culture",
+      "Soccer Heritage"
+    ],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "designer_signature",
+      "notes": "Martine Rose — defining designer for football casual as fashion language"
+    }
+  },
+  {
+    "id": "57213235-df96-4e62-b017-c013e76fa5f8",
+    "designer": "Lev Tanju",
+    "brand": "Palace Skateboards x Adidas",
+    "collection_or_era": "2015–2024 — ongoing Adidas collab",
+    "title": "Skate-football hybrid Adidas collab",
+    "description": "Palace x Adidas ongoing collaboration translating classic Adidas football kit codes into skate-adjacent streetwear: three-stripe taping on track jackets, football-collar polos, ribbed jersey knits in team-adjacent colorways, trefoil-branded mesh shorts. The construction borrows directly from authentic Adidas football heritage — the same polyester mesh, ribbed collar, and sublimated graphic technology used in actual kits — but the context is entirely Palace: colorways, proportions, and styling borrowed from the skating subculture.",
+    "taxonomy_tags": ["Kit Collector", "Retro Kit Culture", "Sport Hybrid"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Palace x Adidas — football kit heritage through skate culture lens"
+    }
+  },
+  {
+    "id": "dfbb900d-85aa-4451-a747-ef69f480e95f",
+    "designer": "Guillermo Andrade",
+    "brand": "424 x Adidas",
+    "collection_or_era": "SS22 — Adidas Originals collab",
+    "title": "Three-stripe football heritage, LA attitude",
+    "description": "424 x Adidas: football-adjacent jerseys, track tops, and shorts using authentic Adidas football construction — three-stripe taping on sleeves, ribbed collar, Adidas trefoil on chest — but in the 424 palette of stone, black, olive, and white. No team affiliation, no club crest. The garment reads as a genuine Adidas football piece but contextually exists as LA underground streetwear with political intentionality. Heavier fabric weights than standard kit production.",
+    "taxonomy_tags": ["Sport Hybrid", "Training Ground", "Football Casual"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "424 x Adidas — football construction stripped of team identity, given political charge"
+    }
+  },
+  {
+    "id": "bcc4c3d7-c9b8-4f78-a556-f6ac9d336522",
+    "designer": "Grace Wales Bonner",
+    "brand": "Wales Bonner",
+    "collection_or_era": "2019 — Adidas World Cup archive reissue",
+    "title": "World Cup archive as wearable history",
+    "description": "Wales Bonner reissues Adidas kits from the 1970 and 1982 World Cups — Brazil yellow and green, Argentina sky blue and white, Zaire green — in exact period construction: single-color polyester with minimal embellishment, small embroidered Adidas trefoil, woven v-neck or polo collar, simple number on back. The pieces are museum-quality reproductions worn as fashion, connecting contemporary Black British identity to football history and African diaspora sporting pride.",
+    "taxonomy_tags": ["Soccer Heritage", "Kit Collector", "Retro Kit Culture"],
+    "image_url": null,
+    "metadata": {
+      "bucket": "soccer_streetwear",
+      "reference_type": "collaboration",
+      "notes": "Wales Bonner — World Cup archive as diasporic fashion statement"
     }
   }
 ]

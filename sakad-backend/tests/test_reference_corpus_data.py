@@ -20,6 +20,7 @@ REQUIRED_BUCKETS = {
     "japanese_streetwear",
     "minimalism_tailoring",
     "avant_garde",
+    "soccer_streetwear",
 }
 
 
