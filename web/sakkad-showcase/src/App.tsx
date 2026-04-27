@@ -36,7 +36,10 @@ export function App() {
     [],
   );
   const [showRelationships, setShowRelationships] = useState(false);
-  const [sketchStatement, setSketchStatement] = useState<string | null>(null);
+  const [sketchPayload, setSketchPayload] = useState<{
+    statement: string;
+    captureIds: string[];
+  } | null>(null);
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -88,7 +91,10 @@ export function App() {
   }
 
   function handleSelectStatement(statement: string) {
-    setSketchStatement(statement);
+    setSketchPayload({
+      statement,
+      captureIds: selectedCaptures.map((c) => c.id),
+    });
     setShowRelationships(false);
   }
 
@@ -173,6 +179,7 @@ export function App() {
             <GalleryStrip
               captures={gallery}
               activeId={active?.id ?? null}
+              selectedIds={new Set(selectedCaptures.map((c) => c.id))}
               onSelect={(c) => {
                 setActive(c);
                 toggleSelected(c);
@@ -217,11 +224,11 @@ export function App() {
         />
       )}
 
-      {sketchStatement && (
+      {sketchPayload && (
         <SketchStage
-          statement={sketchStatement}
-          captureIds={selectedCaptures.map((c) => c.id)}
-          onClose={() => setSketchStatement(null)}
+          statement={sketchPayload.statement}
+          captureIds={sketchPayload.captureIds}
+          onClose={() => setSketchPayload(null)}
         />
       )}
     </div>

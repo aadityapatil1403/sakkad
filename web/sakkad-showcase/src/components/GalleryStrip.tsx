@@ -4,11 +4,18 @@ import { topTaxonomyLabel } from "../lib/format";
 interface Props {
   captures: BackendCapture[];
   activeId: string | null;
+  selectedIds: Set<string>;
   onSelect: (capture: BackendCapture) => void;
   loading: boolean;
 }
 
-export function GalleryStrip({ captures, activeId, onSelect, loading }: Props) {
+export function GalleryStrip({
+  captures,
+  activeId,
+  selectedIds,
+  onSelect,
+  loading,
+}: Props) {
   if (loading) {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -61,6 +68,7 @@ export function GalleryStrip({ captures, activeId, onSelect, loading }: Props) {
       </div>
       {captures.slice(0, 8).map((c) => {
         const isActive = c.id === activeId;
+        const isSelected = selectedIds.has(c.id);
         const topLabel = topTaxonomyLabel(c.taxonomy_matches);
         return (
           <button
@@ -71,27 +79,54 @@ export function GalleryStrip({ captures, activeId, onSelect, loading }: Props) {
               alignItems: "center",
               gap: 10,
               padding: 8,
-              border: `1px solid ${isActive ? "var(--color-accent)" : "var(--color-border)"}`,
+              border: `1px solid ${isSelected || isActive ? "var(--color-accent)" : "var(--color-border)"}`,
               borderRadius: "var(--radius-sm)",
-              background: isActive ? "var(--color-accent-dim)" : "transparent",
+              background:
+                isSelected || isActive
+                  ? "var(--color-accent-dim)"
+                  : "transparent",
               cursor: "pointer",
               textAlign: "left",
               width: "100%",
               transition: "border-color 150ms, background 150ms",
             }}
           >
-            <img
-              src={c.image_url}
-              alt={topLabel ?? "Capture"}
-              style={{
-                width: 52,
-                height: 52,
-                objectFit: "cover",
-                borderRadius: "var(--radius-sm)",
-                flexShrink: 0,
-                border: "1px solid var(--color-border)",
-              }}
-            />
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <img
+                src={c.image_url}
+                alt={topLabel ?? "Capture"}
+                style={{
+                  width: 52,
+                  height: 52,
+                  objectFit: "cover",
+                  borderRadius: "var(--radius-sm)",
+                  border: "1px solid var(--color-border)",
+                  display: "block",
+                }}
+              />
+              {isSelected && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 3,
+                    right: 3,
+                    width: 16,
+                    height: 16,
+                    background: "var(--color-accent)",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 9,
+                    color: "#0a0a0a",
+                    fontWeight: 700,
+                    lineHeight: 1,
+                  }}
+                >
+                  ✓
+                </div>
+              )}
+            </div>
             <div style={{ overflow: "hidden" }}>
               <div
                 style={{

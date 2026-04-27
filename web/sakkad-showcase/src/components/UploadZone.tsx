@@ -135,6 +135,17 @@ export function UploadZone({ onUpload, loading, error }: Props) {
         </div>
       )}
 
+      <div style={{ marginTop: 12 }}>
+        <button
+          className="primary"
+          onClick={() => !loading && inputRef.current?.click()}
+          disabled={loading}
+          style={{ width: "100%" }}
+        >
+          {loading ? "Uploading…" : "Upload Image"}
+        </button>
+      </div>
+
       <PipelineReveal active={pipelineActive} />
     </div>
   );

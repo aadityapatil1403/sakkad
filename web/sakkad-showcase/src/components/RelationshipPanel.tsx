@@ -43,7 +43,7 @@ export function RelationshipPanel({
 
   const aggregatedTaxonomy = sortedTaxonomy(
     aggregateGroupTaxonomy(captures),
-  ).slice(0, 5);
+  ).slice(0, 8);
   const { layer1, layer2, references } = aggregateGroupTags(captures);
   const captureIds = captures.map((c) => c.id);
 
@@ -71,7 +71,6 @@ export function RelationshipPanel({
 
   function handleSelect(idx: number) {
     setSelectedIdx(idx);
-    onSelectStatement(statements[idx]!.text);
   }
 
   return (
@@ -98,17 +97,31 @@ export function RelationshipPanel({
           overflow: "auto",
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
+          position: "relative",
         }}
       >
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            border: "none",
+            padding: "2px 8px",
+            fontSize: 18,
+            color: "var(--color-text-dim)",
+            zIndex: 1,
+          }}
+        >
+          ×
+        </button>
+
         {/* Col 1 — Suggested Relationships */}
         <div
           style={{ padding: 28, borderRight: "1px solid var(--color-border)" }}
         >
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
               marginBottom: 20,
             }}
           >
@@ -123,17 +136,6 @@ export function RelationshipPanel({
             >
               Suggested Relationships
             </div>
-            <button
-              onClick={onClose}
-              style={{
-                border: "none",
-                padding: "2px 8px",
-                fontSize: 16,
-                color: "var(--color-text-dim)",
-              }}
-            >
-              ×
-            </button>
           </div>
 
           {statements.length === 0 && !loading && (
@@ -171,7 +173,7 @@ export function RelationshipPanel({
                 key={i}
                 onClick={() => handleSelect(i)}
                 style={{
-                  padding: 12,
+                  padding: 14,
                   border: `1px solid ${selectedIdx === i ? "var(--color-accent)" : "var(--color-border)"}`,
                   borderRadius: "var(--radius-sm)",
                   cursor: "pointer",
@@ -185,10 +187,10 @@ export function RelationshipPanel({
                 <p
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: 14,
+                    fontSize: 16,
                     fontStyle: "italic",
                     color: "var(--color-text-primary)",
-                    lineHeight: 1.6,
+                    lineHeight: 1.65,
                     margin: 0,
                   }}
                 >
@@ -209,6 +211,18 @@ export function RelationshipPanel({
               </div>
             ))}
           </div>
+
+          {selectedIdx !== null && statements[selectedIdx] && (
+            <div style={{ marginTop: 16 }}>
+              <button
+                className="primary"
+                style={{ width: "100%" }}
+                onClick={() => onSelectStatement(statements[selectedIdx]!.text)}
+              >
+                Generate Sketch →
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Col 2 — Grouped Images */}
