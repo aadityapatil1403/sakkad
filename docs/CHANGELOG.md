@@ -4,6 +4,10 @@ All notable changes to Sakkad will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **2026-04-25** — `sakad-backend/routes/generate.py`, `sakad-backend/services/gemini_service.py`, `sakad-backend/tests/test_generate_image_api.py`, `sakad-backend/tests/test_gemini_service.py`, `web/sakkad-showcase/src/components/SketchStage.tsx`, `web/sakkad-showcase/src/lib/api.ts`, `web/sakkad-showcase/src/lib/types.ts`, `web/sakkad-showcase/src/test/api.test.ts`, `BACKEND_CONTEXT.md`, `API_CONTRACT.md`: Codex P1/P2 review fixes — (1) SketchStage image generation now triggered by button click, not useEffect, eliminating React StrictMode double-fire; (2) `generate_image` route uses `run_in_threadpool` to avoid blocking the FastAPI event loop during Gemini calls; (3) retry logic uses `_is_retryable_error` (server 5xx, rate-limit 429, network) instead of catching all exceptions; (4) partial capture ID mismatch returns 404; (5) `mime_type` is passed from Gemini response rather than hardcoded; (6) `generateImage()` API wrapper + `GenerateImageResponse` type added with 4 new tests; (7) `BACKEND_CONTEXT.md` and `API_CONTRACT.md` document `POST /api/generate/image`; 137 backend + 22 frontend tests passing
+
 ### Added
 
 - **2026-04-25** — `data/taxonomy.json`: Added 6 soccer/football taxonomy labels — Retro Kit Culture, Football Casual, Soccer Heritage, Sport Hybrid, Training Ground, Kit Collector — with 670–780 char SigLIP-optimized descriptions referencing visual cues (jersey mesh, sponsor logos, club crests, polo collars, ribbed cuffs, polyester sheen) and brand anchors (KidSuper, Corteiz, Palace x Adidas, Wales Bonner x Adidas, Martine Rose, Willy Chavarria); resolves misclassification of retro football kits as Maximalism/Print Mixing

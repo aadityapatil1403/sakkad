@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getHealth, getGallery, uploadCapture, generateCopy } from "../lib/api";
+import { getHealth, getGallery, uploadCapture, generateCopy, generateImage } from "../lib/api";
 import { mockCapture } from "./fixtures";
 
 const BASE_URL = "http://127.0.0.1:8000";
@@ -120,5 +120,60 @@ describe("generateCopy", () => {
     const body = JSON.parse(options.body as string) as Record<string, unknown>;
     expect(body.kind).toBe("creative_summary");
     expect(body.capture_ids).toEqual(["id-1"]);
+  });
+});
+
+describe("generateImage", () => {
+  const mockImageResponse = {
+    image_b64: "abc123",
+    mime_type: "image/png",
+    statement: "Austere material philosophy.",
+    taxonomy_influences: [{ label: "Quiet Luxury", score: 0.87 }],
+  };
+
+  it("sends statement and capture_ids to /api/generate/image", async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => mockImageResponse,
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const result = await generateImage("Austere material philosophy.", ["id-1", "id-2"]);
+    expect(result.image_b64).toBe("abc123");
+    expect(result.mime_type).toBe("image/png");
+
+    const [url, options] = mockFetch.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe(`${BASE_URL}/api/generate/image`);
+    const body = JSON.parse(options.body as string) as Record<string, unknown>;
+    expect(body.statement).toBe("Austere material philosophy.");
+    expect(body.capture_ids).toEqual(["id-1", "id-2"]);
+  });
+
+  it("includes ngrok header", async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => mockImageResponse,
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    await generateImage("test", ["id-1"]);
+    const [, options] = mockFetch.mock.calls[0] as [string, RequestInit];
+    expect((options.headers as Record<string, string>)["ngrok-skip-browser-warning"]).toBe("true");
+  });
+
+  it("throws ApiError on non-ok response", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 503 }));
+    await expect(generateImage("test", ["id-1"])).rejects.toMatchObject({ status: 503 });
+  });
+
+  it("preserves mime_type from response", async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ...mockImageResponse, mime_type: "image/jpeg" }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const result = await generateImage("test", ["id-1"]);
+    expect(result.mime_type).toBe("image/jpeg");
   });
 });

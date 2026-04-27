@@ -176,8 +176,72 @@ Success response:
 
 Failure response: `404` if the session does not exist.
 
+### `POST /api/generate`
+
+Generates short copy text (inspiration prompt, styling direction, or creative summary) from a session or a set of captures.
+
+Request body:
+
+```json
+{
+  "kind": "inspiration_prompt" | "styling_direction" | "creative_summary",
+  "session_id": "string",
+  "capture_ids": ["string"]
+}
+```
+
+Provide exactly one of `session_id` or `capture_ids`.
+
+Success response: `200 OK`
+
+```json
+{
+  "kind": "inspiration_prompt",
+  "text": "Short render-ready copy.",
+  "fallback_used": false,
+  "source": { "session_id": "...", "capture_ids": [...] }
+}
+```
+
+### `POST /api/generate/image`
+
+Generates a fashion sketch image using Gemini image generation. The sketch style is influenced by the taxonomy scores of the provided captures.
+
+Request body:
+
+```json
+{
+  "statement": "string",
+  "capture_ids": ["string"]
+}
+```
+
+All `capture_ids` must exist in the database.
+
+Success response: `200 OK`
+
+```json
+{
+  "image_b64": "<base64>",
+  "mime_type": "image/png",
+  "statement": "...",
+  "taxonomy_influences": [
+    { "label": "Quiet Luxury", "score": 0.87 }
+  ]
+}
+```
+
+Render with `data:${mime_type};base64,${image_b64}`. Always use `mime_type` from the response.
+
+Failure responses:
+
+- `422` if `statement` is empty or `capture_ids` is empty
+- `404` if any `capture_id` is not found
+- `503` if Gemini image generation is unavailable
+
 ## Notes
 
 - New routes should use `/api/v1/`, but existing routes above remain unversioned for compatibility.
 - Gemini failures are best-effort and do not block capture ingestion.
 - `taxonomy_matches` is intentionally a map, not a ranked array of objects.
+- `POST /api/generate/image` calls Gemini image generation (10–30s). Trigger only from explicit user action — never in a `useEffect` on mount.
