@@ -2,6 +2,7 @@ import base64
 import functools
 import logging
 import re
+import time
 from collections.abc import Callable
 from typing import TypeVar
 
@@ -356,9 +357,13 @@ def _call_gemini_tags(
                     model_name,
                     exc,
                 )
+                time.sleep(1)
                 continue
 
-            logger.exception("[gemini_service] %s: API error: %s", layer, exc)
+            if _is_retryable_error(exc):
+                logger.warning("[gemini_service] %s: all models unavailable: %s", layer, exc)
+            else:
+                logger.exception("[gemini_service] %s: API error: %s", layer, exc)
             return [], None
 
     return [], None
