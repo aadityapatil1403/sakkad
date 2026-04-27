@@ -21,15 +21,15 @@ Build the Sakkad backend (FastAPI + SigLIP + Supabase) so Snap Spectacles can ca
 
 ### Done (recent)
 
-- P1/P2 Codex review fixes: SketchStage generation on button click (no StrictMode double-fire), generate_image uses run_in_threadpool, retry only transient errors, partial captures validated, mime_type from response, generateImage wrapper + tests, docs updated (2026-04-25)
-- Soccer taxonomy: 6 new labels + 20 brand corpus entries seeded; jersey scores validated (2026-04-25)
-- Merged `feat/backend-showcase-ui` → main; full React/Vite/TS showcase UI; 137 tests passing (2026-04-25)
+- Merged `feat/soccer-taxonomy` + `fix/fix-codex-p1-p2-review-issues` → main; Codex P2 fixes applied to both branches before merge; 144 backend + 22 frontend tests passing (2026-04-26)
+- P1/P2 Codex review fixes: SketchStage generation on button click, run_in_threadpool, retry 502/504/httpx, UUID normalization, generateImage wrapper + tests (2026-04-25)
+- Soccer taxonomy: 6 new labels + 20 brand corpus entries; KidSuper/Palace data integrity fixed (2026-04-25)
 
 ### Now
 
 **Week 3 — Demo-readiness and Partner Contract**
 
-- [ ] Merge `feat/soccer-taxonomy` → main (user testing UI first)
+- [x] Merge `feat/soccer-taxonomy` → main
 - [ ] Run live demo seed (`python scripts/seed_demo_captures.py`)
 - [ ] Ship first-pass clustering: `POST /api/clusters/run`, `GET /api/clusters`
 - [x] Soccer taxonomy + brand corpus seeded and validated
