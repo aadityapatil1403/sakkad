@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactElement } from "react";
 import { generateImage } from "../lib/api";
 import type { GenerateImageResponse } from "../lib/types";
 
@@ -18,7 +19,7 @@ export function SketchStage({
   statement,
   captureIds,
   onClose,
-}: Props): JSX.Element {
+}: Props): ReactElement {
   const [state, setState] = useState<State>({ phase: "idle" });
 
   async function handleGenerate(): Promise<void> {
@@ -49,6 +50,7 @@ export function SketchStage({
     >
       <div
         style={{
+          position: "relative",
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-md)",
@@ -59,6 +61,24 @@ export function SketchStage({
           padding: 40,
         }}
       >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            background: "none",
+            border: "none",
+            color: "var(--color-text-dim)",
+            fontSize: 20,
+            cursor: "pointer",
+            lineHeight: 1,
+            padding: 4,
+          }}
+        >
+          ×
+        </button>
         <div
           style={{
             fontFamily: "var(--font-mono)",
